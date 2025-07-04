@@ -99,14 +99,14 @@ export default function PlantDetail() {
 
         {/* Manual Actions */}
         {!plant.is_automatic && (
-  <div className="mt-4">
-    <button
-      className="bg-red-500 hover:bg-red-600 text-white font-semibold w-full py-3 rounded-lg shadow">
-      🚨 Launch Action
-    </button>
-    <p className="text-xs text-gray-400 text-center mt-1">Based on latest critical sensor</p>
-  </div>
-)}
+            <div className="mt-4">
+                <button
+                className="bg-red-500 hover:bg-red-600 text-white font-semibold w-full py-3 rounded-lg shadow">
+                🚨 Launch Action
+                </button>
+                <p className="text-xs text-gray-400 text-center mt-1">Based on latest critical sensor</p>
+            </div>
+        )}
 
         {/* Actions Log */}
         <div className="mt-6">
