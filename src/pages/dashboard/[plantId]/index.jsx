@@ -1,4 +1,4 @@
-// 📁 pages/dashboard/[plantId]/index.jsx
+// pages/dashboard/[plantId]/index.jsx
 import { useRouter } from "next/router";
 import { usePlantDetail } from "@/hooks/usePlantDetail";
 import { applyAction } from "@/lib/actionService";
