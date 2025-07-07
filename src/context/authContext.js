@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";  
 import { loginUser } from "../lib/authService";   // ← seul appel backend pour l’instant
+import { registerUser } from "../lib/authService"; // pour l’inscription
 
 const AuthContext = createContext();
 
@@ -20,6 +21,11 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  //register
+ const register = async (username, email, password) => {
+  return await registerUser({ username, email, password });
+};
+
   // login
   const login = async (credentials) => {
     const { token } = await loginUser(credentials);   // POST /api/users/login
@@ -37,7 +43,7 @@ export const AuthProvider = ({ children }) => {
 
   // expose au reste de l’app
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
