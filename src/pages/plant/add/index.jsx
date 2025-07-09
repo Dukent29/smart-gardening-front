@@ -1,6 +1,7 @@
 // pages/plant/add/index.jsx
 import { useState } from 'react';
 import axios from '@/lib/axios'; // Assurez-vous que le chemin est correct
+import Sidebar from '@/components/Sidebar';
 
 export default function AddPlantPage() {
   const [image, setImage] = useState(null);
@@ -76,7 +77,9 @@ export default function AddPlantPage() {
   };
 
   return (
-    <div className="p-6 max-w-xl mx-auto space-y-6">
+    <div className="flex">
+      <Sidebar />
+      <div className="p-6 max-w-xl mx-auto space-y-6">
       <h1 className="text-2xl font-bold text-center">🌱 Ajouter une plante</h1>
 
       <input
@@ -136,5 +139,7 @@ export default function AddPlantPage() {
         </div>
       )}
     </div>
+    </div>
+    
   );
 }

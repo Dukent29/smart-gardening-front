@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { usePlantDetail } from "@/hooks/usePlantDetail";
 import { applyAction } from "@/lib/actionService";
 import SensorBar from "@/components/SensorBar";
+import Sidebar from "@/components/Sidebar";
 
 export default function PlantDetail() {
   const { plantId } = useRouter().query;
@@ -33,7 +34,9 @@ export default function PlantDetail() {
   
 
   return (
-    <div className="p-6 space-y-6 max-w-4xl mx-auto">
+    <div className="flex">
+      <Sidebar />
+      <div className="p-6 flex-1 space-y-6 max-w-4xl mx-auto">
       {/* 🔹 Title + description + image */}
       <div className="space-y-2">
         <h1 className="text-3xl font-bold text-gray-800">{plant.plant_name}</h1>
@@ -126,6 +129,7 @@ export default function PlantDetail() {
             )}
             </div>
       </div>
+    </div>
     </div>
   );
 }
