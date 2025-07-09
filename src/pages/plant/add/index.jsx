@@ -42,6 +42,31 @@ export default function AddPlantPage() {
       setLoading(false);
     }
   };
+  console.log('API Base URL:', process.env.NEXT_PUBLIC_API_BASE_URL)
+
+  // save to the database
+  const savePlant = async () => {
+  try {
+    const payload = {
+      name: result.name,
+      type: result.type,
+      description: result.description,
+      imageUrl: result.image_url, 
+    };
+
+    const res = await axios.post('/plants/add-plant', payload); // token auto via axios interceptor
+
+    if (res.data.success) {
+      alert('✅ Plante enregistrée avec succès !');
+      reset();
+    } else {
+      setError(res.data.message || 'Erreur lors de l’enregistrement');
+    }
+  } catch (err) {
+    console.error('Erreur lors du save:', err);
+    setError('Erreur serveur lors de l’enregistrement');
+  }
+};
 
   const reset = () => {
     setImage(null);
@@ -75,6 +100,7 @@ export default function AddPlantPage() {
         >
           {loading ? 'Analyse en cours...' : '🔍 Identifier'}
         </button>
+        
         <button
           onClick={reset}
           className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
@@ -87,13 +113,14 @@ export default function AddPlantPage() {
 
       {result && (
         <div className="border rounded p-4 shadow space-y-2">
-          <img src={result.image_url} className="w-full h-52 object-cover rounded" alt="Plante identifiée" />
+          <img src={result.image_url}  className="w-full h-52 object-cover rounded" alt="Plante identifiée" />
           <p><strong>Nom:</strong> {result.name}</p>
           <p><strong>Type:</strong> {result.type}</p>
           <p><strong>Description:</strong> {result.description}</p>
 
           <div className="flex justify-center space-x-4 mt-4">
             <button
+              onClick={savePlant}
               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
               // TODO: handle save
             >

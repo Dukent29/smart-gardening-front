@@ -30,6 +30,7 @@ export default function PlantDetail() {
     await applyAction(plantId, { sensor_type });
     mutate(); // refresh everything
   };
+  
 
   return (
     <div className="p-6 space-y-6 max-w-4xl mx-auto">
@@ -45,6 +46,7 @@ export default function PlantDetail() {
             className="w-full max-h-[400px] object-cover rounded-xl shadow"
           />
         )}
+        
       </div>
 
       {/* 🔸 Sensor + Actions Card */}
