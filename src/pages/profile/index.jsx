@@ -7,6 +7,7 @@ import HealthReport from "@/components/UserProfile/HealthReport";
 import { getUserProfile } from "@/lib/userService";
 import Sidebar from "@/components/Sidebar";
 
+
 export default function UserProfilePage() {
   const [user, setUser] = useState(null);
 
