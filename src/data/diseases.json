@@ -1,0 +1,38 @@
+[
+  {
+    "entity_id": 458,
+    "name": "Fungi",
+    "description": "Fungal diseases affect the leaves, stems, or roots of plants and often appear as mold, mildew, or rust.",
+    "treatment": "Use appropriate fungicide. Remove infected parts and avoid overwatering."
+  },
+  {
+    "entity_id": 469,
+    "name": "Leotiomycetes",
+    "description": "A class of fungi known to cause blight and decay in plant tissue.",
+    "treatment": "Prune infected areas and apply antifungal treatments during early signs."
+  },
+  {
+    "entity_id": 1030,
+    "name": "Rust",
+    "description": "Rust appears as orange, yellow, or brown pustules on leaves and can spread rapidly.",
+    "treatment": "Remove affected leaves. Use sulfur-based fungicides."
+  },
+    {
+        "entity_id": 1031,
+        "name": "Powdery Mildew",
+        "description": "A fungal disease that appears as white powdery spots on leaves.",
+        "treatment": "Increase air circulation, avoid overhead watering, and apply fungicides."
+    },
+    {
+        "entity_id": 1032,
+        "name": "Leaf Spot",
+        "description": "Leaf spot diseases cause dark or light spots on leaves, often leading to leaf drop.",
+        "treatment": "Remove affected leaves and apply fungicides if necessary."
+    },
+    {
+        "entity_id": 1033,
+        "name": "Blight",
+        "description": "Blight causes rapid browning and death of plant tissues, especially in leaves and stems.",
+        "treatment": "Remove infected parts and apply appropriate fungicides."
+    }
+]
