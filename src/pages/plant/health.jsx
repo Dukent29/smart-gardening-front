@@ -4,6 +4,8 @@ import axios from '@/lib/axios';
 import TabsNav from '@/components/TabsNav';
 import Modal from '@/components/Modal';
 import localDiseases from '@/data/diseases.json';
+import ChatBotComponent from '@/components/ChatBotComponent';
+import Sidebar from "@/components/Sidebar";
 
 // 🧪 Scan logic stays here
 function ScanComponent({ onSelectDisease }) {
@@ -127,88 +129,39 @@ function ScanComponent({ onSelectDisease }) {
 }
 
 // 💬 Chat tab
-function ChatBotComponent() {
-  const [message, setMessage] = useState('');
-  const [responses, setResponses] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const sendMessage = async () => {
-    if (!message) return;
-
-    try {
-      setLoading(true);
-      const res = await axios.post('/plants/chat', { question: message }); // Assuming route
-      setResponses((prev) => [...prev, { question: message, answer: res.data.answer }]);
-      setMessage('');
-    } catch (err) {
-      console.error(err);
-      setResponses((prev) => [...prev, { question: message, answer: 'Erreur de l’API.' }]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="space-y-4">
-      <div className="space-y-2 max-h-[300px] overflow-y-auto p-2 border rounded">
-        {responses.map((res, idx) => (
-          <div key={idx}>
-            <p className="font-semibold">🧑‍🌾 Vous: {res.question}</p>
-            <p className="text-green-700">🤖 Bot: {res.answer}</p>
-          </div>
-        ))}
-      </div>
-      <div className="flex gap-2">
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="flex-1 border p-2 rounded"
-          placeholder="Posez une question sur une plante..."
-        />
-        <button onClick={sendMessage} disabled={loading} className="bg-green-600 text-white px-4 py-2 rounded">
-          {loading ? 'Envoi...' : 'Envoyer'}
-        </button>
-      </div>
-    </div>
-  );
-}
-
 export default function PlantHealthPage() {
   const [activeTab, setActiveTab] = useState('Scan');
   const [selectedDisease, setSelectedDisease] = useState(null);
 
   return (
-    <>
-      <TabsNav activeTab={activeTab} onTabChange={setActiveTab} />
-
-      <div className="p-6 max-w-xl mx-auto space-y-6">
+    <div className="flex">
+      <Sidebar />
+      <div className="p-6 max-w-xl mx-auto space-y-6 flex-1">
+        <TabsNav activeTab={activeTab} onTabChange={setActiveTab} />
         <h1 className="text-2xl font-bold text-center">🌿 Analyse et Assistance</h1>
-
         {activeTab === 'Scan' && <ScanComponent onSelectDisease={setSelectedDisease} />}
         {activeTab === 'Chat' && <ChatBotComponent />}
         {activeTab === 'History' && (
           <p className="text-center text-gray-400 mt-10">📜 Historique en cours de développement...</p>
         )}
+        {selectedDisease && (
+          <Modal onClose={() => setSelectedDisease(null)}>
+            <h2 className="text-xl font-bold mb-2 text-red-600">
+              {selectedDisease.disease_details?.local_name || selectedDisease.name}
+            </h2>
+            <p className="text-sm mb-4">
+              <strong>Description :</strong>
+              <br />
+              {selectedDisease.disease_details?.description || 'Non disponible'}
+            </p>
+            <p className="text-sm">
+              <strong>Traitement :</strong>
+              <br />
+              {selectedDisease.disease_details?.treatment || 'Non disponible'}
+            </p>
+          </Modal>
+        )}
       </div>
-
-      {selectedDisease && (
-        <Modal onClose={() => setSelectedDisease(null)}>
-          <h2 className="text-xl font-bold mb-2 text-red-600">
-            {selectedDisease.disease_details?.local_name || selectedDisease.name}
-          </h2>
-          <p className="text-sm mb-4">
-            <strong>Description :</strong>
-            <br />
-            {selectedDisease.disease_details?.description || 'Non disponible'}
-          </p>
-          <p className="text-sm">
-            <strong>Traitement :</strong>
-            <br />
-            {selectedDisease.disease_details?.treatment || 'Non disponible'}
-          </p>
-        </Modal>
-      )}
-    </>
+    </div>
   );
 }
