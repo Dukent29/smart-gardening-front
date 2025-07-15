@@ -4,6 +4,7 @@ import PlantCard            from "@/components/PlantCard";
 import { useAuthGuard }     from "@/hooks/useAuthGuard";
 import { DashboardLayout } from "@/layout/dashboardLayout";
 import Sidebar from "@/components/Sidebar";
+import Header from "@/components/Header";
 
 
 export default function Dashboard() {
@@ -19,6 +20,7 @@ export default function Dashboard() {
       <div className="flex">
         <Sidebar />
         <div className="p-4 flex-1">
+          <Header title="Tableau de bord" />
           <h1 className="text-2xl font-bold mb-4">Vue d’ensemble du jardin 🌿</h1>
           {loading && <p>Chargement…</p>}
           {error   && <p className="text-red-500">{error}</p>}
