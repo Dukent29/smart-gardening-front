@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useAuth } from "@/context/authContext";
 import { useRouter } from "next/router";
+import BottomNav from "@/components/BottomNav";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -22,7 +23,9 @@ export default function LoginPage() {
   };
 
   return (
+    
     <div className="min-h-screen flex items-center justify-center p-4">
+      <BottomNav />
       <form onSubmit={handleLogin}
             className="bg-white p-6 rounded shadow w-full max-w-sm space-y-4">
         <h1 className="text-xl font-bold">Connexion 🌿</h1>
