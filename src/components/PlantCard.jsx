@@ -1,6 +1,10 @@
 // 📁 src/components/PlantCard.jsx
 import { useRouter } from "next/router";
 import SensorBar from "./SensorBar";
+import TempIcon from "../assets/icons/thermometer.svg";
+import HumidityIcon from "../assets/icons/eye.svg"; 
+import LightIcon from "../assets/icons/sun.svg";
+import MoistureIcon from "../assets/icons/droplets.svg"; // Assuming you have these icons
 
 export default function PlantCard({ plant }) {
   const router = useRouter();
@@ -40,19 +44,19 @@ export default function PlantCard({ plant }) {
     >
       {/* HEADER */}
       <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-bold">{plant.plant_name}</h2>
-        <p className="text-sm text-gray-500">{plant.plant_type}</p>
+        <h2 className="text-lg font-bold text-[#06331a]">{plant.plant_name}</h2>
+        <p className="text-sm text-[#5b9274]">{plant.plant_type}</p>
         <span className={`text-xs text-white px-2 py-0.5 rounded-full ${badgeColor} w-fit`}>
           {badgeText}
         </span>
       </div>
 
       {/* CAPTEURS */}
-      <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-6 items-center mt-4">
-        <SensorBar icon="🌱" label="Moisture" value={latest.soil}      barColor="blue"   />
-        <SensorBar icon="💡" label="Light"    value={latest.light}     barColor="amber"  unit="lx" />
-        <SensorBar icon="🌡️" label="Temp"     value={latest.temp}      barColor="orange" unit="°C" />
-        <SensorBar icon="💧" label="Humidity" value={latest.humidity}  barColor="pink"   />
+      <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-6 items-center mt-4 text-gray-700">
+        <SensorBar icon={<MoistureIcon />} label="Moisture" value={latest.soil}      barColor="blue" />
+        <SensorBar icon={<LightIcon />} label="Light"    value={latest.light}     barColor="amber"  unit="lx" />
+        <SensorBar icon={<TempIcon />} label="Temp"     value={latest.temp}      barColor="orange" unit="°C" />
+        <SensorBar icon={<HumidityIcon />} label="Humidity" value={latest.humidity}  barColor="pink"   />
       </div>
 
       {/* FOOTER */}
