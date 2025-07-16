@@ -8,7 +8,7 @@ export default function HealthReport() {
 
   return (
     <div>
-      <h3 className="font-semibold text-gray-800 mb-2">Health Report</h3>
+      <h3 className="font-semibold text-[#0A5D2F] mb-2">Health Report</h3>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {stats.map((stat) => (
           <div
