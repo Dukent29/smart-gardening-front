@@ -17,7 +17,7 @@ export default function Dashboard() {
 
   return (
     <DashboardLayout>
-      <div className="flex">
+      <div className="flex bg-[#F5F5F5]">
         <Sidebar />
         <div className="p-4 flex-1">
           <Header title="Tableau de bord" />

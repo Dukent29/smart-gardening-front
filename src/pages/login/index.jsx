@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { useAuth } from "@/context/authContext";
 import { useRouter } from "next/router";
-import BottomNav from "@/components/BottomNav";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -24,31 +23,31 @@ export default function LoginPage() {
 
   return (
     
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <BottomNav />
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[#F5F5F5]">
+      
       <form onSubmit={handleLogin}
             className="bg-white p-6 rounded shadow w-full max-w-sm space-y-4">
-        <h1 className="text-xl font-bold">Connexion 🌿</h1>
+        <h1 className="text-xl font-bold text-[#074221]">Connexion </h1>
 
         {error && <p className="text-red-500">{error}</p>}
 
         <input
           type="email" placeholder="Email"
           value={email} onChange={(e) => setEmail(e.target.value)}
-          className="w-full border p-2 rounded"
+          className="w-full bg-[#D9D9D9] p-2 rounded-xl placeholder-[#fff]"
         />
         <input
           type="password" placeholder="Mot de passe"
           value={password} onChange={(e) => setPassword(e.target.value)}
-          className="w-full border p-2 rounded"
+          className="w-full bg-[#D9D9D9] p-2 rounded-xl placeholder-[#fff]"
         />
 
-        <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
+        <button className="w-full bg-[#0a5d2f] text-white py-2 rounded-xl hover:bg-green-700">
           Se connecter
         </button>
 
         {/* petit lien vers register */}
-        <p className="text-sm text-center">
+        <p className="text-sm text-center text-[#000]">
           Pas de compte ?{" "}
           <span
             className="text-green-700 cursor-pointer"

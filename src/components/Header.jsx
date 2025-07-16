@@ -1,5 +1,7 @@
 import { useRouter } from "next/router";
-import { FaArrowLeft, FaUserCircle } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
+import ProfilIcon from "../assets/icons/profil.svg"; 
+import BackIcon from "../assets/icons/arrow-left.svg";
 
 export default function Header({ title = "Page" }) {
   const router = useRouter();
@@ -12,7 +14,7 @@ export default function Header({ title = "Page" }) {
         className="text-gray-600 hover:text-blue-600 text-xl"
         aria-label="Retour"
       >
-        <FaArrowLeft />
+        <BackIcon />
       </button>
 
       {/* Page title */}
@@ -26,7 +28,7 @@ export default function Header({ title = "Page" }) {
         className="text-gray-600 hover:text-blue-600 text-2xl"
         aria-label="Profil"
       >
-        <FaUserCircle />
+        <ProfilIcon/>
       </button>
     </header>
   );

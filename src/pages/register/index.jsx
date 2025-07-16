@@ -43,9 +43,9 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-[#F5F5F5]">
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow w-full max-w-md space-y-4">
-        <h1 className="text-2xl font-bold text-center">Créer un compte</h1>
+        <h1 className="text-2xl font-bold  text-[#074221]">Créer un compte</h1>
 
         {error && <p className="text-red-500 text-sm">{error}</p>}
 
@@ -54,7 +54,7 @@ export default function RegisterPage() {
           value={form.username}
           onChange={handleChange}
           placeholder="Nom d'utilisateur"
-          className="w-full border px-4 py-2 rounded"
+          className="w-full bg-[#D9D9D9] placeholder-[#fff] rounded-xl px-4 py-2"
           required
         />
         <input
@@ -63,7 +63,7 @@ export default function RegisterPage() {
           value={form.email}
           onChange={handleChange}
           placeholder="Adresse email"
-          className="w-full border px-4 py-2 rounded"
+          className="w-full bg-[#D9D9D9] placeholder-[#fff] rounded-xl px-4 py-2 "
           required
         />
         <input
@@ -72,7 +72,7 @@ export default function RegisterPage() {
           value={form.password}
           onChange={handleChange}
           placeholder="Mot de passe"
-          className="w-full border px-4 py-2 rounded"
+          className="w-full bg-[#D9D9D9] placeholder-[#fff] rounded-xl px-4 py-2 "
           required
         />
 
@@ -80,19 +80,19 @@ export default function RegisterPage() {
         name="confirmPassword"
         type="password"
         placeholder="Confirmez le mot de passe"
-        className="w-full border px-4 py-2 rounded"
+        className="w-full bg-[#D9D9D9] placeholder-[#fff] rounded-xl px-4 py-2 "
         value={form.confirmPassword}
         onChange={handleChange}
         required
         />
 
-        <label className="flex items-center text-sm">
+        <label className="flex items-center text-sm text-gray-700">
           <input
             name="rgpd"
             type="checkbox"
             checked={form.rgpd}
             onChange={handleChange}
-            className="mr-2"
+            className="mr-2 "
           />
           J’accepte les conditions RGPD
         </label>
@@ -100,14 +100,14 @@ export default function RegisterPage() {
         <button
           type="submit"
           disabled={!form.rgpd || loading}
-          className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded disabled:opacity-50"
+          className="w-full bg-[#09552b] rounded-xl hover:bg-green-700 text-white font-semibold py-2 px-4 "
         >
           {loading ? "Création…" : "Créer mon compte"}
         </button>
 
-        <p className="text-xs text-center">
+        <p className="text-xs text-center text-gray-700">
           Déjà un compte ?{" "}
-          <a href="/auth/Login" className="text-blue-600 hover:underline">
+          <a href="/auth/Login" className="text-green-700 hover:underline">
             Se connecter
           </a>
         </p>
