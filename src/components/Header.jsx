@@ -7,7 +7,7 @@ export default function Header({ title = "Page" }) {
   const router = useRouter();
 
   return (
-    <header className="flex items-center justify-between px-4 py-3 bg-white shadow rounded-xl mb-4">
+    <header className="flex items-center justify-between px-4 py-3 bg-white shadow  ">
       {/* Arrow left */}
       <button
         onClick={() => router.back()}

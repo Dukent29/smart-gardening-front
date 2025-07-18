@@ -9,11 +9,9 @@ import { IoMdSettings } from "react-icons/io";
 
 const links = [
   { href: "/dashboard", label: "Garden", icon: <TbGardenCart /> },
-  { href: "/Explore", label: "Explore", icon: <FaQuestionCircle /> },
   { href: "/plant/health", label: "Health", icon: <BsHeartPulse /> },
+  { href: "/Explore", label: "Explore", icon: <FaQuestionCircle /> },
   { href: "/search", label: "Recherche", icon: <FaSearch /> },
-  { href: "/plant/add", label: "Ajouter plante", icon: <MdOutlinePlaylistAdd /> },
-  { href: "/profile", label: "Profil", icon: <FaUserCircle /> },
   { href: "/settings", label: "Paramètres", icon: <IoMdSettings /> },
    { href: "/logout", label: "Déconnexion", icon: <FaSignOutAlt /> },
   
