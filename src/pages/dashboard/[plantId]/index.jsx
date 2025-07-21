@@ -4,6 +4,8 @@ import { usePlantDetail } from "@/hooks/usePlantDetail";
 import { applyAction } from "@/lib/actionService";
 import SensorBar from "@/components/SensorBar";
 import Sidebar from "@/components/Sidebar";
+import Header from "@/components/Header";
+import BottomNav from "@/components/BottomNav";
 
 export default function PlantDetail() {
   const { plantId } = useRouter().query;
@@ -36,9 +38,11 @@ export default function PlantDetail() {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="p-6 flex-1 space-y-6 max-w-4xl mx-auto">
+      <div className=" flex-1 ">
+        <Header title={plant.plant_name} /> 
       {/* 🔹 Title + description + image */}
-      <div className="space-y-2">
+      <div className="space-y-6 max-w-4xl mx-auto">
+        <div className="space-y-2">
         <h1 className="text-3xl font-bold text-gray-800">{plant.plant_name}</h1>
         <p className="text-sm text-gray-500">{plant.plant_type}</p>
         <p className="text-gray-600">{plant.description}</p>
@@ -129,6 +133,9 @@ export default function PlantDetail() {
             )}
             </div>
       </div>
+      </div>
+      
+      <BottomNav />
     </div>
     </div>
   );
