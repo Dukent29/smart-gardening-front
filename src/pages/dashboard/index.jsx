@@ -5,7 +5,8 @@ import { useAuthGuard }     from "@/hooks/useAuthGuard";
 import { DashboardLayout } from "@/layout/dashboardLayout";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
-import { useRouter } from "next/router"; // Import useRouter from next/router
+import { useRouter } from "next/router"; 
+import BottomNav from "@/components/BottomNav";
 
 
 export default function Dashboard() {
@@ -43,6 +44,7 @@ export default function Dashboard() {
         </div>
         
       </div>
+      <BottomNav />
     </DashboardLayout>
   );
 }

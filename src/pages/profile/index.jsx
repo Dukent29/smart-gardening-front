@@ -6,6 +6,7 @@ import NotificationOptions from "@/components/UserProfile/NotificationOptions";
 import HealthReport from "@/components/UserProfile/HealthReport";
 import { getUserProfile } from "@/lib/userService";
 import Sidebar from "@/components/Sidebar";
+import BottomNav from "@/components/BottomNav";
 
 
 export default function UserProfilePage() {
@@ -22,9 +23,9 @@ export default function UserProfilePage() {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex bg-[#F5F5F5] min-h-screen">
       <Sidebar />
-      <div className="max-w-xl mx-auto p-6 space-y-6">
+      <div className="w-full p-6">
       {!user ? (
         <div className="text-center text-gray-400">Loading user info...</div>
       ) : (
@@ -37,6 +38,7 @@ export default function UserProfilePage() {
         <HealthReport />
       </div>
     </div>
+      <BottomNav />
     </div>
   );
 }

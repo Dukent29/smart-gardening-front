@@ -6,6 +6,7 @@ import Modal from '@/components/Modal';
 import localDiseases from '@/data/diseases.json';
 import ChatBotComponent from '@/components/ChatBotComponent';
 import Sidebar from "@/components/Sidebar";
+import BottomNav from '@/components/BottomNav';
 
 export default function PlantHealthPage() {
   const [activeTab, setActiveTab] = useState('Scan');
@@ -24,7 +25,7 @@ export default function PlantHealthPage() {
             {activeTab === 'Scan' && <ScanComponent onSelectDisease={setSelectedDisease} />}
             {activeTab === 'Chat' && <ChatBotComponent />}
             {activeTab === 'History' && (
-              <p className="text-center text-gray-400 mt-10">📜 Historique en cours de développement...</p>
+              <p className="text-center text-gray-400 mt-10"> Historique en cours de développement...</p>
             )}
           </div>
 
@@ -45,6 +46,7 @@ export default function PlantHealthPage() {
           )}
         </div>
       </div>
+      <BottomNav />
     </div>
   );
 }
@@ -149,7 +151,7 @@ function ScanComponent({ onSelectDisease }) {
         className="w-full h-64 object-cover rounded border"
       />
 
-      {/* 💡 Tips Box */}
+      {/*  Tips Box */}
       <div className="bg-gray-100 rounded-lg p-4">
         <h2 className="font-semibold text-green-800 mb-2">Diagnostiquer l’état de santé</h2>
         <p className="text-sm text-gray-700 mb-2">
@@ -166,14 +168,14 @@ function ScanComponent({ onSelectDisease }) {
         </div>
       </div>
 
-      {/* 📸 Preview */}
+      {/*  Preview */}
       {previewUrl && (
         <div className="text-center mt-4">
           <img src={previewUrl} alt="Preview" className="mx-auto h-64 object-cover rounded shadow" />
         </div>
       )}
 
-      {/* 🔘 Actions */}
+      {/*  Actions */}
       <div className="flex  space-x-4">
         <button
           onClick={takeSnapshotAndAnalyze}
@@ -191,10 +193,10 @@ function ScanComponent({ onSelectDisease }) {
         </button>
       </div>
 
-      {/* ⚠️ Error */}
+      {/*  Error */}
       {error && <p className="text-red-600 text-center">{error}</p>}
 
-      {/* 🧪 Result */}
+      {/*  Result */}
       {result && (
         <div className="p-4 border rounded bg-gray-50 shadow space-y-4">
           <h2 className="text-xl font-semibold text-gray-800">Résultats de l’analyse</h2>

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import axios from '@/lib/axios';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
+import BottomNav from '@/components/BottomNav';
 
 export default function AddPlantPage() {
   const [image, setImage] = useState(null);
@@ -199,6 +200,7 @@ export default function AddPlantPage() {
           </div>
         )}
       </div>
+      <BottomNav />
       </div>
     </div>
   );
