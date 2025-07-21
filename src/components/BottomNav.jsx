@@ -16,8 +16,7 @@ export default function BottomNav() {
   const router = useRouter();
 
   return (
-    <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-[#FEFEFD] rounded-full shadow-lg flex px-4 py-2 gap-4 items-center"
-      style={{ minWidth: 320, maxWidth: 420, justifyContent: "center" }}>
+    <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-[#FEFEFD] rounded-full shadow-lg flex justify-around px-4 py-2 gap-4 items-center border border-[#E0E0E0] sm:w-[520px] w-full max-w-[420px] md:hidden">
       {navLinks.map(({ href, label, icon }) => {
         const isActive = router.pathname === href;
         return (

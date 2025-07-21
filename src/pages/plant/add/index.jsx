@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from 'react';
 import axios from '@/lib/axios';
 import Sidebar from '@/components/Sidebar';
+import Header from '@/components/Header';
+import BottomNav from '@/components/BottomNav';
 
 export default function AddPlantPage() {
   const [image, setImage] = useState(null);
@@ -112,10 +114,13 @@ export default function AddPlantPage() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex bg-[#F5F5F5] min-h-screen">
       <Sidebar />
-      <div className="p-6 max-w-xl mx-auto space-y-6">
-        <h1 className="text-2xl font-bold text-center">🌱 Ajouter une plante</h1>
+      <div className=' w-full'>
+      <Header title="Ajouter une plante" />
+        <div className="p-6 max-w-xl mx-auto space-y-6">
+        
+        
 
         {/* 📷 Live camera */}
         <video
@@ -156,14 +161,14 @@ export default function AddPlantPage() {
             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50"
             disabled={loading}
           >
-            {loading ? 'Analyse en cours...' : '🌿 Scan to Add'}
+            {loading ? 'Analyse en cours...' : 'Scan to Add'}
           </button>
 
           <button
             onClick={reset}
             className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
           >
-            ❌ Annuler
+            Annuler
           </button>
         </div>
 
@@ -194,6 +199,8 @@ export default function AddPlantPage() {
             </div>
           </div>
         )}
+      </div>
+      <BottomNav />
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import SensorBar from "./SensorBar";
 import TempIcon from "../assets/icons/thermometer.svg";
 import HumidityIcon from "../assets/icons/eye.svg"; 
 import LightIcon from "../assets/icons/sun.svg";
-import MoistureIcon from "../assets/icons/droplets.svg"; // Assuming you have these icons
+import MoistureIcon from "../assets/icons/droplets.svg"; 
 
 export default function PlantCard({ plant }) {
   const router = useRouter();

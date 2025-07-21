@@ -2,18 +2,15 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { TbGardenCart } from "react-icons/tb";
-import { MdOutlinePlaylistAdd } from "react-icons/md";
-import {  FaUserCircle, FaSignOutAlt, FaQuestionCircle, FaSearch } from "react-icons/fa";
+import { FaSignOutAlt, FaQuestionCircle, FaSearch } from "react-icons/fa";
 import { BsHeartPulse } from "react-icons/bs";
 import { IoMdSettings } from "react-icons/io";
 
 const links = [
   { href: "/dashboard", label: "Garden", icon: <TbGardenCart /> },
-  { href: "/Explore", label: "Explore", icon: <FaQuestionCircle /> },
   { href: "/plant/health", label: "Health", icon: <BsHeartPulse /> },
+  { href: "/Explore", label: "Explore", icon: <FaQuestionCircle /> },
   { href: "/search", label: "Recherche", icon: <FaSearch /> },
-  { href: "/plant/add", label: "Ajouter plante", icon: <MdOutlinePlaylistAdd /> },
-  { href: "/profile", label: "Profil", icon: <FaUserCircle /> },
   { href: "/settings", label: "Paramètres", icon: <IoMdSettings /> },
    { href: "/logout", label: "Déconnexion", icon: <FaSignOutAlt /> },
   
@@ -23,7 +20,7 @@ export default function Sidebar() {
   const router = useRouter();
 
   return (
-    <aside className="h-screen w-64 bg-white shadow-xl p-4 flex flex-col justify-between">
+    <aside className="h-screen w-64 bg-white shadow-xl p-4 flex flex-col justify-between hidden md:block">
       <div>
         <h2 className="text-2xl font-bold mb-6 text-blue-700">🌿 Smart Garden</h2>
         <nav className="space-y-2">
