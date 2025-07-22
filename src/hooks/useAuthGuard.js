@@ -1,7 +1,7 @@
 // dossier: hooks · fichier: useAuthGuard.js
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useAuth } from "@/context/authContext";
+import { useAuth } from "@/context/authProvider";
 
 /**
  * Redirects to /login if no authenticated user is found.

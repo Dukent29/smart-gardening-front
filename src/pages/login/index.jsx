@@ -1,6 +1,6 @@
 // dossier: pages/login · fichier: index.jsx
 import { useState } from "react";
-import { useAuth } from "@/context/authContext";
+import { useAuth } from "@/context/authProvider";
 import { useRouter } from "next/router";
 
 export default function LoginPage() {

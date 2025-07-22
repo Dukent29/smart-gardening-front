@@ -41,7 +41,7 @@ export default function PlantDetail() {
       <div className=" flex-1 ">
         <Header title={plant.plant_name} /> 
       {/* 🔹 Title + description + image */}
-      <div className="space-y-6 max-w-4xl mx-auto">
+      <div className="space-y-7 max-w-2xl mx-auto mt-8">
         <div className="space-y-2">
         <h1 className="text-3xl font-bold text-gray-800">{plant.plant_name}</h1>
         <p className="text-sm text-gray-500">{plant.plant_type}</p>
