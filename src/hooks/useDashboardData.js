@@ -10,7 +10,7 @@ export const useDashboardData = () => {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const plants = await getPlantsWithSensors();   // ← déjà un tableau
+        const plants = await getPlantsWithSensors();   // Récupère les plantes avec leurs capteurs
         setData(plants);
       } catch (err) {
         setError("Impossible de charger les données");

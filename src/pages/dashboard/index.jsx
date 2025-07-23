@@ -1,50 +1,49 @@
 // dossier: pages/dashboard · fichier: index.jsx
+import { AppLayout } from "@/layout/AppLayout";
+import PlantCard from "@/components/PlantCard";
 import { useDashboardData } from "@/hooks/useDashboardData";
-import PlantCard            from "@/components/PlantCard";
-import { useAuthGuard }     from "@/hooks/useAuthGuard";
-import { DashboardLayout } from "@/layout/dashboardLayout";
+import { useAuthGuard } from "@/hooks/useAuthGuard";
 import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
-import { useRouter } from "next/router"; 
+
+import { useRouter } from "next/router";
 import BottomNav from "@/components/BottomNav";
 
-
 export default function Dashboard() {
-  useAuthGuard();                         // protège la route
+  useAuthGuard(); // Protects the route
   const { data, loading, error } = useDashboardData();
-  const router = useRouter(); // Initialise useRouter
-    console.log("DBG loading:", loading);
-    console.log("DBG error:", error);
-    console.log("DBG data:", data);
-
+  const router = useRouter();
 
   return (
-    <DashboardLayout>
-      <div className="flex bg-[#F5F5F5] relative">
-        <Sidebar />
-        <div className="flex-1">
-          <Header title="Tableau de bord" />
-          <h1 className="text-2xl font-bold mb-4 text-[#074221] p-4">Vue d’ensemble du jardin </h1>
-          {loading && <p>Chargement…</p>}
-          {error && <p className="text-red-500">{error}</p>}
-          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-4">
-            {data.map((plant) => (
-              <PlantCard key={plant.id} plant={plant} />
-            ))}
-          </div>
+  <div className="flex bg-[#F5F5F5] min-h-screen relative">
+    <Sidebar />
+    <div className="flex-1 w-full max-w-md mx-auto relative">
+      <AppLayout title="Tableau de bord">
+        <h1 className="text-2xl font-bold mb-4 text-[#074221] text-center">
+          Vue d’ensemble du jardin 🌿
+        </h1>
 
-          {/* Floating Button */}
-          <button
-            onClick={() => router.push("/plant/add")}
-            className="fixed bottom-6 right-6 w-[52px] h-[52px] bg-[#B3CDBF] text-[#074221] rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-[#A3BCAF] transition"
-            aria-label="Ajouter une plante"
-          >
-            +
-          </button>
+        {loading && <p className="text-center text-gray-500">Chargement…</p>}
+        {error && <p className="text-center text-red-500">{error}</p>}
+
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 px-4">
+          {data.map((plant) => (
+            <PlantCard key={plant.id} plant={plant} />
+          ))}
         </div>
-        
-      </div>
-      <BottomNav />
-    </DashboardLayout>
-  );
+      </AppLayout>
+
+      {/* ✅ Floating button */}
+      <button
+        onClick={() => router.push('/plant/add')}
+        className="fixed bottom-20 right-6 bg-green-600 hover:bg-green-700 text-white rounded-full w-14 h-14 flex items-center justify-center text-3xl shadow-lg z-50"
+        aria-label="Ajouter une plante"
+      >
+        +
+      </button>
+    </div>
+
+    <BottomNav />
+  </div>
+);
+
 }
