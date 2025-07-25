@@ -17,13 +17,17 @@ export default function AddPlantPage() {
   useEffect(() => {
     const startCamera = async () => {
       try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error("getUserMedia is not supported in this browser.");
+        }
+
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
       } catch (err) {
         console.error("Erreur accès caméra:", err);
-        setError("Impossible d'accéder à la caméra");
+        setError("Impossible d'accéder à la caméra. Vérifiez les permissions ou utilisez un navigateur compatible.");
       }
     };
 

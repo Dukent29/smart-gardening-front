@@ -11,7 +11,7 @@ export default function TabsNav({ activeTab, onTabChange }) {
   ];
 
   return (
-    <div className="bg-white px-6 pt-4">
+    <div className="bg-white px-6 pt-4 -mt-6">
       {/* 🟢 Top title */}
       <div className="mb-4">
         <h2 className="text-xl font-bold text-green-800">Plant Health</h2>

@@ -34,5 +34,11 @@
         "name": "Blight",
         "description": "Blight causes rapid browning and death of plant tissues, especially in leaves and stems.",
         "treatment": "Remove infected parts and apply appropriate fungicides."
-    }
+    },
+  {
+    "entity_id": 1034,
+    "name": "abiotic",
+    "description": "Downy mildew appears as yellow or white patches on the upper surface of leaves, with a downy growth underneath.",
+    "treatment": "Improve air circulation, avoid overhead watering, and apply appropriate fungicides."
+  }
 ]

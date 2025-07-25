@@ -1,8 +1,7 @@
 // dossier: context · fichier: authContext.js
 import { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";  
-import { loginUser } from "../lib/authService";   // ← seul appel backend pour l’instant
-import { registerUser } from "../lib/authService"; // pour l’inscription
+import { loginUser, registerUser } from "../lib/authService";   // ← seul appel backend pour l’instant
 
 const AuthContext = createContext();
 

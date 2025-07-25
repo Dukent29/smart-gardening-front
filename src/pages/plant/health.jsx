@@ -1,3 +1,4 @@
+// This file is deprecated after refactoring. See /plant/health/index.jsx for the new implementation.
 // pages/plant/health.jsx
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -8,7 +9,7 @@ import Modal from "@/components/Modal";
 import localDiseases from "@/data/diseases.json";
 import ChatBotComponent from "@/components/ChatBotComponent";
 
-export default function PlantHealthPage() {
+export default function DeprecatedPlantHealthPage() {
   const [activeTab, setActiveTab] = useState("Scan");
   const [selectedDisease, setSelectedDisease] = useState(null);
   const router = useRouter();
@@ -17,10 +18,7 @@ export default function PlantHealthPage() {
     <AppLayout title="Santé de la Plante">
       <TabsNav activeTab={activeTab} onTabChange={setActiveTab} />
       <div className="space-y-6 mt-6">
-        <div className="p-6 rounded-lg bg-white shadow space-y-6">
-          <h1 className="text-2xl font-bold text-center text-green-800">
-            🧪 Analyse Santé de la Plante
-          </h1>
+        <div className="p-4 rounded-lg bg-white shadow space-y-6">
 
           {activeTab === "Scan" && <ScanComponent onSelectDisease={setSelectedDisease} />}
           {activeTab === "Chat" && <ChatBotComponent />}
