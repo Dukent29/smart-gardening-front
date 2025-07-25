@@ -16,7 +16,7 @@ export const usePlantDetail = (id) => {
   );
 
   return {
-    plant: plantData,                // ✅ ici : c'est l’objet complet
+    plant: plantData,                
     sensors: plantData?.sensors ?? [],
     actions,
     loading: !plantData && !plantError,

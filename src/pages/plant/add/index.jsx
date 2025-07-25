@@ -1,17 +1,15 @@
 // pages/plant/add/index.jsx
 
-import { useState, useRef, useEffect } from 'react';
-import axios from '@/lib/axios';
-import Sidebar from '@/components/Sidebar';
-import Header from '@/components/Header';
-import BottomNav from '@/components/BottomNav';
+import { useState, useRef, useEffect } from "react";
+import axios from "@/lib/axios";
+import { AppLayout } from "@/layout/AppLayout";
 
 export default function AddPlantPage() {
   const [image, setImage] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState('');
+  const [previewUrl, setPreviewUrl] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const videoRef = useRef(null);
 
@@ -19,13 +17,17 @@ export default function AddPlantPage() {
   useEffect(() => {
     const startCamera = async () => {
       try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error("getUserMedia is not supported in this browser.");
+        }
+
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
       } catch (err) {
         console.error("Erreur accès caméra:", err);
-        setError("Impossible d'accéder à la caméra");
+        setError("Impossible d'accéder à la caméra. Vérifiez les permissions ou utilisez un navigateur compatible.");
       }
     };
 
@@ -34,20 +36,20 @@ export default function AddPlantPage() {
     return () => {
       if (videoRef.current?.srcObject) {
         const tracks = videoRef.current.srcObject.getTracks();
-        tracks.forEach(track => track.stop());
+        tracks.forEach((track) => track.stop());
       }
     };
   }, []);
 
   // 🌿 Fusion de capture + analyse
   const handleScanToAdd = () => {
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     const video = videoRef.current;
     if (!video) return;
 
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext("2d");
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     canvas.toBlob(async (blob) => {
@@ -59,27 +61,27 @@ export default function AddPlantPage() {
       setLoading(true);
 
       const formData = new FormData();
-      formData.append('image', blob);
+      formData.append("image", blob);
 
       try {
-        const res = await axios.post('/plants/identify', formData, {
+        const res = await axios.post("/plants/identify", formData, {
           headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+            "Content-Type": "multipart/form-data",
+          },
         });
 
         if (res.data.success) {
           setResult(res.data);
         } else {
-          setError('Identification failed');
+          setError("Identification failed");
         }
       } catch (err) {
         console.error(err);
-        setError('Erreur lors de l’identification');
+        setError("Erreur lors de l’identification");
       } finally {
         setLoading(false);
       }
-    }, 'image/jpeg');
+    }, "image/jpeg");
   };
 
   // 💾 Enregistrement dans la DB
@@ -92,42 +94,36 @@ export default function AddPlantPage() {
         imageUrl: result.image_url,
       };
 
-      const res = await axios.post('/plants/add-plant', payload);
+      const res = await axios.post("/plants/add-plant", payload);
 
       if (res.data.success) {
-        alert('✅ Plante enregistrée avec succès !');
+        alert("✅ Plante enregistrée avec succès !");
         reset();
       } else {
-        setError(res.data.message || 'Erreur lors de l’enregistrement');
+        setError(res.data.message || "Erreur lors de l’enregistrement");
       }
     } catch (err) {
-      console.error('Erreur lors du save:', err);
-      setError('Erreur serveur lors de l’enregistrement');
+      console.error("Erreur lors du save:", err);
+      setError("Erreur serveur lors de l’enregistrement");
     }
   };
 
   const reset = () => {
     setImage(null);
     setResult(null);
-    setPreviewUrl('');
-    setError('');
+    setPreviewUrl("");
+    setError("");
   };
 
   return (
-    <div className="flex bg-[#F5F5F5] min-h-screen">
-      <Sidebar />
-      <div className=' w-full'>
-      <Header title="Ajouter une plante" />
-        <div className="p-6 max-w-xl mx-auto space-y-6">
-        
-        
-
+    <AppLayout title="Ajouter une plante">
+      <div className="space-y-6 mt-6">
         {/* 📷 Live camera */}
         <video
           ref={videoRef}
           autoPlay
           playsInline
-          className="w-full h-64 object-cover rounded border"
+          className="w-full h-64 object-cover rounded-lg border"
         />
 
         {/* 📝 Tips section */}
@@ -150,7 +146,11 @@ export default function AddPlantPage() {
         {/* 📸 Preview */}
         {previewUrl && (
           <div className="text-center mt-4">
-            <img src={previewUrl} alt="Preview" className="mx-auto h-64 object-cover rounded" />
+            <img
+              src={previewUrl}
+              alt="Preview"
+              className="mx-auto h-64 object-cover rounded-lg"
+            />
           </div>
         )}
 
@@ -158,15 +158,15 @@ export default function AddPlantPage() {
         <div className="flex justify-center space-x-4">
           <button
             onClick={handleScanToAdd}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50"
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50"
             disabled={loading}
           >
-            {loading ? 'Analyse en cours...' : 'Scan to Add'}
+            {loading ? "Analyse en cours..." : "Scan to Add"}
           </button>
 
           <button
             onClick={reset}
-            className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+            className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
           >
             Annuler
           </button>
@@ -177,22 +177,32 @@ export default function AddPlantPage() {
 
         {/* ✅ Result after analysis */}
         {result && (
-          <div className="border rounded p-4 shadow space-y-2">
-            <img src={result.image_url} className="w-full h-52 object-cover rounded" alt="Plante identifiée" />
-            <p><strong>Nom:</strong> {result.name}</p>
-            <p><strong>Type:</strong> {result.type}</p>
-            <p><strong>Description:</strong> {result.description}</p>
+          <div className="border rounded-lg p-4 shadow space-y-2">
+            <img
+              src={result.image_url}
+              className="w-full h-52 object-cover rounded-lg"
+              alt="Plante identifiée"
+            />
+            <p>
+              <strong>Nom:</strong> {result.name}
+            </p>
+            <p>
+              <strong>Type:</strong> {result.type}
+            </p>
+            <p>
+              <strong>Description:</strong> {result.description}
+            </p>
 
             <div className="flex justify-center space-x-4 mt-4">
               <button
                 onClick={savePlant}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
               >
                 ✅ Confirmer & Enregistrer
               </button>
               <button
                 onClick={reset}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
               >
                 ❌ Annuler
               </button>
@@ -200,8 +210,6 @@ export default function AddPlantPage() {
           </div>
         )}
       </div>
-      <BottomNav />
-      </div>
-    </div>
+    </AppLayout>
   );
 }

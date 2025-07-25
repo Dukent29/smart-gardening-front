@@ -21,13 +21,17 @@ export default function PlantCard({ plant }) {
   const mainSensorType = plant.main_sensor || "soil_moisture";
   const mainSensor     = (plant.sensors || []).find(s => s.type === mainSensorType);
 
-  const badgeColor =
-    mainSensor?.status === "OK"        ? "bg-green-500"
-    : mainSensor?.status === "LOW"     ? "bg-yellow-400"
-    : mainSensor?.status === "CRITICAL"? "bg-red-500"
-    : "bg-gray-300";
+  const getBadgeStyle = (status) => {
+    const styles = {
+      OK: "bg-green-100 text-green-800 border-green-200",
+      LOW: "bg-yellow-100 text-yellow-800 border-yellow-200",
+      CRITICAL: "bg-red-100 text-red-800 border-red-200",
+      default: "bg-gray-100 text-gray-600 border-gray-200"
+    };
+    return styles[status] || styles.default;
+  };
 
-  const badgeText = mainSensor?.status || "—";
+  const badgeText = mainSensor?.status || "Unknown";
 
   /* 3. Valeurs pour barres */
   const latest = {
@@ -43,12 +47,25 @@ export default function PlantCard({ plant }) {
       className="cursor-pointer bg-white rounded-2xl shadow hover:shadow-lg transition p-5 flex flex-col"
     >
       {/* HEADER */}
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2">
         <h2 className="text-lg font-bold text-[#06331a]">{plant.plant_name}</h2>
         <p className="text-sm text-[#5b9274]">{plant.plant_type}</p>
-        <span className={`text-xs text-white px-2 py-0.5 rounded-full ${badgeColor} w-fit`}>
-          {badgeText}
-        </span>
+        
+        {/* Status Badge */}
+        <div className="flex items-center gap-2">
+          <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full border ${getBadgeStyle(mainSensor?.status)}`}>
+            {badgeText}
+          </span>
+          
+          {/* Auto/Manual Mode Badge */}
+          <span className={`inline-block text-xs font-medium px-2 py-1 rounded-full ${
+            plant.is_automatic 
+              ? "bg-blue-100 text-blue-700 border border-blue-200" 
+              : "bg-gray-100 text-gray-600 border border-gray-200"
+          }`}>
+            {plant.is_automatic ? "AUTO" : "MANUAL"}
+          </span>
+        </div>
       </div>
 
       {/* CAPTEURS */}
