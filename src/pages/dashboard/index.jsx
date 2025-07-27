@@ -35,7 +35,7 @@ export default function Dashboard() {
       {/* ✅ Floating button */}
       <button
         onClick={() => router.push('/plant/add')}
-        className="fixed bottom-20 right-6 bg-green-600 hover:bg-green-700 text-white rounded-full w-14 h-14 flex items-center justify-center text-3xl shadow-lg z-50"
+        className="fixed bottom-20  right-6 bg-green-600 hover:bg-green-700 text-white rounded-full w-14 h-14 flex items-center justify-center text-3xl shadow-lg z-99"
         aria-label="Ajouter une plante"
       >
         +
