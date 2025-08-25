@@ -7,20 +7,30 @@ import { AppLayout } from "@/layout/AppLayout";
 import TabsNav from "@/components/TabsNav";
 import Modal from "@/components/Modal";
 import localDiseases from "@/data/diseases.json";
-import ChatBotComponent from "@/components/ChatBotComponent";
+import ChatBotComponent from "@/components/SimpleChatBot.jsx";
 
 export default function DeprecatedPlantHealthPage() {
   const [activeTab, setActiveTab] = useState("Scan");
   const [selectedDisease, setSelectedDisease] = useState(null);
+  const [showResultsModal, setShowResultsModal] = useState(false);
+  const [analysisData, setAnalysisData] = useState(null);
   const router = useRouter();
 
   return (
     <AppLayout title="Santé de la Plante">
       <TabsNav activeTab={activeTab} onTabChange={setActiveTab} />
-      <div className="space-y-6 mt-6">
-        <div className="p-4 rounded-lg bg-white shadow space-y-6">
+      <div className="space-y-6 ">
+        <div className="space-y-6">
 
-          {activeTab === "Scan" && <ScanComponent onSelectDisease={setSelectedDisease} />}
+          {activeTab === "Scan" && (
+            <ScanComponent 
+              onSelectDisease={setSelectedDisease} 
+              onShowResults={(data) => {
+                setAnalysisData(data);
+                setShowResultsModal(true);
+              }}
+            />
+          )}
           {activeTab === "Chat" && <ChatBotComponent />}
           {activeTab === "History" && (
             <p className="text-center text-gray-400 mt-10">
@@ -46,15 +56,70 @@ export default function DeprecatedPlantHealthPage() {
             </p>
           </Modal>
         )}
+
+        {showResultsModal && analysisData && (
+          <Modal onClose={() => setShowResultsModal(false)}>
+            <div className="space-y-4 max-h-96 overflow-y-auto">
+              <h2 className="text-xl font-semibold text-gray-800 sticky top-0 bg-white pb-2">
+                Résultats de l'analyse
+              </h2>
+              
+              {/* Display captured image */}
+              {analysisData.imageUrl && (
+                <div className="text-center">
+                  <img
+                    src={analysisData.imageUrl}
+                    alt="Image analysée"
+                    className="mx-auto h-48 object-cover rounded shadow"
+                  />
+                </div>
+              )}
+
+              <p>
+                <strong>Plante en bonne santé :</strong>{" "}
+                {analysisData.result.health_assessment?.is_healthy ? (
+                  <span className="text-green-600 font-semibold">✅ Oui</span>
+                ) : (
+                  <span className="text-red-500 font-semibold">❌ Non</span>
+                )}
+              </p>
+
+              {analysisData.result.health_assessment.diseases
+                .filter((d) => d.probability > 0.6)
+                .slice(0, 3)
+                .map((disease, idx) => (
+                  <div key={idx} className="border rounded-lg p-4 bg-red-50 shadow-sm relative">
+                    <h4 className="text-md font-semibold text-red-700">
+                      {disease.disease_details?.local_name || disease.name}
+                    </h4>
+                    <p className="text-sm text-gray-600">
+                      Probabilité :{" "}
+                      <span className="font-semibold">
+                        {Math.round(disease.probability * 100)}%
+                      </span>
+                    </p>
+                    <button
+                      className="text-xs text-gray-400 hover:text-green-600 absolute top-2 right-2"
+                      onClick={() => {
+                        setShowResultsModal(false);
+                        setSelectedDisease(analysisData.enrichDisease(disease));
+                      }}
+                    >
+                      Voir détails
+                    </button>
+                  </div>
+                ))}
+            </div>
+          </Modal>
+        )}
       </div>
     </AppLayout>
   );
 }
 
-function ScanComponent({ onSelectDisease }) {
+function ScanComponent({ onSelectDisease, onShowResults }) {
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
-  const [result, setResult] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const videoRef = useRef(null);
@@ -94,8 +159,8 @@ function ScanComponent({ onSelectDisease }) {
       if (!blob) return;
 
       setImage(blob);
-      setPreviewUrl(URL.createObjectURL(blob));
-      setResult(null);
+      const imageUrl = URL.createObjectURL(blob);
+      setPreviewUrl(imageUrl);
       setLoading(true);
 
       const formData = new FormData();
@@ -107,13 +172,17 @@ function ScanComponent({ onSelectDisease }) {
         });
 
         if (res.data.success) {
-          setResult(res.data.health_data);
+          onShowResults({
+            result: res.data.health_data,
+            imageUrl: imageUrl,
+            enrichDisease: enrichDisease
+          });
         } else {
           setError("Analyse échouée.");
         }
       } catch (err) {
         console.error(err);
-        setError("Erreur serveur pendant l’analyse.");
+        setError("Erreur serveur pendant l'analyse.");
       } finally {
         setLoading(false);
       }
@@ -123,7 +192,6 @@ function ScanComponent({ onSelectDisease }) {
   const reset = () => {
     setImage(null);
     setPreviewUrl("");
-    setResult(null);
     setError("");
   };
 
@@ -148,14 +216,14 @@ function ScanComponent({ onSelectDisease }) {
         ref={videoRef}
         autoPlay
         playsInline
-        className="w-full h-64 object-cover rounded border"
+        className="w-full h-64 object-cover border"
       />
 
       {/* Tips Box */}
-      <div className="bg-gray-100 rounded-lg p-4">
-        <h2 className="font-semibold text-green-800 mb-2">Diagnostiquer l’état de santé</h2>
+      <div className="bg-gray-100 p-4">
+        <h2 className="font-semibold text-green-800 mb-2">Diagnostiquer l'état de santé</h2>
         <p className="text-sm text-gray-700 mb-2">
-          Placez la plante bien en vue dans le cadre pour lancer l’analyse de maladies potentielles.
+          Placez la plante bien en vue dans le cadre pour lancer l'analyse de maladies potentielles.
         </p>
         <div className="bg-white p-3 rounded shadow-inner">
           <h3 className="font-semibold text-green-700">Conseils pour de meilleurs résultats :</h3>
@@ -168,25 +236,15 @@ function ScanComponent({ onSelectDisease }) {
         </div>
       </div>
 
-      {/* Preview */}
-      {previewUrl && (
-        <div className="text-center mt-4">
-          <img
-            src={previewUrl}
-            alt="Preview"
-            className="mx-auto h-64 object-cover rounded shadow"
-          />
-        </div>
-      )}
 
       {/* Actions */}
-      <div className="flex space-x-4">
+      <div className="flex space-x-4 p-2">
         <button
           onClick={takeSnapshotAndAnalyze}
-          className="bg-green-600 flex-1 text-white px-4 py-2 rounded-xl hover:bg-green-700 disabled:opacity-50"
+          className="bg-[#0A5D2F] flex-1 text-white px-4 py-2 rounded-xl hover:bg-green-700 disabled:opacity-50"
           disabled={loading}
         >
-          {loading ? "Analyse en cours..." : "Scan pour Diagnostiquer"}
+          {loading ? "Analyse en cours..." : "Scanner la Plante"}
         </button>
 
         <button
@@ -199,44 +257,6 @@ function ScanComponent({ onSelectDisease }) {
 
       {/* Error */}
       {error && <p className="text-red-600 text-center">{error}</p>}
-
-      {/* Result */}
-      {result && (
-        <div className="p-4 border rounded bg-gray-50 shadow space-y-4">
-          <h2 className="text-xl font-semibold text-gray-800">Résultats de l’analyse</h2>
-          <p>
-            <strong>Plante en bonne santé :</strong>{" "}
-            {result.health_assessment?.is_healthy ? (
-              <span className="text-green-600 font-semibold">✅ Oui</span>
-            ) : (
-              <span className="text-red-500 font-semibold">❌ Non</span>
-            )}
-          </p>
-
-          {result.health_assessment.diseases
-            .filter((d) => d.probability > 0.6)
-            .slice(0, 3)
-            .map((disease, idx) => (
-              <div key={idx} className="border rounded-lg p-4 bg-red-50 shadow-sm relative">
-                <h4 className="text-md font-semibold text-red-700">
-                  {disease.disease_details?.local_name || disease.name}
-                </h4>
-                <p className="text-sm text-gray-600">
-                  Probabilité :{" "}
-                  <span className="font-semibold">
-                    {Math.round(disease.probability * 100)}%
-                  </span>
-                </p>
-                <button
-                  className="text-xs text-gray-400 hover:text-green-600 absolute top-2 right-2"
-                  onClick={() => onSelectDisease(enrichDisease(disease))}
-                >
-                  Voir détails
-                </button>
-              </div>
-            ))}
-        </div>
-      )}
     </div>
   );
 }

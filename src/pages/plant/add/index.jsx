@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import axios from "@/lib/axios";
 import { AppLayout } from "@/layout/AppLayout";
 import TabsNav from "@/components/TabsNavPlant";
+import Modal from "@/components/Modal";
 
 export default function AddPlantPage() {
   const [activeTab, setActiveTab] = useState("AddPhoto"); // Default tab
@@ -18,6 +19,7 @@ export default function AddPlantPage() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showResultModal, setShowResultModal] = useState(false);
 
   const videoRef = useRef(null);
 
@@ -63,7 +65,6 @@ export default function AddPlantPage() {
 
       setImage(blob);
       setPreviewUrl(URL.createObjectURL(blob));
-      setResult(null);
       setLoading(true);
 
       const formData = new FormData();
@@ -78,12 +79,13 @@ export default function AddPlantPage() {
 
         if (res.data.success) {
           setResult(res.data);
+          setShowResultModal(true);
         } else {
           setError("Identification failed");
         }
       } catch (err) {
         console.error(err);
-        setError("Erreur lors de l’identification");
+        setError("Erreur lors de l'identification");
       } finally {
         setLoading(false);
       }
@@ -108,7 +110,8 @@ export default function AddPlantPage() {
       });
 
       if (res.data.success) {
-        setResult(res.data); // Store the result for confirmation
+        setResult(res.data);
+        setShowResultModal(true);
         setForm({
           name: res.data.name,
           type: res.data.type,
@@ -120,7 +123,7 @@ export default function AddPlantPage() {
       }
     } catch (err) {
       console.error(err);
-      setError("Erreur lors de l’identification.");
+      setError("Erreur lors de l'identification.");
     } finally {
       setLoading(false);
     }
@@ -145,6 +148,7 @@ export default function AddPlantPage() {
       const res = await axios.post("/plants/add-plant", payload);
       if (res.data.success) {
         alert("✅ Plante ajoutée avec succès !");
+        setShowResultModal(false);
         reset(); // Reset the state after saving
       } else {
         setError(res.data.message || "Erreur lors de l'ajout de la plante.");
@@ -169,6 +173,11 @@ export default function AddPlantPage() {
     setPreviewUrl("");
     setError("");
     setForm({ name: "", type: "", description: "", image: null });
+  };
+
+  const handleCancelResult = () => {
+    setShowResultModal(false);
+    reset();
   };
 
   return (
@@ -201,16 +210,6 @@ export default function AddPlantPage() {
                 </ul>
               </div>
             </div>
-
-            {previewUrl && (
-              <div className="text-center mt-4">
-                <img
-                  src={previewUrl}
-                  alt="Preview"
-                  className="mx-auto h-64 object-cover rounded-lg"
-                />
-              </div>
-            )}
 
             <div className="flex justify-center space-x-4 mt-4">
               <button
@@ -249,9 +248,10 @@ export default function AddPlantPage() {
             />
             <button
               type="submit"
-              className="bg-[#0A5D2F] text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              className="bg-[#0A5D2F] text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              disabled={loading}
             >
-              Identifier la plante
+              {loading ? "Identification en cours..." : "Identifier la plante"}
             </button>
           </form>
         )}
@@ -259,39 +259,50 @@ export default function AddPlantPage() {
         {/* ⚠️ Error */}
         {error && <p className="text-red-600 text-center">{error}</p>}
 
-        {/* ✅ Result after analysis */}
-        {result && (
-          <div className="border rounded-lg p-4 shadow space-y-2">
-            <img
-              src={result.image_url}
-              className="w-full h-52 object-cover rounded-lg"
-              alt="Plante identifiée"
-            />
-            <p>
-              <strong>Nom:</strong> {result.name}
-            </p>
-            <p>
-              <strong>Type:</strong> {result.type}
-            </p>
-            <p>
-              <strong>Description:</strong> {result.description}
-            </p>
+        {/* Results Modal */}
+        {showResultModal && result && (
+          <Modal onClose={handleCancelResult}>
+            <div className="space-y-4 max-h-96 overflow-y-auto">
+              <h2 className="text-xl font-semibold text-gray-800 sticky top-0 bg-white pb-2">
+                Plante Identifiée
+              </h2>
+              
+              <div className="text-center">
+                <img
+                  src={result.image_url}
+                  className="mx-auto h-52 object-cover rounded-lg shadow"
+                  alt="Plante identifiée"
+                />
+              </div>
 
-            <div className="flex justify-center space-x-4 mt-4">
-              <button
-                onClick={savePlant}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-              >
-                ✅ Confirmer & Enregistrer
-              </button>
-              <button
-                onClick={reset}
-                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
-              >
-                ❌ Annuler
-              </button>
+              <div className="space-y-2">
+                <p className="text-sm text-[#06331a]">
+                  <strong>Nom:</strong> {result.name}
+                </p>
+                <p className="text-sm text-[#3b7d59]">
+                  <strong>Type:</strong> {result.type}
+                </p>
+                <p className="text-sm text-[#474747]">
+                  <strong>Description:</strong> {result.description}
+                </p>
+              </div>
+
+              <div className="flex justify-center space-x-4 mt-6 pt-4 border-t sticky bottom-0 bg-white">
+                <button
+                  onClick={savePlant}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+                >
+                  ✅Enregistrer
+                </button>
+                <button
+                  onClick={handleCancelResult}
+                  className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700"
+                >
+                  ❌ Annuler
+                </button>
+              </div>
             </div>
-          </div>
+          </Modal>
         )}
       </div>
     </AppLayout>

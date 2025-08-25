@@ -1,5 +1,5 @@
-@tailwind base;
-@tailwind components;
+@import "tailwindcss/preflight";
+@tailwind utilities;
 @tailwind utilities;
 
 @import "tailwindcss";
@@ -30,3 +30,5 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+

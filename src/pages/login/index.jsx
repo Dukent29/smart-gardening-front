@@ -52,6 +52,9 @@ export default function LoginPage() {
             onClick={() => router.push("/register")}
           >
             Inscris-toi
+          </span> <br/>
+          <span className="text-green-700 cursor-pointer" onClick={() => router.push("/login/forgotPassword")}>
+            Mot de passe oublié ?
           </span>
         </p>
       </form>

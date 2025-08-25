@@ -1,7 +1,7 @@
 // dossier: context · fichier: authContext.js
 import { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";  
-import { loginUser, registerUser } from "../lib/authService";   // ← seul appel backend pour l’instant
+import { loginUser, registerUser, forgotPassword as forgotPasswordService } from "../lib/authService";   // ← seul appel backend pour l’instant
 
 const AuthContext = createContext();
 
@@ -34,6 +34,11 @@ export const AuthProvider = ({ children }) => {
     setUser({ id: decoded.userId, role: decoded.role });
   };
 
+  // forgot password
+  const forgotPassword = async (email) => {
+    return await forgotPasswordService(email); // POST /api/users/forgot-password
+  };
+
   //  logout
   const logout = () => {
     localStorage.removeItem("token");
@@ -42,7 +47,7 @@ export const AuthProvider = ({ children }) => {
 
   // expose au reste de l’app
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, register }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, register, forgotPassword }}>
       {children}
     </AuthContext.Provider>
   );

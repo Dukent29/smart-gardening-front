@@ -17,3 +17,8 @@ export const getMe = async () => {
   // TODO : soit décoder le JWT ici, soit attendre un endpoint backend
   throw new Error("Endpoint /users/profile not implemented yet 🚧");
 };
+
+ export const forgotPassword = async (email) => {
+  const { data } = await axios.post('/users/forgot-password', { email });
+  return data;
+}
