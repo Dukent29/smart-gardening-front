@@ -24,7 +24,7 @@ export default function LoginPage() {
   return (
     <div className="w-full max-w-md mx-auto px-4 min-h-screen flex items-center justify-center bg-[#F5F5F5]">
       <form onSubmit={handleLogin}
-            className="bg-white p-6 rounded shadow w-full space-y-4">
+            className=" p-6 rounded  w-full space-y-4">
         <h1 className="text-xl font-bold text-[#074221]">Connexion </h1>
 
         {error && <p className="text-red-500">{error}</p>}
@@ -52,6 +52,9 @@ export default function LoginPage() {
             onClick={() => router.push("/register")}
           >
             Inscris-toi
+          </span> <br/>
+          <span className="text-green-700 cursor-pointer" onClick={() => router.push("/login/forgotPassword")}>
+            Mot de passe oublié ?
           </span>
         </p>
       </form>

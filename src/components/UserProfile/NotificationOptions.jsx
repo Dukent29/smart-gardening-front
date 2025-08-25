@@ -1,42 +1,30 @@
 import { useState } from "react";
+import SwitchToggle from "@/components/SwitchToggle";
 
 export default function NotificationOptions() {
-  const [plantAlert, setPlantAlert] = useState(true);
-  const [wateringReminders, setWateringReminders] = useState(true);
-  const [healthReport, setHealthReport] = useState(false);
+  const [emailNotif, setEmailNotif] = useState(true);
+  const [smsNotif, setSmsNotif] = useState(false);
+  const [healthNotif, setHealthNotif] = useState(true);
+  const [wateringReminders, setWateringReminders] = useState(false);
 
   return (
-    <div>
-      <h3 className="font-semibold text-[#0A5D2F] mb-2">Notifications</h3>
-      <div className="space-y-2">
-        <label className="flex items-center gap-2 text-[#474747]">
-          <input
-            type="checkbox"
-            checked={plantAlert}
-            onChange={() => setPlantAlert(v => !v)}
-            className="accent-green-500"
-          />
-          <span>🌱 Plant Alert</span>
-        </label>
-        <label className="flex items-center gap-2 text-[#474747]">
-          <input
-            type="checkbox"
-            checked={wateringReminders}
-            onChange={() => setWateringReminders(v => !v)}
-            className="accent-blue-500"
-          />
-          <span>💧 Watering Reminders</span>
-        </label>
-        <label className="flex items-center gap-2 text-[#474747]">
-          <input
-            type="checkbox"
-            checked={healthReport}
-            onChange={() => setHealthReport(v => !v)}
-            className="accent-pink-500"
-          />
-          <span>📈 Health Report</span>
-          
-        </label>
+    <div className="space-y-2 text-gray-700">
+      <div className="flex justify-between items-center">
+        <span className="text-sm font-medium">Notifications par e-mail</span>
+        <SwitchToggle checked={emailNotif} onChange={() => setEmailNotif(!emailNotif)} />
+      </div>
+      <div className="flex justify-between items-center">
+        <span className="text-sm font-medium">Notifications SMS</span>
+        <SwitchToggle checked={smsNotif} onChange={() => setSmsNotif(!smsNotif)} />
+      </div>
+      <div className="flex justify-between items-center">
+        <span className="text-sm font-medium">Health Notifications</span>
+        <SwitchToggle checked={healthNotif} onChange={() => setHealthNotif(!healthNotif)} />
+      </div>
+
+      <div className="flex justify-between items-center">
+        <span className="text-sm font-medium">Watering Reminders</span>
+        <SwitchToggle checked={wateringReminders} onChange={() => setWateringReminders(!wateringReminders)} />
       </div>
     </div>
   );
