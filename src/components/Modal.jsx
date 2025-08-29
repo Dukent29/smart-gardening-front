@@ -3,13 +3,13 @@ import { Oval } from "react-loader-spinner";
 
 export default function Modal({ children, onClose, loading }) {
   return (
-    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50">
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
         transition={{ duration: 0.3 }}
-        className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative"
+        className="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-6 max-w-md w-full relative"
       >
         <button
           onClick={onClose}
