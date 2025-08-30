@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { FaArrowLeft } from "react-icons/fa";
 import ProfilIcon from "../assets/icons/profil.svg"; 
 import BackIcon from "../assets/icons/arrow-left.svg";
-import NotificationBell from "../assets/icons/notification-bell.svg"; // Assuming you have a bell icon for notifications
+import NotificationBell from "./NotificationBell";
 
 export default function Header({ title = "Page" }) {
   const router = useRouter();
@@ -25,7 +25,7 @@ export default function Header({ title = "Page" }) {
 
        {/* Notifications + Profile */}
       <div className="flex items-center gap-4">
-        <NotificationBell />  {/* ⬅️ nouvelle cloche */}
+  <NotificationBell />
         <button
           onClick={() => router.push("/profile")}
           className="text-gray-600 hover:text-blue-600 text-2xl"

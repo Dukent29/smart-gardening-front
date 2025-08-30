@@ -32,6 +32,9 @@ export const AuthProvider = ({ children }) => {
 
     const decoded = jwtDecode(token);
     setUser({ id: decoded.userId, role: decoded.role });
+
+    // Store userId explicitly in localStorage
+    localStorage.setItem("userId", decoded.userId);
   };
 
   // forgot password
