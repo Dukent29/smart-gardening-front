@@ -261,48 +261,44 @@ export default function AddPlantPage() {
 
         {/* Results Modal */}
         {showResultModal && result && (
-          <Modal onClose={handleCancelResult}>
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-              <h2 className="text-xl font-semibold text-gray-800 sticky top-0 bg-white pb-2">
-                Plante Identifiée
-              </h2>
-              
-              <div className="text-center">
-                <img
-                  src={result.image_url}
-                  className="mx-auto h-52 object-cover rounded-lg shadow"
-                  alt="Plante identifiée"
-                />
-              </div>
+<Modal onClose={handleCancelResult}>
+  <div className="flex flex-col w-full max-w-md overflow-hidden rounded-2xl 
+                  ">
+    
+    {/* Image */}
+    <img
+      src={result.image_url}
+      alt="Plante identifiée"
+      className="w-full h-56 object-cover"
+    />
 
-              <div className="space-y-2">
-                <p className="text-sm text-[#06331a]">
-                  <strong>Nom:</strong> {result.name}
-                </p>
-                <p className="text-sm text-[#3b7d59]">
-                  <strong>Type:</strong> {result.type}
-                </p>
-                <p className="text-sm text-[#474747]">
-                  <strong>Description:</strong> {result.description}
-                </p>
-              </div>
+    {/* Texte */}
+    <div className="">
+      <h2 className="text-xl font-semibold text-gray-900 mb-2">
+        {result.name}
+      </h2>
+      <p className="text-sm text-gray-700 mb-1">
+        <strong>Type:</strong> {result.type}
+      </p>
+      <p className="text-sm text-gray-600">
+        {result.description}
+      </p>
+    </div>
 
-              <div className="flex justify-center space-x-4 mt-6 pt-4 border-t sticky bottom-0 bg-white">
-                <button
-                  onClick={savePlant}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-                >
-                  ✅Enregistrer
-                </button>
-                <button
-                  onClick={handleCancelResult}
-                  className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700"
-                >
-                  ❌ Annuler
-                </button>
-              </div>
-            </div>
-          </Modal>
+    {/* Boutons */}
+    <div className="flex flex-col gap-3 pt-6 pb-6">
+      <button
+        onClick={savePlant}
+        className="w-full bg-[#074221] hover:bg-[#0A5D2F] text-white font-semibold 
+                   py-3 rounded-lg transition"
+      >
+        Enregistrer
+      </button>
+    </div>
+  </div>
+</Modal>
+
+
         )}
       </div>
     </AppLayout>
