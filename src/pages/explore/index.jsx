@@ -105,7 +105,8 @@ export default function ExplorePage() {
 
 function ArticleCard({ article }) {
   const router = useRouter();
-  const imageUrl = `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${article.image}`;
+  const baseUrl = 'http://localhost:5000';
+  const imageUrl = article.image?.startsWith('http') ? article.image : `${baseUrl}${article.image}`;
 
   const handleCardClick = () => {
     router.push(`/explore/${article._id}`);
