@@ -73,7 +73,7 @@ export default function ArticleDetailPage() {
     );
   }
 
-  const imageUrl = `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${article.image}`;
+  const imageUrl = `${"http://localhost:5000"}${article.image}`;
 
   return (
     <AppLayout title={article.title}>
