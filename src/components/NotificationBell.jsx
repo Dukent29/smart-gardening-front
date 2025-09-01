@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaBell } from "react-icons/fa";
+import { FaBell, FaTrash, FaFileAlt, FaSeedling, FaPlus, FaEdit } from "react-icons/fa";
 import { getNotifications } from "@/lib/notificationService";
 
 export default function NotificationBell() {
@@ -41,9 +41,11 @@ export default function NotificationBell() {
     fetchNotifications();
   }, []);
 
-  const markAsRead = async (id) => {
+  const markNotificationAsRead = async (id) => {
     try {
-      await markNotificationAsRead(id);
+      await fetch(`/api/notifications/${id}/read`, {
+        method: "PATCH",
+      });
       setNotifications((prev) =>
         prev.map((notif) =>
           notif._id === id ? { ...notif, is_read: true } : notif
@@ -52,13 +54,29 @@ export default function NotificationBell() {
       setCount((prev) => prev - 1);
     } catch (err) {
       console.error("Error marking notification as read:", err);
-      setError("Failed to mark notification as read. Please try again later.");
+    }
+  };
+
+  const markAllAsRead = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      await fetch(`/api/notifications/${userId}/read`, {
+        method: "PATCH",
+      });
+      setNotifications((prev) => prev.map((notif) => ({ ...notif, is_read: true })));
+      setCount(0);
+    } catch (err) {
+      console.error("Error marking all notifications as read:", err);
     }
   };
 
   if (loading) {
     return <div>Loading notifications...</div>;
   }
+
+  const sortedNotifications = [...notifications].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
 
   return (
     <div className="relative">
@@ -77,7 +95,9 @@ export default function NotificationBell() {
 
       {open && (
         <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg z-50">
-          <div className="p-2 text-sm font-bold border-b">Notifications</div>
+          <div className="p-2 text-sm font-bold border-b text-[#0A5D2F]">
+            Notifications
+          </div>
           <div className="max-h-60 overflow-y-auto">
             {error ? (
               <div className="p-2 text-red-500">{error}</div>
@@ -85,19 +105,60 @@ export default function NotificationBell() {
               <div className="p-2 text-gray-500">No new notifications</div>
             ) : (
               <>
-                {notifications.slice(0, 3).map((notif) => (
-                  <div
-                    key={notif._id}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => markAsRead(notif._id)}
-                  >
-                    {notif.message}
-                  </div>
-                ))}
+                {sortedNotifications.slice(0, 3).map((notif) => {
+                  let Icon;
+                  let iconColor;
+
+                  switch (notif.type) {
+                    case "delete":
+                      Icon = FaTrash;
+                      iconColor = "text-red-500 bg-red-100";
+                      break;
+                    case "article":
+                      Icon = FaFileAlt;
+                      iconColor = "text-blue-500 bg-blue-100";
+                      break;
+                    case "plant":
+                      Icon = FaSeedling;
+                      iconColor = "text-green-500 bg-green-100";
+                      break;
+                    case "add_plant":
+                      Icon = FaSeedling;
+                      iconColor = "text-green-500 bg-green-100";
+                      break;
+                    default:
+                      Icon = FaFileAlt;
+                      iconColor = "text-gray-500 bg-gray-100";
+                  }
+
+                  return (
+                    <div
+                      key={notif._id}
+                      className="p-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+                      onClick={() => {
+                        markNotificationAsRead(notif._id);
+                        // Open notification details logic here
+                      }}
+                    >
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${iconColor}`}>
+                        <Icon className="w-4 h-4 text-white" />
+                      </div>
+                      <div className="flex-1 overflow-hidden">
+                        <div className="font-semibold text-sm text-[#0A5D2F] truncate">{notif.title}</div>
+                        <div className="text-xs text-gray-500 truncate">{notif.message.slice(0, 50)}...</div>
+                        <div className="text-xs text-gray-400 mt-1">
+                          {new Date(notif.createdAt).toLocaleString()}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
                 {notifications.length > 3 && (
                   <div
                     className="p-2 text-blue-500 cursor-pointer hover:underline"
-                    onClick={() => (window.location.href = "/notifications")}
+                    onClick={() => {
+                      window.location.href = "/notifications";
+                    }}
                   >
                     See more
                   </div>
