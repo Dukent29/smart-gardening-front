@@ -64,7 +64,7 @@ export default function SearchPage() {
           {/* Filter Tabs */}
           <div className="flex justify-center mb-6">
             <button
-              className={`px-4 py-2 rounded-lg ${
+              className={`px-4 py-2 rounded-3xl ${
                 filter === "all" ? "bg-green-300 text-[#074221]" : "bg-gray-600"
               }`}
               onClick={() => setFilter("all")}
@@ -72,7 +72,7 @@ export default function SearchPage() {
               All ({matchedPlants.length + matchedArticles.length})
             </button>
             <button
-              className={`px-4 py-2 rounded-lg mx-2 ${
+              className={`px-4 py-2 rounded-3xl mx-2 ${
                 filter === "plants" ? "bg-green-300 text-[#074221]" : "bg-gray-600"
               }`}
               onClick={() => setFilter("plants")}
@@ -80,7 +80,7 @@ export default function SearchPage() {
               Plants ({matchedPlants.length})
             </button>
             <button
-              className={`px-4 py-2 rounded-lg ${
+              className={`px-4 py-2 rounded-3xl ${
                 filter === "articles" ? "bg-green-300 text-[#074221]" : "bg-gray-600"
               }`}
               onClick={() => setFilter("articles")}
@@ -141,7 +141,11 @@ export default function SearchPage() {
               )}
             </div>
           ) : (
+            /* Start Searching Section */
             <div className="text-center">
+              <div className="flex justify-center mb-4 mt-16">
+                <FiSearch className="text-green-500" size={64} />
+              </div>
               <h2 className="text-xl font-bold text-gray-800">Start Searching</h2>
               <p className="text-sm text-gray-600">
                 Search through all your plants, articles, and care resources
