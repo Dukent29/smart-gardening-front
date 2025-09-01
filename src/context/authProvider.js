@@ -32,6 +32,9 @@ export const AuthProvider = ({ children }) => {
 
     const decoded = jwtDecode(token);
     setUser({ id: decoded.userId, role: decoded.role });
+
+    // Store userId explicitly in localStorage
+    localStorage.setItem("userId", decoded.userId);
   };
 
   // forgot password
@@ -55,3 +58,21 @@ export const AuthProvider = ({ children }) => {
 
 // Hook pratique pour consommer le contexte
 export const useAuth = () => useContext(AuthContext);
+
+function requestNotificationPermission() {
+  if (typeof window !== "undefined" && "Notification" in window) {
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        console.log("Notification permission granted.");
+      } else if (permission === "denied") {
+        console.warn("Notification permission denied.");
+        alert("Please enable notifications to stay updated.");
+      }
+    });
+  } else {
+    console.error("This browser does not support notifications or SSR context.");
+  }
+}
+
+// Call this function when the user logs in or visits the dashboard
+requestNotificationPermission();

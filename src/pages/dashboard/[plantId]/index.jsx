@@ -6,7 +6,7 @@ import SensorCard from "@/components/SensorCard";
 import { AppLayout } from "@/layout/AppLayout";
 import { FiMoreVertical } from "react-icons/fi";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css"; // Import skeleton styles
+import "react-loading-skeleton/dist/skeleton.css"; 
 
 
 export default function PlantDetail() {
