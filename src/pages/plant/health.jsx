@@ -8,8 +8,11 @@ import TabsNav from "@/components/TabsNav";
 import Modal from "@/components/Modal";
 import localDiseases from "@/data/diseases.json";
 import ChatBotComponent from "@/components/SimpleChatBot.jsx";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function DeprecatedPlantHealthPage() {
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("Scan");
   const [selectedDisease, setSelectedDisease] = useState(null);
   const [showResultsModal, setShowResultsModal] = useState(false);
@@ -19,17 +22,20 @@ export default function DeprecatedPlantHealthPage() {
   return (
     <AppLayout title="Santé de la Plante">
       <TabsNav activeTab={activeTab} onTabChange={setActiveTab} />
-      <div className="space-y-6 ">
+      <div className="space-y-6">
         <div className="space-y-6">
-
-          {activeTab === "Scan" && (
-            <ScanComponent 
-              onSelectDisease={setSelectedDisease} 
-              onShowResults={(data) => {
-                setAnalysisData(data);
-                setShowResultsModal(true);
-              }}
-            />
+          {loading ? (
+            <Skeleton height={200} />
+          ) : (
+            activeTab === "Scan" && (
+              <ScanComponent
+                onSelectDisease={setSelectedDisease}
+                onShowResults={(data) => {
+                  setAnalysisData(data);
+                  setShowResultsModal(true);
+                }}
+              />
+            )
           )}
           {activeTab === "Chat" && <ChatBotComponent />}
           {activeTab === "History" && (
@@ -41,74 +47,122 @@ export default function DeprecatedPlantHealthPage() {
 
         {selectedDisease && (
           <Modal onClose={() => setSelectedDisease(null)}>
-            <h2 className="text-xl font-bold mb-2 text-red-600">
-              {selectedDisease.disease_details?.local_name || selectedDisease.name}
-            </h2>
-            <p className="text-sm mb-4">
-              <strong>Description :</strong>
-              <br />
-              {selectedDisease.disease_details?.description || "Non disponible"}
-            </p>
-            <p className="text-sm">
-              <strong>Traitement :</strong>
-              <br />
-              {selectedDisease.disease_details?.treatment || "Non disponible"}
-            </p>
+            <div className="flex flex-col w-full max-w-md overflow-hidden rounded-2xl">
+              {loading ? (
+                <Skeleton height={200} />
+              ) : (
+                selectedDisease?.imageUrl && (
+                  <img
+                    src={selectedDisease.imageUrl}
+                    alt="Disease Image"
+                    className="w-full h-56 object-cover"
+                  />
+                )
+              )}
+
+              <div className="px-6 py-4 bg-white">
+                {loading ? (
+                  <Skeleton count={3} />
+                ) : (
+                  <>
+                    <h2 className="text-xl font-bold mb-2 text-red-600">
+                      {selectedDisease.disease_details?.local_name || selectedDisease.name}
+                    </h2>
+                    <p className="text-sm mb-4 text-gray-700">
+                      <strong>Description :</strong>
+                      <br />
+                      {selectedDisease.disease_details?.description || "Non disponible"}
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      <strong>Traitement :</strong>
+                      <br />
+                      {selectedDisease.disease_details?.treatment || "Non disponible"}
+                    </p>
+                  </>
+                )}
+              </div>
+            </div>
           </Modal>
         )}
 
         {showResultsModal && analysisData && (
           <Modal onClose={() => setShowResultsModal(false)}>
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-              <h2 className="text-xl font-semibold text-gray-800 sticky top-0 bg-white pb-2">
-                Résultats de l'analyse
-              </h2>
-              
-              {/* Display captured image */}
-              {analysisData.imageUrl && (
-                <div className="text-center">
+            <div className="flex flex-col w-full max-w-md overflow-hidden rounded-2xl">
+              {loading ? (
+                <Skeleton height={200} />
+              ) : (
+                analysisData?.imageUrl && (
                   <img
                     src={analysisData.imageUrl}
                     alt="Image analysée"
-                    className="mx-auto h-48 object-cover rounded shadow"
+                    className="w-full h-56 object-cover"
                   />
-                </div>
+                )
               )}
 
-              <p>
-                <strong>Plante en bonne santé :</strong>{" "}
-                {analysisData.result.health_assessment?.is_healthy ? (
-                  <span className="text-green-600 font-semibold">✅ Oui</span>
+              <div className="p-4">
+                {loading ? (
+                  <Skeleton count={3} />
                 ) : (
-                  <span className="text-red-500 font-semibold">❌ Non</span>
-                )}
-              </p>
-
-              {analysisData.result.health_assessment.diseases
-                .filter((d) => d.probability > 0.6)
-                .slice(0, 3)
-                .map((disease, idx) => (
-                  <div key={idx} className="border rounded-lg p-4 bg-red-50 shadow-sm relative">
-                    <h4 className="text-md font-semibold text-red-700">
-                      {disease.disease_details?.local_name || disease.name}
-                    </h4>
-                    <p className="text-sm text-gray-600">
-                      Probabilité :{" "}
-                      <span className="font-semibold">
-                        {Math.round(disease.probability * 100)}%
-                      </span>
+                  <>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                      Résultats de l'analyse
+                    </h2>
+                    <p className="text-md text-gray-700 mb-1">
+                      <strong>Plante en bonne santé :</strong>{" "}
+                      {analysisData.result.health_assessment?.is_healthy ? (
+                        <span className="text-[#0A5D2F] font-semibold">✅ Oui</span>
+                      ) : (
+                        <span className="text-red-500 font-semibold">❌ Non</span>
+                      )}
                     </p>
-                    <button
-                      className="text-xs text-gray-400 hover:text-green-600 absolute top-2 right-2"
-                      onClick={() => {
-                        setShowResultsModal(false);
-                        setSelectedDisease(analysisData.enrichDisease(disease));
-                      }}
-                    >
-                      Voir détails
-                    </button>
-                  </div>
-                ))}
+                    {analysisData.result.health_assessment.diseases
+                      .filter((d) => d.probability > 0.6)
+                      .slice(0, 3)
+                      .map((disease, idx) => (
+                        <div
+                          key={idx}
+                          className="border rounded-lg bg-red-50 shadow-sm relative p-4"
+                        >
+                          <h4 className="text-md font-semibold text-red-700">
+                            {disease.disease_details?.local_name || disease.name}
+                          </h4>
+                          <p className="text-sm text-gray-600">
+                            Probabilité :{" "}
+                            <span className="font-semibold">
+                              {Math.round(disease.probability * 100)}%
+                            </span>
+                          </p>
+                          <button
+                            className="text-xs text-gray-400 hover:text-green-600 absolute top-2 right-2"
+                            onClick={() => {
+                              setShowResultsModal(false);
+                              setSelectedDisease(analysisData.enrichDisease(disease));
+                            }}
+                          >
+                            Voir détails
+                          </button>
+                        </div>
+                      ))}
+                  </>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-3 p-4">
+                {loading ? (
+                  <Skeleton height={50} />
+                ) : (
+                  <button
+                    onClick={() => {
+                      setShowResultsModal(false);
+                      savePlant();
+                    }}
+                    className="w-full bg-[#074221] hover:bg-[#0A5D2F] text-white font-semibold py-3 rounded-lg transition"
+                  >
+                    Enregistrer
+                  </button>
+                )}
+              </div>
             </div>
           </Modal>
         )}
