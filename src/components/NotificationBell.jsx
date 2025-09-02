@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaBell, FaTrash, FaFileAlt, FaSeedling, FaPlus, FaEdit } from "react-icons/fa";
+import { FaBell, FaTrash, FaFileAlt, FaSeedling, FaPlus, FaEdit, FaExclamationCircle } from "react-icons/fa";
 import { getNotifications } from "@/lib/notificationService";
 
 export default function NotificationBell() {
@@ -112,23 +112,27 @@ export default function NotificationBell() {
                   switch (notif.type) {
                     case "delete":
                       Icon = FaTrash;
-                      iconColor = "text-red-500 bg-red-100";
+                      iconColor = "text-red-500 bg-red-200";
                       break;
                     case "article":
                       Icon = FaFileAlt;
-                      iconColor = "text-blue-500 bg-blue-100";
+                      iconColor = "text-blue-500 bg-blue-200";
                       break;
                     case "plant":
                       Icon = FaSeedling;
-                      iconColor = "text-green-500 bg-green-100";
+                      iconColor = "text-green-500 bg-green-200";
                       break;
                     case "add_plant":
                       Icon = FaSeedling;
-                      iconColor = "text-green-500 bg-green-100";
+                      iconColor = "text-green-500 bg-green-200";
+                      break;
+                    case "alert":
+                      Icon = FaExclamationCircle;
+                      iconColor = "text-yellow-500 bg-yellow-200";
                       break;
                     default:
                       Icon = FaFileAlt;
-                      iconColor = "text-gray-500 bg-gray-100";
+                      iconColor = "text-gray-500 bg-gray-200";
                   }
 
                   return (
