@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://f35aac998111.ngrok-free.app/api",
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api",
   withCredentials: false,
 });
 
