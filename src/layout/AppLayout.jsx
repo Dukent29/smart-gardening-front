@@ -10,7 +10,7 @@ export const AppLayout = ({ children, title = "Page Title" }) => {
       </div>
 
       {/* Scrollable Body with proper spacing */}
-      <main className="flex-1 w-full max-w-md mx-auto pt-20 pb-24 overflow-y-auto min-h-screen bg-[#E7EFEA]">
+      <main className="flex-1 w-full max-w-lg mx-auto pt-20 pb-24 overflow-y-auto min-h-screen bg-[#E7EFEA]">
         {children}
       </main>
 

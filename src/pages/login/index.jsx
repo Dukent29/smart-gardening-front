@@ -24,7 +24,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto px-4 min-h-screen flex items-center justify-center bg-[#F5F5F5]">
+    <div className="w-full max-w-lg mx-auto px-4 min-h-screen flex items-center justify-center bg-[#F5F5F5]">
       <form onSubmit={handleLogin}
             className=" p-6 rounded  w-full space-y-4">
         <h1 className="text-xl font-bold text-[#074221]">Connexion </h1>
