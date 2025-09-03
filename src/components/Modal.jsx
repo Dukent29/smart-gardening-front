@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Oval } from "react-loader-spinner";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function Modal({ children, onClose, loading }) {
   return (
@@ -9,7 +10,7 @@ export default function Modal({ children, onClose, loading }) {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
         transition={{ duration: 0.3 }}
-        className="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-6 max-w-md w-full relative"
+        className="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg max-w-md w-full relative"
       >
         <button
           onClick={onClose}
@@ -19,17 +20,8 @@ export default function Modal({ children, onClose, loading }) {
         </button>
 
         {loading ? (
-          <div className="flex justify-center items-center">
-            <Oval
-              height={40}
-              width={40}
-              color="#074221"
-              visible={true}
-              ariaLabel="oval-loading"
-              secondaryColor="#0A5D2F"
-              strokeWidth={2}
-              strokeWidthSecondary={2}
-            />
+          <div className="p-4">
+            <Skeleton height={40} width={40} circle={true} />
           </div>
         ) : (
           children
