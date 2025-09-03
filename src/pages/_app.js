@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
 import "../styles/globals.css";
 import '../styles/switch.css'; 
+import InstallPWAButton from "@/components/InstallPWAButton";
+import ServiceWorkerUpdater from "@/components/ServiceWorkerUpdater";
+
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -21,6 +24,8 @@ export default function App({ Component, pageProps }) {
           <Component {...pageProps} />
         </motion.div>
       </AnimatePresence>
+      <InstallPWAButton />
+      <ServiceWorkerUpdater />
     </AuthProvider>
   );
 }

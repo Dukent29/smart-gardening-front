@@ -87,7 +87,7 @@ export default function DeprecatedPlantHealthPage() {
 
         {showResultsModal && analysisData && (
           <Modal onClose={() => setShowResultsModal(false)}>
-            <div className="flex flex-col w-full max-w-md overflow-hidden rounded-2xl">
+            <div className="flex flex-col w-full max-w-md overflow-hidden rounded-lg">
               {loading ? (
                 <Skeleton height={200} />
               ) : (

@@ -129,7 +129,7 @@ export default function AddPlantPage() {
     }
   };
 
-  // 💾 Save plant to the database
+  //  Save plant to the database
   const savePlant = async () => {
     if (!result) {
       setError("Aucun résultat à enregistrer.");
@@ -150,6 +150,7 @@ export default function AddPlantPage() {
         alert("✅ Plante ajoutée avec succès !");
         setShowResultModal(false);
         reset(); // Reset the state after saving
+        window.location.href = "/dashboard"; // Redirect to dashboard
       } else {
         setError(res.data.message || "Erreur lors de l'ajout de la plante.");
       }
@@ -262,7 +263,7 @@ export default function AddPlantPage() {
         {/* Results Modal */}
         {showResultModal && result && (
 <Modal onClose={handleCancelResult}>
-  <div className="flex flex-col w-full max-w-md overflow-hidden rounded-2xl 
+  <div className="flex flex-col w-full max-w-md overflow-hidden rounded-md 
                   ">
     
     {/* Image */}
@@ -273,7 +274,7 @@ export default function AddPlantPage() {
     />
 
     {/* Texte */}
-    <div className="">
+    <div className="p-4">
       <h2 className="text-xl font-semibold text-gray-900 mb-2">
         {result.name}
       </h2>
@@ -286,7 +287,7 @@ export default function AddPlantPage() {
     </div>
 
     {/* Boutons */}
-    <div className="flex flex-col gap-3 pt-6 pb-6">
+    <div className="flex flex-col gap-3 p-4">
       <button
         onClick={savePlant}
         className="w-full bg-[#074221] hover:bg-[#0A5D2F] text-white font-semibold 

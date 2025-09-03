@@ -32,7 +32,7 @@ export default function Dashboard() {
   return (
     <div className="flex bg-[#F5F5F5] min-h-screen relative">
       <Sidebar />
-      <div className="flex-1 w-full max-w-md mx-auto relative">
+      <div className="flex-1 w-full max-w-lg mx-auto relative">
         <AppLayout title="Tableau de bord">
           <h1 className="text-2xl font-bold mb-4 text-[#074221] px-4">
             Vue d’ensemble du jardin
