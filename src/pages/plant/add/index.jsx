@@ -203,7 +203,7 @@ export default function AddPlantPage() {
                 ref={videoRef}
                 autoPlay
                 playsInline
-                className="w-full h-64 object-cover rounded-lg border"
+                className="w-full h-80 object-cover rounded-lg border"
               />
               <button
                 onClick={toggleCamera}

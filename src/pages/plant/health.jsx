@@ -279,7 +279,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
           ref={videoRef}
           autoPlay
           playsInline
-          className="w-full h-84 object-cover border"
+          className="w-full h-80 object-cover border"
         />
         <button
           onClick={toggleCamera}
