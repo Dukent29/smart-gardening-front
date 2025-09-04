@@ -5,6 +5,7 @@ import axios from "@/lib/axios";
 import { AppLayout } from "@/layout/AppLayout";
 import TabsNav from "@/components/TabsNavPlant";
 import Modal from "@/components/Modal";
+import { FaSyncAlt } from "react-icons/fa"; // Import the switch icon
 
 export default function AddPlantPage() {
   const [activeTab, setActiveTab] = useState("AddPhoto"); // Default tab
@@ -22,13 +23,16 @@ export default function AddPlantPage() {
   const [showResultModal, setShowResultModal] = useState(false);
 
   const videoRef = useRef(null);
+  const [cameraFacingMode, setCameraFacingMode] = useState("user"); // Default to front camera
 
   // 📷 Start camera on mount for "AddPhoto" tab
   useEffect(() => {
     if (activeTab === "AddPhoto") {
       const startCamera = async () => {
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: cameraFacingMode },
+          });
           if (videoRef.current) {
             videoRef.current.srcObject = stream;
           }
@@ -47,7 +51,7 @@ export default function AddPlantPage() {
         }
       };
     }
-  }, [activeTab]);
+  }, [activeTab, cameraFacingMode]); // Reinitialize camera when facing mode changes
 
   // 🌿 Handle scanning and analysis for "Take Photo"
   const handleScanToAdd = () => {
@@ -181,6 +185,10 @@ export default function AddPlantPage() {
     reset();
   };
 
+  const toggleCamera = () => {
+    setCameraFacingMode((prevMode) => (prevMode === "user" ? "environment" : "user"));
+  };
+
   return (
     <AppLayout title="Ajouter une plante">
       <TabsNav activeTab={activeTab} onTabChange={setActiveTab} />
@@ -189,12 +197,37 @@ export default function AddPlantPage() {
         {/* Add Photo Tab */}
         {activeTab === "AddPhoto" && (
           <div>
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              className="w-full h-64 object-cover rounded-lg border"
-            />
+            {/* Video and Switch Camera Button */}
+            <div className="relative">
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                className="w-full h-80 object-cover rounded-lg border"
+              />
+              <button
+                onClick={toggleCamera}
+                className="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 focus:outline-none"
+                aria-label="Switch Camera"
+              >
+                <FaSyncAlt />
+              </button>
+
+              {/* Scanning Lines */}
+              <div className="absolute inset-0 pointer-events-none">
+                {/* Top Left Corner */}
+                <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-green-500"></div>
+                {/* Top Right Corner */}
+                <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-green-500"></div>
+                {/* Bottom Left Corner */}
+                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-green-500"></div>
+                {/* Bottom Right Corner */}
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-green-500"></div>
+
+                {/* Scanning Line */}
+                <div className="absolute inset-x-0 top-0 h-1 bg-green-500 animate-scan"></div>
+              </div>
+            </div>
 
             <div className="bg-gray-100 rounded-lg p-4 mt-4">
               <h2 className="font-semibold text-green-800 mb-2">Add Plant to Garden</h2>
@@ -212,20 +245,15 @@ export default function AddPlantPage() {
               </div>
             </div>
 
-            <div className="flex justify-center space-x-4 mt-4">
+            <div className="flex space-x-2 p-4">
               <button
                 onClick={handleScanToAdd}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50"
+                className="bg-[#0A5D2F] flex-1 text-white px-4 py-3 rounded-xl hover:bg-green-700 disabled:opacity-50"
                 disabled={loading}
               >
-                {loading ? "Analyse en cours..." : "Scan to Add"}
+                {loading ? "Analyse en cours..." : "Scanner la plante"}
               </button>
-              <button
-                onClick={reset}
-                className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
-              >
-                Annuler
-              </button>
+              
             </div>
           </div>
         )}
