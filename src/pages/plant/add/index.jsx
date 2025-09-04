@@ -318,7 +318,21 @@ export default function AddPlantPage() {
                 <p className="text-sm text-gray-700 mb-1">
                   <strong>Type:</strong> {result.type}
                 </p>
-                <p className="text-sm text-gray-600">{result.description}</p>
+                <p className="text-sm text-gray-600">
+                  {result.description.length > 150 ? (
+                    <>
+                      {result.description.slice(0, 150)}...
+                      <button
+                        onClick={() => alert(result.description)} // Replace with a better expand logic if needed
+                        className="text-blue-500 hover:underline ml-1"
+                      >
+                        Lire plus
+                      </button>
+                    </>
+                  ) : (
+                    result.description
+                  )}
+                </p>
               </div>
 
               {/* Boutons */}
