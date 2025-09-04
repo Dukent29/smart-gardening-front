@@ -9,7 +9,7 @@ export default function ExplorePage() {
   const [articles, setArticles] = useState([]);
   const [filteredArticles, setFilteredArticles] = useState([]);
   const [categories] = useState([
-    "All", "Rare", "My collection", "Troubleshooting", "Indoors"
+    "All", "Rare", "favoris", "Troubleshooting", "Indoors"
   ]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,7 +37,7 @@ export default function ExplorePage() {
   useEffect(() => {
     let filtered = [...articles];
 
-    if (activeCategory === "My collection") {
+    if (activeCategory === "favoris") {
       const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
       filtered = filtered.filter((article) => favorites.includes(article._id));
     } else if (activeCategory !== "All") {
@@ -65,7 +65,7 @@ export default function ExplorePage() {
             placeholder="Search articles..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-2 pl-10 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 bg-[#D9D9D9] text-gray-800"
+            className="w-full p-2 pl-10 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 bg-gray-100 text-gray-800"
           />
           {/* Search Icon */}
           <svg
@@ -90,7 +90,7 @@ export default function ExplorePage() {
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`w-32 px-2  rounded-full border text-xs ${
+              className={`w-32 px-2 py-2 rounded-full border text-xs ${
                 activeCategory === category
                   ? "bg-[#0A5D2F] text-white"
                   : "border-[#0A5D2F] text-[#0A5D2F]"
@@ -123,10 +123,15 @@ export default function ExplorePage() {
   );
 }
 
+// Utility function to handle image URLs
+const getImageUrl = (path) => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  return `${baseUrl}${path}`;
+};
+
 function ArticleCard({ article }) {
   const router = useRouter();
-  const baseUrl = 'http://localhost:5000';
-  const imageUrl = article.image?.startsWith('http') ? article.image : `${baseUrl}${article.image}`;
+  const imageUrl = article.image?.startsWith('http') ? article.image : getImageUrl(article.image);
 
   const [isFavorite, setIsFavorite] = useState(false);
 

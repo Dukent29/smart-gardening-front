@@ -6,6 +6,7 @@ import { AppLayout } from "@/layout/AppLayout";
 import TabsNav from "@/components/TabsNavPlant";
 import Modal from "@/components/Modal";
 import { FaSyncAlt } from "react-icons/fa"; // Import the switch icon
+import { IoScanCircle } from "react-icons/io5"; // Import the scan icon
 
 export default function AddPlantPage() {
   const [activeTab, setActiveTab] = useState("AddPhoto"); // Default tab
@@ -197,7 +198,7 @@ export default function AddPlantPage() {
         {/* Add Photo Tab */}
         {activeTab === "AddPhoto" && (
           <div>
-            {/* Video and Switch Camera Button */}
+            {/* Video and Buttons */}
             <div className="relative">
               <video
                 ref={videoRef}
@@ -205,12 +206,23 @@ export default function AddPlantPage() {
                 playsInline
                 className="w-full h-80 object-cover rounded-lg border"
               />
+              {/* Switch Camera Button */}
               <button
                 onClick={toggleCamera}
                 className="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 focus:outline-none"
                 aria-label="Switch Camera"
               >
                 <FaSyncAlt />
+              </button>
+
+              {/* Scan Button */}
+              <button
+                onClick={handleScanToAdd}
+                className="absolute bottom-4 right-2 text-white text-5xl hover:text-gray-300 focus:outline-none"
+                aria-label="Scan Plant"
+                disabled={loading}
+              >
+                <IoScanCircle />
               </button>
 
               {/* Scanning Lines */}
@@ -253,7 +265,6 @@ export default function AddPlantPage() {
               >
                 {loading ? "Analyse en cours..." : "Scanner la plante"}
               </button>
-              
             </div>
           </div>
         )}
@@ -290,44 +301,37 @@ export default function AddPlantPage() {
 
         {/* Results Modal */}
         {showResultModal && result && (
-<Modal onClose={handleCancelResult}>
-  <div className="flex flex-col w-full max-w-md overflow-hidden rounded-md 
-                  ">
-    
-    {/* Image */}
-    <img
-      src={result.image_url}
-      alt="Plante identifiée"
-      className="w-full h-56 object-cover"
-    />
+          <Modal onClose={handleCancelResult}>
+            <div className="flex flex-col w-full max-w-md overflow-hidden rounded-md">
+              {/* Image */}
+              <img
+                src={result.image_url}
+                alt="Plante identifiée"
+                className="w-full h-64 object-cover"
+              />
 
-    {/* Texte */}
-    <div className="p-4">
-      <h2 className="text-xl font-semibold text-gray-900 mb-2">
-        {result.name}
-      </h2>
-      <p className="text-sm text-gray-700 mb-1">
-        <strong>Type:</strong> {result.type}
-      </p>
-      <p className="text-sm text-gray-600">
-        {result.description}
-      </p>
-    </div>
+              {/* Texte */}
+              <div className="p-4">
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                  {result.name}
+                </h2>
+                <p className="text-sm text-gray-700 mb-1">
+                  <strong>Type:</strong> {result.type}
+                </p>
+                <p className="text-sm text-gray-600">{result.description}</p>
+              </div>
 
-    {/* Boutons */}
-    <div className="flex flex-col gap-3 p-4">
-      <button
-        onClick={savePlant}
-        className="w-full bg-[#074221] hover:bg-[#0A5D2F] text-white font-semibold 
-                   py-3 rounded-lg transition"
-      >
-        Enregistrer
-      </button>
-    </div>
-  </div>
-</Modal>
-
-
+              {/* Boutons */}
+              <div className="flex flex-col gap-3 p-4">
+                <button
+                  onClick={savePlant}
+                  className="w-full bg-[#074221] hover:bg-[#0A5D2F] text-white font-semibold py-3 rounded-lg transition"
+                >
+                  Enregistrer
+                </button>
+              </div>
+            </div>
+          </Modal>
         )}
       </div>
     </AppLayout>

@@ -10,7 +10,8 @@ import localDiseases from "@/data/diseases.json";
 import ChatBotComponent from "@/components/SimpleChatBot.jsx";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { FaSyncAlt } from "react-icons/fa"; // Import the switch icon
+import { FaSyncAlt} from "react-icons/fa";
+import { TbHealthRecognition } from "react-icons/tb"; // Import the switch and scan icons
 
 export default function DeprecatedPlantHealthPage() {
   const [loading, setLoading] = useState(false);
@@ -237,7 +238,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
           onShowResults({
             result: res.data.health_data,
             imageUrl: imageUrl,
-            enrichDisease: enrichDisease
+            enrichDisease: enrichDisease,
           });
         } else {
           setError("Analyse échouée.");
@@ -281,12 +282,23 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
           playsInline
           className="w-full h-80 object-cover border"
         />
+        {/* Switch Camera Button */}
         <button
           onClick={toggleCamera}
           className="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 focus:outline-none"
           aria-label="Switch Camera"
         >
           <FaSyncAlt />
+        </button>
+
+        {/* Scan Button */}
+        <button
+          onClick={takeSnapshotAndAnalyze}
+          className="absolute bottom-4 right-4 text-white text-4xl hover:text-gray-300 focus:outline-none"
+          aria-label="Scan Plant"
+          disabled={loading}
+        >
+          <TbHealthRecognition className="h-2xl" />
         </button>
 
         {/* Scanning Lines */}
