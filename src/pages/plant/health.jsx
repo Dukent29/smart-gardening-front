@@ -10,6 +10,7 @@ import localDiseases from "@/data/diseases.json";
 import ChatBotComponent from "@/components/SimpleChatBot.jsx";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { FaSyncAlt } from "react-icons/fa"; // Import the switch icon
 
 export default function DeprecatedPlantHealthPage() {
   const [loading, setLoading] = useState(false);
@@ -177,11 +178,14 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const videoRef = useRef(null);
+  const [cameraFacingMode, setCameraFacingMode] = useState("user"); // Default to front camera
 
   useEffect(() => {
     const startCamera = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: cameraFacingMode },
+        });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
@@ -197,7 +201,11 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
         videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
       }
     };
-  }, []);
+  }, [cameraFacingMode]); // Reinitialize camera when facing mode changes
+
+  const toggleCamera = () => {
+    setCameraFacingMode((prevMode) => (prevMode === "user" ? "environment" : "user"));
+  };
 
   const takeSnapshotAndAnalyze = () => {
     const canvas = document.createElement("canvas");
@@ -265,13 +273,37 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
 
   return (
     <div className="space-y-6">
-      {/* 📷 Live camera */}
-      <video
-        ref={videoRef}
-        autoPlay
-        playsInline
-        className="w-full h-64 object-cover border"
-      />
+      {/* 📷 Live camera with switch button and scanning lines */}
+      <div className="relative">
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          className="w-full h-84 object-cover border"
+        />
+        <button
+          onClick={toggleCamera}
+          className="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 focus:outline-none"
+          aria-label="Switch Camera"
+        >
+          <FaSyncAlt />
+        </button>
+
+        {/* Scanning Lines */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Top Left Corner */}
+          <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-green-500"></div>
+          {/* Top Right Corner */}
+          <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-green-500"></div>
+          {/* Bottom Left Corner */}
+          <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-green-500"></div>
+          {/* Bottom Right Corner */}
+          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-green-500"></div>
+
+          {/* Scanning Line */}
+          <div className="absolute inset-x-0 top-0 h-1 bg-green-500 animate-scan"></div>
+        </div>
+      </div>
 
       {/* Tips Box */}
       <div className="bg-gray-100 p-4">
@@ -292,21 +324,15 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
 
 
       {/* Actions */}
-      <div className="flex space-x-4 p-2">
+      <div className="flex space-x-2 p-4">
         <button
           onClick={takeSnapshotAndAnalyze}
-          className="bg-[#0A5D2F] flex-1 text-white px-4 py-2 rounded-xl hover:bg-green-700 disabled:opacity-50"
+          className="bg-[#0A5D2F] flex-1 text-white px-4 py-3 rounded-xl hover:bg-green-700 disabled:opacity-50"
           disabled={loading}
         >
           {loading ? "Analyse en cours..." : "Scanner la Plante"}
         </button>
 
-        <button
-          onClick={reset}
-          className="bg-gray-400 flex-1 text-white px-4 py-2 rounded-xl hover:bg-gray-500"
-        >
-          Réinitialiser
-        </button>
       </div>
 
       {/* Error */}

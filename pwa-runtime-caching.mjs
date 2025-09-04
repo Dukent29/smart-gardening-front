@@ -29,4 +29,16 @@ export default [
       expiration: { maxEntries: 30, maxAgeSeconds: oneYear },
     },
   },
+   {
+    urlPattern: ({ url }) => url.pathname.startsWith('/api/'),
+    handler: 'NetworkOnly',
+    method: 'GET',
+    options: { cacheName: 'api-network-only' },
+  },
+  {
+    urlPattern: ({ url }) => url.origin.includes('ngrok-free.app') && url.pathname.startsWith('/api/'),
+    handler: 'NetworkOnly',
+    method: 'GET',
+    options: { cacheName: 'api-ngrok-network-only' },
+  },
 ];

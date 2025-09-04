@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { FaBell, FaTrash, FaFileAlt, FaSeedling, FaExclamationCircle } from "react-icons/fa";
 import { getNotifications } from "@/lib/notificationService";
+import api from "@/lib/axios"; // ← instance axios (baseURL finit par /api)
 
 export default function NotificationBell() {
   // Déclare TOUS les hooks sans condition (règle d’or React)
@@ -20,12 +21,11 @@ export default function NotificationBell() {
         if (typeof window === "undefined") return; // anti-SSR
         const userId = localStorage.getItem("userId");
         if (!userId) {
-          // Redirige si pas connecté
           window.location.href = "/login";
           return;
         }
 
-        const data = await getNotifications(userId);
+        const data = await getNotifications(userId); // ← utilise déjà l’instance axios
         if (ignore) return;
 
         if (Array.isArray(data)) {
@@ -60,8 +60,11 @@ export default function NotificationBell() {
 
   const markNotificationAsRead = async (id) => {
     try {
-      await fetch(`/api/notifications/${id}/read`, { method: "PATCH" });
-      setNotifications((prev) => prev.map((n) => (n._id === id ? { ...n, is_read: true } : n)));
+      // ✨ axios instance → pas de /api dans le chemin
+      await api.patch(`/notifications/${id}/read`);
+      setNotifications((prev) =>
+        prev.map((n) => (n._id === id ? { ...n, is_read: true } : n))
+      );
       setCount((prev) => Math.max(prev - 1, 0));
     } catch (err) {
       console.warn("Error marking notification as read:", err);
@@ -73,7 +76,8 @@ export default function NotificationBell() {
       if (typeof window === "undefined") return;
       const userId = localStorage.getItem("userId");
       if (!userId) return;
-      await fetch(`/api/notifications/${userId}/read`, { method: "PATCH" });
+      // ✨ axios instance
+      await api.patch(`/notifications/${userId}/read`);
       setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
       setCount(0);
     } catch (err) {
