@@ -3,6 +3,11 @@ import { useState, useEffect } from "react";
 import { AppLayout } from "@/layout/AppLayout";
 import axios from "@/lib/axios";
 
+const getImageUrl = (path) => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  return `${baseUrl}${path}`;
+};
+
 export default function ArticleDetailPage() {
   const { id } = useRouter().query;
   const [article, setArticle] = useState(null);
@@ -73,7 +78,7 @@ export default function ArticleDetailPage() {
     );
   }
 
-  const imageUrl = `${"http://localhost:5000"}${article.image}`;
+  const imageUrl = getImageUrl(article.image);
 
   return (
     <AppLayout title={article.title}>

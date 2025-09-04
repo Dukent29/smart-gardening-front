@@ -1,16 +1,22 @@
 import { useState, useEffect } from "react";
-import { AppLayout } from "../../layout/AppLayout";
-import { getAllArticles } from "../../lib/articleService";
-import { getPlants } from "../../lib/plantService";
+import { AppLayout } from "@/layout/AppLayout";
+import { getAllArticles } from "@/lib/articleService";
+import { getPlants } from "@/lib/plantService";
 import { FiSearch } from "react-icons/fi";
+import { useRouter } from "next/router"; // Import useRouter
 
-const baseUrl = "http://localhost:5000";
+// Utility function to handle image URLs
+const getImageUrl = (path) => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  return `${baseUrl}${path}`;
+};
 
 export default function SearchPage() {
   const [plants, setPlants] = useState([]);
   const [articles, setArticles] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("all");
+  const router = useRouter(); // Initialize useRouter
 
   useEffect(() => {
     const loadData = async () => {
@@ -43,8 +49,16 @@ export default function SearchPage() {
       ? matchedArticles
       : [...matchedPlants, ...matchedArticles];
 
+  const handleResultClick = (id, type) => {
+    if (type === "plant") {
+      router.push(`/dashboard`); 
+    } else if (type === "article") {
+      router.push(`/explore`); 
+    }
+  };
+
   return (
-    <AppLayout>
+    <AppLayout title="Recherche">
       <div className="min-h-screen p-6">
         <div className="max-w-2xl mx-auto">
           {/* Search Input */}
@@ -56,7 +70,7 @@ export default function SearchPage() {
                 placeholder="Search plants, species, care tips"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 p-4 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 placeholder-gray-600 text-gray-600"
+                className="bg-gray-100 w-full pl-10 p-4 rounded-4xl border border-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 placeholder-gray-600 text-gray-600"
               />
             </div>
           </div>
@@ -97,10 +111,11 @@ export default function SearchPage() {
                   result.plant_name ? (
                     <div
                       key={index}
-                      className="flex items-center p-4 mb-4 bg-white rounded-lg shadow-md border border-gray-200"
+                      className="flex items-center p-4 mb-4 bg-white rounded-lg shadow-md border border-gray-200 cursor-pointer"
+                      onClick={() => handleResultClick(result.id, "plant")} // Navigate on click
                     >
                       <img
-                        src={`${baseUrl}${result.image_url}`}
+                        src={getImageUrl(result.image_url)}
                         alt={result.plant_name}
                         className="w-16 h-16 rounded-lg object-cover mr-4"
                       />
@@ -119,7 +134,8 @@ export default function SearchPage() {
                   ) : (
                     <div
                       key={index}
-                      className="p-4 mb-4 bg-white rounded-lg shadow-md border border-gray-200"
+                      className="p-4 mb-4 bg-white rounded-lg shadow-md border border-gray-200 cursor-pointer"
+                      onClick={() => handleResultClick(result.id, "article")} // Navigate on click
                     >
                       <span className="px-3 py-1 bg-gray-200 rounded-full text-sm text-gray-600">
                         {result.category}
