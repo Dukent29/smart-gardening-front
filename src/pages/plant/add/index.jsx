@@ -5,17 +5,25 @@ import axios from "@/lib/axios";
 import { AppLayout } from "@/layout/AppLayout";
 import TabsNav from "@/components/TabsNavPlant";
 import Modal from "@/components/Modal";
-import { FaSyncAlt } from "react-icons/fa"; // Import the switch icon
-import { IoScanCircle } from "react-icons/io5"; // Import the scan icon
+import { FaSyncAlt } from "react-icons/fa";
+import { IoScanCircle } from "react-icons/io5";
+
+// ====== STATIC BASE (doit pointer vers .../api) ======
+const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, "");
+
+// Reconstruit systématiquement une URL .../api/uploads/xxx, même si on reçoit une URL absolue
+const toApiStatic = (raw = "") => {
+  if (!raw) return "";
+  let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, ""); // enlève protocole+host si présents
+  p = p.replace(/^\/+/, "");     // retire / au début
+  p = p.replace(/^api\/+/, "");  // retire un "api/" parasite
+  if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
+  return `${STATIC_BASE}/${p}`;  // => https://.../api/uploads/xxx
+};
 
 export default function AddPlantPage() {
-  const [activeTab, setActiveTab] = useState("AddPhoto"); // Default tab
-  const [form, setForm] = useState({
-    name: "",
-    type: "",
-    description: "",
-    image: null,
-  });
+  const [activeTab, setActiveTab] = useState("AddPhoto");
+  const [form, setForm] = useState({ name: "", type: "", description: "", image: null });
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [result, setResult] = useState(null);
@@ -24,37 +32,30 @@ export default function AddPlantPage() {
   const [showResultModal, setShowResultModal] = useState(false);
 
   const videoRef = useRef(null);
-  const [cameraFacingMode, setCameraFacingMode] = useState("user"); // Default to front camera
+  const [cameraFacingMode, setCameraFacingMode] = useState("user");
 
-  // 📷 Start camera on mount for "AddPhoto" tab
+  // 📷 Start/stop camera
   useEffect(() => {
-    if (activeTab === "AddPhoto") {
-      const startCamera = async () => {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: cameraFacingMode },
-          });
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-          }
-        } catch (err) {
-          console.error("Erreur accès caméra:", err);
-          setError("Impossible d'accéder à la caméra.");
-        }
-      };
+    if (activeTab !== "AddPhoto") return;
+    const start = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: cameraFacingMode } });
+        if (videoRef.current) videoRef.current.srcObject = stream;
+      } catch (err) {
+        console.error("Erreur accès caméra:", err);
+        setError("Impossible d'accéder à la caméra.");
+      }
+    };
+    start();
+    return () => {
+      if (videoRef.current?.srcObject) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach((t) => t.stop());
+      }
+    };
+  }, [activeTab, cameraFacingMode]);
 
-      startCamera();
-
-      return () => {
-        if (videoRef.current?.srcObject) {
-          const tracks = videoRef.current.srcObject.getTracks();
-          tracks.forEach((track) => track.stop());
-        }
-      };
-    }
-  }, [activeTab, cameraFacingMode]); // Reinitialize camera when facing mode changes
-
-  // 🌿 Handle scanning and analysis for "Take Photo"
+  // 🌿 Scan with camera
   const handleScanToAdd = () => {
     const canvas = document.createElement("canvas");
     const video = videoRef.current;
@@ -62,12 +63,11 @@ export default function AddPlantPage() {
 
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    const context = canvas.getContext("2d");
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     canvas.toBlob(async (blob) => {
       if (!blob) return;
-
       setImage(blob);
       setPreviewUrl(URL.createObjectURL(blob));
       setLoading(true);
@@ -76,12 +76,7 @@ export default function AddPlantPage() {
       formData.append("image", blob);
 
       try {
-        const res = await axios.post("/plants/identify", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-
+        const res = await axios.post("/plants/identify", formData, { headers: { "Content-Type": "multipart/form-data" } });
         if (res.data.success) {
           setResult(res.data);
           setShowResultModal(true);
@@ -97,7 +92,7 @@ export default function AddPlantPage() {
     }, "image/jpeg");
   };
 
-  // 📝 Handle manual form submission (upload image and get plant info)
+  // 📝 Upload file (manual)
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!form.image) {
@@ -110,10 +105,7 @@ export default function AddPlantPage() {
 
     try {
       setLoading(true);
-      const res = await axios.post("/plants/identify", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
+      const res = await axios.post("/plants/identify", formData, { headers: { "Content-Type": "multipart/form-data" } });
       if (res.data.success) {
         setResult(res.data);
         setShowResultModal(true);
@@ -134,7 +126,7 @@ export default function AddPlantPage() {
     }
   };
 
-  //  Save plant to the database
+  // 💾 Save plant
   const savePlant = async () => {
     if (!result) {
       setError("Aucun résultat à enregistrer.");
@@ -145,8 +137,8 @@ export default function AddPlantPage() {
       name: result.name,
       type: result.type,
       description: result.description,
-      user_id: 1, // Replace with the actual user ID
-      imageUrl: result.image_url || null,
+      user_id: 1, // TODO: replace with real user id
+      imageUrl: result.image_url || null, // on stocke tel quel; l'affichage utilise toApiStatic
     };
 
     try {
@@ -154,8 +146,8 @@ export default function AddPlantPage() {
       if (res.data.success) {
         alert("✅ Plante ajoutée avec succès !");
         setShowResultModal(false);
-        reset(); // Reset the state after saving
-        window.location.href = "/dashboard"; // Redirect to dashboard
+        reset();
+        window.location.href = "/dashboard";
       } else {
         setError(res.data.message || "Erreur lors de l'ajout de la plante.");
       }
@@ -167,10 +159,7 @@ export default function AddPlantPage() {
 
   const handleFormChange = (e) => {
     const { name, value, files } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: files ? files[0] : value,
-    }));
+    setForm((prev) => ({ ...prev, [name]: files ? files[0] : value }));
   };
 
   const reset = () => {
@@ -186,9 +175,7 @@ export default function AddPlantPage() {
     reset();
   };
 
-  const toggleCamera = () => {
-    setCameraFacingMode((prevMode) => (prevMode === "user" ? "environment" : "user"));
-  };
+  const toggleCamera = () => setCameraFacingMode((m) => (m === "user" ? "environment" : "user"));
 
   return (
     <AppLayout title="Ajouter une plante">
@@ -198,15 +185,8 @@ export default function AddPlantPage() {
         {/* Add Photo Tab */}
         {activeTab === "AddPhoto" && (
           <div>
-            {/* Video and Buttons */}
             <div className="relative">
-              <video
-                ref={videoRef}
-                autoPlay
-                playsInline
-                className="w-full h-80 object-cover rounded-lg border"
-              />
-              {/* Switch Camera Button */}
+              <video ref={videoRef} autoPlay playsInline className="w-full h-80 object-cover rounded-lg border" />
               <button
                 onClick={toggleCamera}
                 className="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 focus:outline-none"
@@ -215,7 +195,6 @@ export default function AddPlantPage() {
                 <FaSyncAlt />
               </button>
 
-              {/* Scan Button */}
               <button
                 onClick={handleScanToAdd}
                 className="absolute bottom-4 right-2 text-white text-5xl hover:text-gray-300 focus:outline-none"
@@ -225,18 +204,12 @@ export default function AddPlantPage() {
                 <IoScanCircle />
               </button>
 
-              {/* Scanning Lines */}
+              {/* framing + scan line */}
               <div className="absolute inset-0 pointer-events-none">
-                {/* Top Left Corner */}
                 <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-green-500"></div>
-                {/* Top Right Corner */}
                 <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-green-500"></div>
-                {/* Bottom Left Corner */}
                 <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-green-500"></div>
-                {/* Bottom Right Corner */}
                 <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-green-500"></div>
-
-                {/* Scanning Line */}
                 <div className="absolute inset-x-0 top-0 h-1 bg-green-500 animate-scan"></div>
               </div>
             </div>
@@ -303,27 +276,25 @@ export default function AddPlantPage() {
         {showResultModal && result && (
           <Modal onClose={handleCancelResult}>
             <div className="flex flex-col w-full max-w-md overflow-hidden rounded-md">
-              {/* Image */}
+              {/* Image (FORCÉE en /api/uploads) */}
               <img
-                src={result.image_url}
+                src={toApiStatic(result.image_url)}
                 alt="Plante identifiée"
                 className="w-full h-64 object-cover"
               />
 
               {/* Texte */}
               <div className="p-4">
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                  {result.name}
-                </h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">{result.name}</h2>
                 <p className="text-sm text-gray-700 mb-1">
                   <strong>Type:</strong> {result.type}
                 </p>
                 <p className="text-sm text-gray-600">
-                  {result.description.length > 150 ? (
+                  {result.description?.length > 150 ? (
                     <>
                       {result.description.slice(0, 150)}...
                       <button
-                        onClick={() => alert(result.description)} // Replace with a better expand logic if needed
+                        onClick={() => alert(result.description)}
                         className="text-blue-500 hover:underline ml-1"
                       >
                         Lire plus
