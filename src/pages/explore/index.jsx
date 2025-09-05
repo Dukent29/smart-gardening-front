@@ -6,7 +6,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 // 🔗 Base brute pour les images statiques (priorité à l'env, sinon valeur par défaut)
-const STATIC_BASE = process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api";
+const STATIC_BASE = process.env.NEXT_PUBLIC_STATIC_BASE;
 
 export default function ExplorePage() {
   const [articles, setArticles] = useState([]);
