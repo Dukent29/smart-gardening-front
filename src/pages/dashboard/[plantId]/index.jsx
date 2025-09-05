@@ -1,13 +1,31 @@
-import { useState } from "react";
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import { usePlantDetail } from "@/hooks/usePlantDetail";
 import axios from "@/lib/axios";
 import SensorCard from "@/components/SensorCard";
 import { AppLayout } from "@/layout/AppLayout";
 import { FiMoreVertical } from "react-icons/fi";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css"; 
+import "react-loading-skeleton/dist/skeleton.css";
 
+/* ========= Images: FORCER /api/uploads ========= */
+const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, "");
+const toPlantImageUrl = (raw = "") => {
+  if (!raw) return "";
+  // déjà absolue ? on garde
+  if (/^https?:\/\//i.test(raw)) return raw;
+
+  // normaliser le chemin
+  let p = String(raw).trim();
+  p = p.replace(/^https?:\/\/[^/]+\/?/, ""); // enlève éventuel host
+  p = p.replace(/^\/+/, "");                 // enlève / initiaux
+  p = p.replace(/^api\/+/, "");              // enlève "api/" parasite
+  if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
+
+  // >>> colle sur la base qui CONTIENT déjà /api
+  return `${STATIC_BASE}/${p}`;              // -> .../api/uploads/xxx
+};
+/* ============================================== */
 
 export default function PlantDetail() {
   const router = useRouter(); // Call useRouter() at the top level
@@ -28,7 +46,7 @@ export default function PlantDetail() {
   // Calculate overall plant status based on all sensors
   const getOverallStatus = () => {
     const allStatuses = Object.values(latestByType).map(sensor => sensor.status);
-    
+
     if (allStatuses.includes("CRITICAL")) return "CRITICAL";
     if (allStatuses.includes("LOW")) return "LOW";
     if (allStatuses.length > 0 && allStatuses.every(status => status === "OK")) return "OK";
@@ -39,7 +57,7 @@ export default function PlantDetail() {
   const getBadgeStyle = (status) => {
     const styles = {
       OK: "bg-green-100 text-green-800 border-green-200",
-      LOW: "bg-yellow-100 text-yellow-800 border-yellow-200", 
+      LOW: "bg-yellow-100 text-yellow-800 border-yellow-200",
       CRITICAL: "bg-red-100 text-red-800 border-red-200",
       UNKNOWN: "bg-gray-100 text-gray-600 border-gray-200"
     };
@@ -122,7 +140,7 @@ export default function PlantDetail() {
               <p className="text-gray-600">{plant.description}</p>
               {plant.image_url && (
                 <img
-                  src={plant.image_url}
+                  src={toPlantImageUrl(plant.image_url)}
                   alt={plant.plant_name}
                   className="w-full max-h-[300px] object-cover rounded-lg shadow"
                 />
@@ -207,20 +225,6 @@ export default function PlantDetail() {
               <div className="text-xs text-right text-gray-500">
                 Last watered: {plant.lastActionAt ? new Date(plant.lastActionAt).toLocaleString() : "—"}
               </div>
-
-              {/* {!plant.is_automatic && hasCriticalSensor && (
-                <div className="mt-4">
-                  <button
-                    onClick={handleSimulateManualAction}
-                    className="bg-red-500 hover:bg-red-600 text-white font-semibold w-full py-3 rounded-lg shadow"
-                  >
-                    🚨 Launch Manual Action
-                  </button>
-                  <p className="text-xs text-gray-400 text-center mt-1">
-                    Based on latest critical or low sensor
-                  </p>
-                </div>
-              )} */}
 
               <div className="mt-6">
                 <h2 className="text-md font-semibold mb-2 text-[#0A5D2F]">Dernières actions</h2>

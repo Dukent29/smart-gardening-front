@@ -7,7 +7,7 @@ import { useRouter } from "next/router"; // Import useRouter
 
 // Utility function to handle image URLs
 const getImageUrl = (path) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_STATIC_BASE;
   return `${baseUrl}${path}`;
 };
 
