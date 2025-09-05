@@ -124,12 +124,22 @@ export default function ExplorePage() {
 }
 
 // Utility function to handle image URLs
-const getImageUrl = (path) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL; // e.g., "https://awm.portfolio-etudiant-rouen.com/api"
-  if (path.startsWith('/')) {
-    path = path.slice(1); // Remove leading slash to avoid double slashes
-  }
-  return `${baseUrl}/${path}`;
+const getImageUrl = (rawPath) => {
+  const BASE = (process.env.NEXT_PUBLIC_API_BASE_URL || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, ""); 
+  if (!rawPath) return "";
+
+  // 1) si déjà absolu, on renvoie tel quel
+  if (/^https?:\/\//i.test(rawPath)) return rawPath;
+
+  // 2) normalise le chemin relatif
+  let p = String(rawPath).trim();
+  p = p.replace(/^https?:\/\/[^/]+\/?/, ""); // enlève un host s'il traîne
+  p = p.replace(/^\/+/, "");                 // enlève les / de début
+  p = p.replace(/^api\/+/, "");              // *** retire "api/" parasite ***
+  if (!/^uploads\//.test(p)) p = `uploads/${p}`; // force le prefix "uploads/"
+
+  // Résultat: https://.../api/uploads/xxx.jpg
+  return `${BASE}/${p}`;
 };
 
 function ArticleCard({ article }) {
