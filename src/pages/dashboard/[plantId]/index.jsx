@@ -8,22 +8,26 @@ import { FiMoreVertical } from "react-icons/fi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-/* ========= Images: FORCER /api/uploads ========= */
+/* ========= Images: FORCER /api/uploads =========
+   On reconstruit l'URL à partir de NEXT_PUBLIC_STATIC_BASE,
+   même si plant.image_url est déjà une URL absolue. */
 const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, "");
+
 const toPlantImageUrl = (raw = "") => {
   if (!raw) return "";
-  // déjà absolue ? on garde
-  if (/^https?:\/\//i.test(raw)) return raw;
 
-  // normaliser le chemin
-  let p = String(raw).trim();
-  p = p.replace(/^https?:\/\/[^/]+\/?/, ""); // enlève éventuel host
-  p = p.replace(/^\/+/, "");                 // enlève / initiaux
-  p = p.replace(/^api\/+/, "");              // enlève "api/" parasite
+  // 1) enlève protocole+host si présents
+  let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, "");
+
+  // 2) normalise le chemin
+  p = p.replace(/^\/+/, "");   // enlève les / en tête
+  p = p.replace(/^api\/+/, ""); // enlève un "api/" parasite
+
+  // 3) s'assure qu'on commence par uploads/
   if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
 
-  // >>> colle sur la base qui CONTIENT déjà /api
-  return `${STATIC_BASE}/${p}`;              // -> .../api/uploads/xxx
+  // 4) reconstruit systématiquement sur BASE (qui contient déjà /api)
+  return `${STATIC_BASE}/${p}`; // → .../api/uploads/xxx
 };
 /* ============================================== */
 
@@ -46,7 +50,6 @@ export default function PlantDetail() {
   // Calculate overall plant status based on all sensors
   const getOverallStatus = () => {
     const allStatuses = Object.values(latestByType).map(sensor => sensor.status);
-
     if (allStatuses.includes("CRITICAL")) return "CRITICAL";
     if (allStatuses.includes("LOW")) return "LOW";
     if (allStatuses.length > 0 && allStatuses.every(status => status === "OK")) return "OK";
