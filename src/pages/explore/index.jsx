@@ -1,23 +1,24 @@
 import { useState, useEffect } from "react";
 import { AppLayout } from "@/layout/AppLayout";
-import { getAllArticles } from "@/lib/articleService"; 
+import { getAllArticles } from "@/lib/articleService";
 import { useRouter } from "next/router";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css"; // Import skeleton styles
+import "react-loading-skeleton/dist/skeleton.css";
+
+// 🔗 Base brute pour les images statiques (priorité à l'env, sinon valeur par défaut)
+const STATIC_BASE = process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api";
 
 export default function ExplorePage() {
   const [articles, setArticles] = useState([]);
   const [filteredArticles, setFilteredArticles] = useState([]);
-  const [categories] = useState([
-    "All", "Rare", "favoris", "Troubleshooting", "Indoors"
-  ]);
+  const [categories] = useState(["All", "Rare", "favoris", "Troubleshooting", "Indoors"]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchArticles = async () => {
-      setLoading(true); // Set loading to true when fetching articles
+      setLoading(true);
       try {
         const res = await getAllArticles();
         if (res.success) {
@@ -27,7 +28,7 @@ export default function ExplorePage() {
       } catch (err) {
         console.error("❌ Error fetching articles:", err);
       } finally {
-        setLoading(false); // Set loading to false after fetching articles
+        setLoading(false);
       }
     };
 
@@ -41,9 +42,7 @@ export default function ExplorePage() {
       const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
       filtered = filtered.filter((article) => favorites.includes(article._id));
     } else if (activeCategory !== "All") {
-      filtered = filtered.filter(
-        (article) => article.category === activeCategory.toLowerCase()
-      );
+      filtered = filtered.filter((article) => article.category === activeCategory.toLowerCase());
     }
 
     if (searchQuery) {
@@ -123,45 +122,30 @@ export default function ExplorePage() {
   );
 }
 
-// Utility function to handle image URLs
-const getImageUrl = (rawPath) => {
-  const BASE = (process.env.NEXT_PUBLIC_API_BASE_URL || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, ""); 
-  if (!rawPath) return "";
-
-  // 1) si déjà absolu, on renvoie tel quel
-  if (/^https?:\/\//i.test(rawPath)) return rawPath;
-
-  // 2) normalise le chemin relatif
-  let p = String(rawPath).trim();
-  p = p.replace(/^https?:\/\/[^/]+\/?/, ""); // enlève un host s'il traîne
-  p = p.replace(/^\/+/, "");                 // enlève les / de début
-  p = p.replace(/^api\/+/, "");              // *** retire "api/" parasite ***
-  if (!/^uploads\//.test(p)) p = `uploads/${p}`; // force le prefix "uploads/"
-
-  // Résultat: https://.../api/uploads/xxx.jpg
-  return `${BASE}/${p}`;
-};
-
 function ArticleCard({ article }) {
   const router = useRouter();
-  const imageUrl = article.image?.startsWith('http') ? article.image : getImageUrl(article.image);
+
+  // 👉 Si l'URL est déjà absolue on la garde, sinon on colle la base brute + le chemin (ex: "uploads/xxx.jpg")
+  const imageUrl = article.image?.startsWith("http")
+    ? article.image
+    : `${STATIC_BASE}/${article.image}`;
 
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setIsFavorite(favorites.includes(article._id));
   }, [article._id]);
 
   const toggleFavorite = () => {
-    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
     if (favorites.includes(article._id)) {
-      const updatedFavorites = favorites.filter(id => id !== article._id);
-      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+      const updatedFavorites = favorites.filter((id) => id !== article._id);
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
       setIsFavorite(false);
     } else {
       favorites.push(article._id);
-      localStorage.setItem('favorites', JSON.stringify(favorites));
+      localStorage.setItem("favorites", JSON.stringify(favorites));
       setIsFavorite(true);
     }
   };
@@ -171,7 +155,7 @@ function ArticleCard({ article }) {
   };
 
   return (
-    <div 
+    <div
       className="bg-white rounded-xl pb-4 shadow cursor-pointer hover:shadow-lg transition-shadow duration-200"
       onClick={handleCardClick}
     >
@@ -186,7 +170,7 @@ function ArticleCard({ article }) {
         </span>
         <button
           onClick={(e) => {
-            e.stopPropagation(); // Prevent triggering card click
+            e.stopPropagation();
             toggleFavorite();
           }}
           className="focus:outline-none"
