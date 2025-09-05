@@ -125,8 +125,11 @@ export default function ExplorePage() {
 
 // Utility function to handle image URLs
 const getImageUrl = (path) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  return `${baseUrl}${path}`;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL; // e.g., "https://awm.portfolio-etudiant-rouen.com/api"
+  if (path.startsWith('/')) {
+    path = path.slice(1); // Remove leading slash to avoid double slashes
+  }
+  return `${baseUrl}/${path}`;
 };
 
 function ArticleCard({ article }) {
