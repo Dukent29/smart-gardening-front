@@ -1,4 +1,3 @@
-//this page displays all notifications for the user
 import { useEffect, useState } from "react";
 import { getNotifications, markNotificationAsRead } from "@/lib/notificationService";
 import { AppLayout } from "@/layout/AppLayout";

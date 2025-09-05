@@ -40,7 +40,7 @@ export default function ResetPassword() {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4 text-center text-[#0A5D2F]">
-          Reset Password
+          Réinitialiser le mot de passe
         </h2>
 
         {success ? (
@@ -62,16 +62,16 @@ export default function ResetPassword() {
               </svg>
             </div>
             <h2 className="text-xl font-bold mb-2 text-gray-800">
-              Password Updated!
+              Mot de passe mis à jour !
             </h2>
             <p className="text-sm text-gray-600 mb-4">
-              Your password has been changed successfully. Use your new password to log in.
+              Votre mot de passe a été changé avec succès. Utilisez votre nouveau mot de passe pour vous connecter.
             </p>
             <a
               href="/login"
               className="text-blue-500 hover:underline text-sm"
             >
-              Go to Login
+              Aller à la connexion
             </a>
           </div>
         ) : (
@@ -80,7 +80,7 @@ export default function ResetPassword() {
 
             <div>
               <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
-                New Password
+                Nouveau mot de passe
               </label>
               <input
                 type="password"
@@ -94,7 +94,7 @@ export default function ResetPassword() {
 
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                Confirm Password
+                Confirmer le mot de passe
               </label>
               <input
                 type="password"
@@ -110,7 +110,7 @@ export default function ResetPassword() {
               type="submit"
               className="w-full bg-[#0A5D2F] text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700"
             >
-              Reset Password
+              Réinitialiser le mot de passe
             </button>
           </form>
         )}

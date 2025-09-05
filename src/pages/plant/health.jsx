@@ -1,5 +1,3 @@
-// This file is deprecated after refactoring. See /plant/health/index.jsx for the new implementation.
-// pages/plant/health.jsx
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "@/lib/axios";
@@ -11,21 +9,21 @@ import ChatBotComponent from "@/components/SimpleChatBot.jsx";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { FaSyncAlt } from "react-icons/fa";
-import { TbHealthRecognition } from "react-icons/tb"; // Import the switch and scan icons
+import { TbHealthRecognition } from "react-icons/tb"; 
 
-/* ===== Force images to /api/uploads using env base ===== */
+
 const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, "");
 const toApiStatic = (raw = "") => {
   if (!raw) return "";
-  if (/^blob:/i.test(raw)) return raw; // keep camera blob URLs
-  // drop protocol+host if any, then normalize
+  if (/^blob:/i.test(raw)) return raw; 
+  
   let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, "");
-  p = p.replace(/^\/+/, "");    // leading slashes
-  p = p.replace(/^api\/+/, ""); // stray "api/"
+  p = p.replace(/^\/+/, "");    
+  p = p.replace(/^api\/+/, ""); 
   if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
-  return `${STATIC_BASE}/${p}`;  // -> https://.../api/uploads/xxx
+  return `${STATIC_BASE}/${p}`;  
 };
-/* ======================================================= */
+
 
 export default function DeprecatedPlantHealthPage() {
   const [loading, setLoading] = useState(false);
@@ -193,7 +191,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const videoRef = useRef(null);
-  const [cameraFacingMode, setCameraFacingMode] = useState("user"); // Default to front camera
+  const [cameraFacingMode, setCameraFacingMode] = useState("user"); 
 
   useEffect(() => {
     const startCamera = async () => {
@@ -216,7 +214,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
         videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
       }
     };
-  }, [cameraFacingMode]); // Reinitialize camera when facing mode changes
+  }, [cameraFacingMode]); 
 
   const toggleCamera = () => {
     setCameraFacingMode((prevMode) => (prevMode === "user" ? "environment" : "user"));
@@ -236,7 +234,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
       if (!blob) return;
 
       setImage(blob);
-      const imageUrl = URL.createObjectURL(blob); // stays blob:, toApiStatic keeps it unchanged
+      const imageUrl = URL.createObjectURL(blob); 
       setPreviewUrl(imageUrl);
       setLoading(true);
 
@@ -251,7 +249,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
         if (res.data.success) {
           onShowResults({
             result: res.data.health_data,
-            imageUrl: imageUrl, // blob url, shown as-is by toApiStatic()
+            imageUrl: imageUrl, 
             enrichDisease: enrichDisease,
           });
         } else {
@@ -288,7 +286,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
 
   return (
     <div className="space-y-6">
-      {/* 📷 Live camera with switch button and scanning lines */}
+      
       <div className="relative">
         <video
           ref={videoRef}
@@ -296,7 +294,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
           playsInline
           className="w-full h-80 object-cover border"
         />
-        {/* Switch Camera Button */}
+        
         <button
           onClick={toggleCamera}
           className="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 focus:outline-none"
@@ -305,7 +303,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
           <FaSyncAlt />
         </button>
 
-        {/* Scan Button */}
+        
         <button
           onClick={takeSnapshotAndAnalyze}
           className="absolute bottom-4 right-4 text-white text-4xl hover:text-gray-300 focus:outline-none"
@@ -315,23 +313,23 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
           <TbHealthRecognition className="h-2xl" />
         </button>
 
-        {/* Scanning Lines */}
+        
         <div className="absolute inset-0 pointer-events-none">
-          {/* Top Left Corner */}
+          
           <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-green-500"></div>
-          {/* Top Right Corner */}
+          
           <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-green-500"></div>
-          {/* Bottom Left Corner */}
+          
           <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-green-500"></div>
-          {/* Bottom Right Corner */}
+          
           <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-green-500"></div>
 
-          {/* Scanning Line */}
+          
           <div className="absolute inset-x-0 top-0 h-1 bg-green-500 animate-scan"></div>
         </div>
       </div>
 
-      {/* Tips Box */}
+      
       <div className="bg-gray-100 p-4">
         <h2 className="font-semibold text-green-800 mb-2">Diagnostiquer l'état de santé</h2>
         <p className="text-sm text-gray-700 mb-2">
@@ -348,7 +346,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
         </div>
       </div>
 
-      {/* Actions */}
+      
       <div className="flex space-x-2 p-4">
         <button
           onClick={takeSnapshotAndAnalyze}
@@ -359,7 +357,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
         </button>
       </div>
 
-      {/* Error */}
+      
       {error && <p className="text-red-600 text-center">{error}</p>}
     </div>
   );

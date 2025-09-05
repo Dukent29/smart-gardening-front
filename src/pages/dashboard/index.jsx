@@ -79,7 +79,7 @@ export default function Dashboard() {
         </AppLayout>
 
         <BottomNav />
-        {/* Floating Add Plant Button */}
+        
         <Link href="/plant/add" legacyBehavior>
           <a
             className="fixed bottom-24 right-8 bg-green-600 hover:bg-green-700 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg text-3xl z-50 transition-colors duration-200"

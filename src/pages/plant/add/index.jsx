@@ -1,5 +1,3 @@
-// pages/plant/add/index.jsx
-
 import { useState, useRef, useEffect } from "react";
 import axios from "@/lib/axios";
 import { AppLayout } from "@/layout/AppLayout";
@@ -8,17 +6,17 @@ import Modal from "@/components/Modal";
 import { FaSyncAlt } from "react-icons/fa";
 import { IoScanCircle } from "react-icons/io5";
 
-// ====== STATIC BASE (doit pointer vers .../api) ======
+
 const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, "");
 
-// Reconstruit systématiquement une URL .../api/uploads/xxx, même si on reçoit une URL absolue
+
 const toApiStatic = (raw = "") => {
   if (!raw) return "";
-  let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, ""); // enlève protocole+host si présents
-  p = p.replace(/^\/+/, "");     // retire / au début
-  p = p.replace(/^api\/+/, "");  // retire un "api/" parasite
+  let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, ""); 
+  p = p.replace(/^\/+/, "");     
+  p = p.replace(/^api\/+/, "");  
   if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
-  return `${STATIC_BASE}/${p}`;  // => https://.../api/uploads/xxx
+  return `${STATIC_BASE}/${p}`; 
 };
 
 export default function AddPlantPage() {
@@ -34,7 +32,7 @@ export default function AddPlantPage() {
   const videoRef = useRef(null);
   const [cameraFacingMode, setCameraFacingMode] = useState("user");
 
-  // 📷 Start/stop camera
+  
   useEffect(() => {
     if (activeTab !== "AddPhoto") return;
     const start = async () => {
@@ -55,7 +53,7 @@ export default function AddPlantPage() {
     };
   }, [activeTab, cameraFacingMode]);
 
-  // 🌿 Scan with camera
+  
   const handleScanToAdd = () => {
     const canvas = document.createElement("canvas");
     const video = videoRef.current;
@@ -137,8 +135,8 @@ export default function AddPlantPage() {
       name: result.name,
       type: result.type,
       description: result.description,
-      user_id: 1, // TODO: replace with real user id
-      imageUrl: result.image_url || null, // on stocke tel quel; l'affichage utilise toApiStatic
+      user_id: 1, 
+      imageUrl: result.image_url || null, 
     };
 
     try {
@@ -204,7 +202,7 @@ export default function AddPlantPage() {
                 <IoScanCircle />
               </button>
 
-              {/* framing + scan line */}
+              
               <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-green-500"></div>
                 <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-green-500"></div>
@@ -242,7 +240,7 @@ export default function AddPlantPage() {
           </div>
         )}
 
-        {/* Add Manually Tab */}
+        
         {activeTab === "AddManually" && (
           <form onSubmit={handleFormSubmit} className="space-y-4 p-4">
             <div className="bg-gray-100 rounded-lg p-4">
@@ -269,21 +267,21 @@ export default function AddPlantPage() {
           </form>
         )}
 
-        {/* ⚠️ Error */}
+        
         {error && <p className="text-red-600 text-center">{error}</p>}
 
-        {/* Results Modal */}
+        
         {showResultModal && result && (
           <Modal onClose={handleCancelResult}>
             <div className="flex flex-col w-full max-w-md overflow-hidden rounded-md">
-              {/* Image (FORCÉE en /api/uploads) */}
+              
               <img
                 src={toApiStatic(result.image_url)}
                 alt="Plante identifiée"
                 className="w-full h-64 object-cover"
               />
 
-              {/* Texte */}
+              
               <div className="p-4">
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">{result.name}</h2>
                 <p className="text-sm text-gray-700 mb-1">

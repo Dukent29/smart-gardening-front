@@ -226,7 +226,7 @@ export default function PlantDetail() {
               </div>
 
               <div className="text-xs text-right text-gray-500">
-                Last watered: {plant.lastActionAt ? new Date(plant.lastActionAt).toLocaleString() : "—"}
+                Dernier arrosage : {plant.lastActionAt ? new Date(plant.lastActionAt).toLocaleString() : "—"}
               </div>
 
               <div className="mt-6">
@@ -249,23 +249,23 @@ export default function PlantDetail() {
             {showDeleteModal && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
                 <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                  <h2 className="text-lg font-semibold text-gray-800">Are you sure?</h2>
+                  <h2 className="text-lg font-semibold text-gray-800">Êtes-vous sûr ?</h2>
                   <p className="text-sm text-gray-600 mt-2">
-                    This action cannot be undone. Do you really want to delete this plant?
+                    Cette action est irréversible. Voulez-vous vraiment supprimer cette plante ?
                   </p>
                   <div className="flex justify-end space-x-4 mt-4">
                     <button
                       onClick={() => setShowDeleteModal(false)}
                       className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
                     >
-                      Cancel
+                      Annuler
                     </button>
                     <button
                       onClick={handleDeletePlant}
                       className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
                       disabled={loadingAction}
                     >
-                      {loadingAction ? "Deleting..." : "Delete"}
+                      {loadingAction ? "Suppression..." : "Supprimer"}
                     </button>
                   </div>
                 </div>

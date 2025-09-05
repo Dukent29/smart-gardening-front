@@ -83,7 +83,7 @@ export default function ArticleDetailPage() {
   return (
     <AppLayout title={article.title}>
       <div className="space-y-6">
-        {/* Article Image */}
+        
         <div className="w-full">
           <img
             src={imageUrl}
@@ -92,9 +92,9 @@ export default function ArticleDetailPage() {
           />
         </div>
 
-        {/* Article Content */}
+        
         <div className="space-y-2 px-4">
-          {/* Category Badge */}
+          
           <div>
             <span
               className={`inline-block text-xs font-semibold px-3 py-1 rounded-full uppercase ${getBadgeColor(
@@ -105,12 +105,12 @@ export default function ArticleDetailPage() {
             </span>
           </div>
 
-          {/* Title */}
+          
           <h1 className="text-2xl font-bold text-gray-800 leading-tight">
             {article.title}
           </h1>
 
-          {/* Author and Date */}
+          
           <div className="flex items-center text-sm text-gray-500 space-x-2">
             <span>By {article.author}</span>
             <span>•</span>
@@ -123,7 +123,7 @@ export default function ArticleDetailPage() {
             </span>
           </div>
 
-          {/* Content */}
+          
           <div className="prose prose-sm max-w-none">
             <p className="text-gray-700 leading-relaxed whitespace-pre-line">
               {article.content}
@@ -131,7 +131,7 @@ export default function ArticleDetailPage() {
           </div>
         </div>
 
-        {/* Related Articles or Actions */}
+        
         <div className="mt-8 pt-6 border-t border-gray-200 px-4">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Article Details

@@ -53,11 +53,11 @@ export default function RegisterPage() {
         <div className="flex flex-col items-center mb-4">
           <button className="w-full bg-white border border-gray-300 py-2 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:bg-gray-100">
             <FaGoogle className="text-[#0a5d2f] w-5 h-5" />
-            <span className="text-gray-600 font-medium">Continue with Google</span>
+            <span className="text-gray-600 font-medium">Continuer avec Google</span>
           </button>
           <div className="flex items-center w-full mt-2">
             <hr className="flex-grow border-gray-300" />
-            <span className="mx-2 text-gray-400 text-sm">OR</span>
+            <span className="mx-2 text-gray-400 text-sm">OU</span>
             <hr className="flex-grow border-gray-300" />
           </div>
         </div>
@@ -81,7 +81,7 @@ export default function RegisterPage() {
             type="email"
             value={form.email}
             onChange={handleChange}
-            placeholder="Adresse email"
+            placeholder="Adresse e-mail"
             className="w-full bg-[#D9D9D9] placeholder-gray-500 rounded-xl px-4 py-2 text-gray-600 pl-10"
             required
           />
@@ -102,6 +102,7 @@ export default function RegisterPage() {
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
+            aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>

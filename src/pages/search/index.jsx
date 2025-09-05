@@ -5,7 +5,7 @@ import { getPlants } from "@/lib/plantService";
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/router"; // Import useRouter
 
-// Utility function to handle image URLs
+
 const getImageUrl = (path) => {
   const baseUrl = process.env.NEXT_PUBLIC_STATIC_BASE;
   return `${baseUrl}${path}`;
@@ -16,7 +16,7 @@ export default function SearchPage() {
   const [articles, setArticles] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("all");
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter(); 
 
   useEffect(() => {
     const loadData = async () => {

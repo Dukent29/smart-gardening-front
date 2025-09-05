@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-// 🔗 Base brute pour les images statiques (priorité à l'env, sinon valeur par défaut)
+
 const STATIC_BASE = process.env.NEXT_PUBLIC_STATIC_BASE;
 
 export default function ExplorePage() {
@@ -57,7 +57,7 @@ export default function ExplorePage() {
   return (
     <AppLayout title="Explore">
       <div className="px-4">
-        {/* 🔍 Search Bar */}
+        
         <div className="mb-4 relative">
           <input
             type="text"
@@ -66,7 +66,7 @@ export default function ExplorePage() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full p-2 pl-10 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 bg-gray-100 text-gray-800"
           />
-          {/* Search Icon */}
+          
           <svg
             className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500"
             fill="none"
@@ -83,7 +83,7 @@ export default function ExplorePage() {
           </svg>
         </div>
 
-        {/* 🧭 Category Filter */}
+        
         <div className="flex gap-2 mb-4 overflow-x-auto">
           {categories.map((category) => (
             <button
@@ -100,7 +100,7 @@ export default function ExplorePage() {
           ))}
         </div>
 
-        {/* 📚 Article Cards or Skeletons */}
+        
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
           {loading
             ? Array.from({ length: 6 }).map((_, index) => (
@@ -125,7 +125,7 @@ export default function ExplorePage() {
 function ArticleCard({ article }) {
   const router = useRouter();
 
-  // 👉 Si l'URL est déjà absolue on la garde, sinon on colle la base brute + le chemin (ex: "uploads/xxx.jpg")
+  
   const imageUrl = article.image?.startsWith("http")
     ? article.image
     : `${STATIC_BASE}/${article.image}`;
