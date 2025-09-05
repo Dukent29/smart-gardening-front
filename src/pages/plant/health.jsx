@@ -10,8 +10,22 @@ import localDiseases from "@/data/diseases.json";
 import ChatBotComponent from "@/components/SimpleChatBot.jsx";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { FaSyncAlt} from "react-icons/fa";
+import { FaSyncAlt } from "react-icons/fa";
 import { TbHealthRecognition } from "react-icons/tb"; // Import the switch and scan icons
+
+/* ===== Force images to /api/uploads using env base ===== */
+const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, "");
+const toApiStatic = (raw = "") => {
+  if (!raw) return "";
+  if (/^blob:/i.test(raw)) return raw; // keep camera blob URLs
+  // drop protocol+host if any, then normalize
+  let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, "");
+  p = p.replace(/^\/+/, "");    // leading slashes
+  p = p.replace(/^api\/+/, ""); // stray "api/"
+  if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
+  return `${STATIC_BASE}/${p}`;  // -> https://.../api/uploads/xxx
+};
+/* ======================================================= */
 
 export default function DeprecatedPlantHealthPage() {
   const [loading, setLoading] = useState(false);
@@ -55,7 +69,7 @@ export default function DeprecatedPlantHealthPage() {
               ) : (
                 selectedDisease?.imageUrl && (
                   <img
-                    src={selectedDisease.imageUrl}
+                    src={toApiStatic(selectedDisease.imageUrl)}
                     alt="Disease Image"
                     className="w-full h-56 object-cover"
                   />
@@ -95,7 +109,7 @@ export default function DeprecatedPlantHealthPage() {
               ) : (
                 analysisData?.imageUrl && (
                   <img
-                    src={analysisData.imageUrl}
+                    src={toApiStatic(analysisData.imageUrl)}
                     alt="Image analysée"
                     className="w-full h-56 object-cover"
                   />
@@ -222,7 +236,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
       if (!blob) return;
 
       setImage(blob);
-      const imageUrl = URL.createObjectURL(blob);
+      const imageUrl = URL.createObjectURL(blob); // stays blob:, toApiStatic keeps it unchanged
       setPreviewUrl(imageUrl);
       setLoading(true);
 
@@ -237,7 +251,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
         if (res.data.success) {
           onShowResults({
             result: res.data.health_data,
-            imageUrl: imageUrl,
+            imageUrl: imageUrl, // blob url, shown as-is by toApiStatic()
             enrichDisease: enrichDisease,
           });
         } else {
@@ -334,7 +348,6 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
         </div>
       </div>
 
-
       {/* Actions */}
       <div className="flex space-x-2 p-4">
         <button
@@ -344,7 +357,6 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
         >
           {loading ? "Analyse en cours..." : "Scanner la Plante"}
         </button>
-
       </div>
 
       {/* Error */}
