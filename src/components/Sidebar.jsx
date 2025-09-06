@@ -1,4 +1,3 @@
-// components/Sidebar.jsx
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { TbGardenCart } from "react-icons/tb";
