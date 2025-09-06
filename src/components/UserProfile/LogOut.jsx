@@ -9,12 +9,10 @@ export default function LogOut() {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      // Clear local storage/session storage
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       sessionStorage.clear();
       
-      // Redirect to login page
       router.push("/login");
     } catch (error) {
       console.error("Logout error:", error);

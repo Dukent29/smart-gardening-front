@@ -244,22 +244,44 @@ export default function AddPlantPage() {
         {activeTab === "AddManually" && (
           <form onSubmit={handleFormSubmit} className="space-y-4 p-4">
             <div className="bg-gray-100 rounded-lg p-4">
-              <h2 className="font-semibold text-green-800 mb-2">Add Plant Manually</h2>
+              <h2 className="font-semibold text-green-800 mb-2">Ajouter une plante manuellement</h2>
               <p className="text-sm text-gray-700">
-                Upload an image of your plant, and we'll identify it for you. Fill in the details to add it to your garden.
+                Téléchargez une image de votre plante, et nous l'identifierons pour vous. Remplissez les détails pour l'ajouter à votre jardin.
               </p>
             </div>
 
-            <input
-              name="image"
-              type="file"
-              onChange={handleFormChange}
-              className="w-full bg-[#D9D9D9] rounded-lg px-4 py-2"
-              required
-            />
+            {/* Custom File Input */}
+            <div className="relative border-dashed border-2 border-gray-300 rounded-lg p-6 text-center">
+              <input
+                name="image"
+                type="file"
+                onChange={handleFormChange}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                required
+              />
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-12 w-12 text-green-700"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                <p className="text-sm text-gray-700">Cliquez pour télécharger une image</p>
+                <p className="text-xs text-gray-500">Formats acceptés : JPG, PNG</p>
+              </div>
+            </div>
+
             <button
               type="submit"
-              className="bg-[#0A5D2F] text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              className="bg-[#0A5D2F] text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50"
               disabled={loading}
             >
               {loading ? "Identification en cours..." : "Identifier la plante"}

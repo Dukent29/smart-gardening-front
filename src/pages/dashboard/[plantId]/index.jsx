@@ -8,36 +8,30 @@ import { FiMoreVertical } from "react-icons/fi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-/* ========= Images: FORCER /api/uploads =========
-   On reconstruit l'URL à partir de NEXT_PUBLIC_STATIC_BASE,
-   même si plant.image_url est déjà une URL absolue. */
+
 const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, "");
 
 const toPlantImageUrl = (raw = "") => {
   if (!raw) return "";
 
-  // 1) enlève protocole+host si présents
   let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, "");
 
-  // 2) normalise le chemin
-  p = p.replace(/^\/+/, "");   // enlève les / en tête
-  p = p.replace(/^api\/+/, ""); // enlève un "api/" parasite
+  p = p.replace(/^\/+/, "");   
+  p = p.replace(/^api\/+/, ""); 
 
-  // 3) s'assure qu'on commence par uploads/
   if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
 
-  // 4) reconstruit systématiquement sur BASE (qui contient déjà /api)
-  return `${STATIC_BASE}/${p}`; // → .../api/uploads/xxx
+  return `${STATIC_BASE}/${p}`; 
 };
-/* ============================================== */
+
 
 export default function PlantDetail() {
-  const router = useRouter(); // Call useRouter() at the top level
+  const router = useRouter(); 
   const { plantId } = router.query;
   const { plant, sensors, actions, loading, error, mutate } = usePlantDetail(plantId);
 
-  const [showMenu, setShowMenu] = useState(false); // For the 3-dots menu
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // For delete confirmation modal
+  const [showMenu, setShowMenu] = useState(false); 
+  const [showDeleteModal, setShowDeleteModal] = useState(false); 
   const [loadingAction, setLoadingAction] = useState(false);
 
   const latestByType = {};
@@ -47,7 +41,7 @@ export default function PlantDetail() {
     }
   });
 
-  // Calculate overall plant status based on all sensors
+  
   const getOverallStatus = () => {
     const allStatuses = Object.values(latestByType).map(sensor => sensor.status);
     if (allStatuses.includes("CRITICAL")) return "CRITICAL";
@@ -119,7 +113,7 @@ export default function PlantDetail() {
   };
 
   const handleEditPlant = () => {
-    router.push(`/plants/edit/${plantId}`); // Redirect to the edit page (to be constructed)
+    router.push(`/plants/edit/${plantId}`); 
   };
 
   return (

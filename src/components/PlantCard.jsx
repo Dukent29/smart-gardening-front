@@ -37,7 +37,7 @@ export default function PlantCard({ plant }) {
     return styles[status] || styles.default;
   };
 
-  const badgeText = overallStatus === "UNKNOWN" ? "Unknown" : overallStatus;
+  const badgeText = overallStatus === "UNKNOWN" ? "Inconnu" : overallStatus;
 
   const cardVariants = {
     hidden: { opacity: 0, scale: 0.9 },
@@ -53,12 +53,12 @@ export default function PlantCard({ plant }) {
       transition={{ duration: 0.5 }}
       variants={cardVariants}
     >
-      {/* HEADER */}
+      
       <div className="flex flex-col gap-2">
         <h2 className="text-lg font-bold text-[#06331a]">{plant.plant_name}</h2>
         <p className="text-sm text-[#5b9274]">{plant.plant_type}</p>
         
-        {/* Status Badge */}
+        
         <div className="flex items-center gap-2">
           <motion.span
             className={`inline-block text-xs font-semibold px-3 py-1 rounded-full border ${getBadgeStyle(overallStatus)}`}
@@ -69,18 +69,18 @@ export default function PlantCard({ plant }) {
             {badgeText}
           </motion.span>
           
-          {/* Auto/Manual Mode Badge */}
+          
           <span className={`inline-block text-xs font-medium px-2 py-1 rounded-full ${
             plant.is_automatic 
               ? "bg-blue-100 text-blue-700 border border-blue-200" 
               : "bg-gray-100 text-gray-600 border border-gray-200"
           }`}>
-            {plant.is_automatic ? "AUTO" : "MANUAL"}
+            {plant.is_automatic ? "AUTO" : "MANUEL"}
           </span>
         </div>
       </div>
 
-      {/* CAPTEURS */}
+      
       <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3 items-center mt-4">
         <SensorCard 
           type="soil_moisture" 
@@ -108,9 +108,9 @@ export default function PlantCard({ plant }) {
         />
       </div>
 
-      {/* FOOTER */}
+      
       <div className="text-xs text-gray-500 mt-4 sm:text-right">
-        Last watered: {plant.lastActionAt ? new Date(plant.lastActionAt).toLocaleString() : "—"}
+        Dernier arrosage : {plant.lastActionAt ? new Date(plant.lastActionAt).toLocaleString() : "—"}
       </div>
     </motion.div>
   );

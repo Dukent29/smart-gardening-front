@@ -20,7 +20,7 @@ export default function Modal({ children, onClose, loading }) {
         exit={{ opacity: 0, scale: 0.8 }}
         transition={{ duration: 0.3 }}
         className="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg max-w-md w-full relative mx-auto"
-        onClick={(e) => e.stopPropagation()} // Prevent click events from propagating to the backdrop
+        onClick={(e) => e.stopPropagation()} 
       >
         <button
           onClick={onClose}

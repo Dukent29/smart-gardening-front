@@ -25,20 +25,20 @@ export default function NotificationBell() {
           return;
         }
 
-        const data = await getNotifications(userId); // ← utilise déjà l’instance axios
+        const data = await getNotifications(userId); 
         if (ignore) return;
 
         if (Array.isArray(data)) {
           setNotifications(data);
           setCount(data.filter((n) => !n.is_read).length);
         } else {
-          console.warn("Invalid response structure:", data);
-          setError("Failed to load notifications. Please try again later.");
+          console.warn("Structure de réponse invalide :", data);
+          setError("Échec du chargement des notifications. Veuillez réessayer plus tard.");
         }
       } catch (err) {
         if (!ignore) {
-          console.warn("Error fetching notifications:", err);
-          setError("Failed to load notifications. Please try again later.");
+          console.warn("Erreur lors de la récupération des notifications :", err);
+          setError("Échec du chargement des notifications. Veuillez réessayer plus tard.");
         }
       } finally {
         if (!ignore) setLoading(false);
@@ -49,12 +49,12 @@ export default function NotificationBell() {
     return () => { ignore = true; };
   }, []);
 
-  // Info support Notifications (client only) – pas d’erreur bruyante
+  
   useEffect(() => {
     if (typeof window !== "undefined" && "Notification" in window) {
-      console.log("Notifications are supported");
+      console.log("Les notifications sont prises en charge");
     } else {
-      console.warn("Notifications unsupported (browser or SSR).");
+      console.warn("Notifications non prises en charge (navigateur ou SSR).");
     }
   }, []);
 
@@ -67,7 +67,7 @@ export default function NotificationBell() {
       );
       setCount((prev) => Math.max(prev - 1, 0));
     } catch (err) {
-      console.warn("Error marking notification as read:", err);
+      console.warn("Erreur lors du marquage de la notification comme lue :", err);
     }
   };
 
@@ -81,12 +81,12 @@ export default function NotificationBell() {
       setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
       setCount(0);
     } catch (err) {
-      console.warn("Error marking all notifications as read:", err);
+      console.warn("Erreur lors du marquage de toutes les notifications comme lues :", err);
     }
   };
 
   if (loading) {
-    return <div>Loading notifications...</div>;
+    return <div>Chargement des notifications...</div>;
   }
 
   const sortedNotifications = [...notifications].sort(
@@ -116,7 +116,7 @@ export default function NotificationBell() {
             {error ? (
               <div className="p-2 text-red-500">{error}</div>
             ) : notifications.length === 0 ? (
-              <div className="p-2 text-gray-500">No new notifications</div>
+              <div className="p-2 text-gray-500">Aucune nouvelle notification</div>
             ) : (
               <>
                 {sortedNotifications.slice(0, 3).map((notif) => {
@@ -153,7 +153,7 @@ export default function NotificationBell() {
                     className="p-2 text-blue-500 cursor-pointer hover:underline"
                     onClick={() => { window.location.href = "/notifications"; }}
                   >
-                    See more
+                    Voir plus
                   </div>
                 )}
               </>
@@ -162,7 +162,7 @@ export default function NotificationBell() {
 
           <div className="p-2 border-t flex items-center justify-between">
             <button onClick={markAllAsRead} className="text-xs text-gray-600 hover:text-gray-800">
-              Mark all as read
+              Tout marquer comme lu
             </button>
           </div>
         </div>

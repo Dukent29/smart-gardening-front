@@ -21,7 +21,7 @@ export default function SensorBar({ icon, label, value, displayValue, unit = "%"
       {/* bar */}
       <div className="w-full h-1 bg-gray-300 rounded mt-1">
         <div
-          className={clsx(`h-full rounded bg-${barColor}-500`)}    /* ex: bg-blue-500 */
+          className={clsx(`h-full rounded bg-${barColor}-500`)} 
           style={widthStyle}
         />
       </div>

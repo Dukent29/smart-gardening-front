@@ -4,16 +4,15 @@ import { IoChatbubbleOutline } from "react-icons/io5";
 // components/TabsNav.jsx
 export default function TabsNav({ activeTab, onTabChange }) {
   const tabs = [
-    { key: 'AddPhoto', label: 'Add Photo', icon: <IoMdQrScanner className="w-6 h-6" /> },
-    { key: 'AddManually', label: 'Add Manually', icon: <IoChatbubbleOutline className="w-6 h-6" /> },
+    { key: 'AddPhoto', label: 'Ajouter une photo', icon: <IoMdQrScanner className="w-6 h-6" /> },
+    { key: 'AddManually', label: 'Ajouter manuellement', icon: <IoChatbubbleOutline className="w-6 h-6" /> },
   ];
 
   return (
     <div className="bg-white px-6 pt-4 -mt-6">
-      <div className="
-      ">
-        <h2 className="text-xl font-bold text-green-800">Add Plant</h2>
-        <p className="text-sm text-gray-500">Choose how you want to add your plant</p>
+      <div>
+        <h2 className="text-xl font-bold text-green-800">Ajouter une plante</h2>
+        <p className="text-sm text-gray-500">Choisissez comment vous souhaitez ajouter votre plante</p>
       </div>
 
       <div className="flex justify-between gap-8 border-b">

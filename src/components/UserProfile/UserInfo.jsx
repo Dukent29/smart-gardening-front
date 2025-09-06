@@ -29,7 +29,7 @@ export default function UserInfo({ user: initialUser }) {
           setUser((prev) => ({ ...prev, [editing.field]: editing.value }));
         }
       } catch (err) {
-        // Optionally handle error
+        
       }
     }
     setEditing({ field: null, value: "" });

@@ -1,5 +1,4 @@
 export default function HealthReport() {
-  // Example stats (replace with real data)
   const stats = [
     { icon: "🌱", label: "Healthy Plants", value: 5 },
     { icon: "⚠️", label: "Needs Attention", value: 2 },

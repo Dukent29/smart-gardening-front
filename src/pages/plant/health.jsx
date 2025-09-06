@@ -11,7 +11,6 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { FaSyncAlt } from "react-icons/fa";
 import { TbHealthRecognition } from "react-icons/tb"; 
 
-
 const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, "");
 const toApiStatic = (raw = "") => {
   if (!raw) return "";

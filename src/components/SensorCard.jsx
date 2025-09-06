@@ -6,10 +6,10 @@ import MoistureIcon from "../assets/icons/droplets.svg";
 
 export default function SensorCard({ type, value, status, onAction, isManual }) {
   const sensorInfo = {
-    temperature: { label: "Temperature", icon: TempIcon, unit: "°C", action: "Adjust Temp", barColor: "red" },
-    humidity: { label: "Humidity", icon: HumidityIcon, unit: "%", action: "Humidify", barColor: "blue" },
-    soil_moisture: { label: "Moisture", icon: MoistureIcon, unit: "%", action: "Water Plant", barColor: "green" },
-    light: { label: "Light", icon: LightIcon, unit: "lx", action: "Add Light", barColor: "yellow" }
+    temperature: { label: "Temperature", icon: TempIcon, unit: "°C", action: "Ajuster Température", barColor: "red" },
+    humidity: { label: "Humidity", icon: HumidityIcon, unit: "%", action: "Humidifier", barColor: "blue" },
+    soil_moisture: { label: "Moisture", icon: MoistureIcon, unit: "%", action: "Arroser la plante", barColor: "green" },
+    light: { label: "Light", icon: LightIcon, unit: "lx", action: "Ajouter de la lumière", barColor: "yellow" }
   };
 
   const { label, icon: IconComponent, unit, action, barColor } = sensorInfo[type] || {};
