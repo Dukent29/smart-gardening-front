@@ -183,47 +183,61 @@ export default function AddPlantPage() {
         {/* Add Photo Tab */}
         {activeTab === "AddPhoto" && (
           <div>
-            <div className="relative">
-              <video ref={videoRef} autoPlay playsInline className="w-full h-80 object-cover rounded-lg border" />
+            {/* Camera Block */}
+            <div className="relative overflow-hidden rounded-2xl ring-1 ring-gray-200 bg-black/60">
+              {/* Video */}
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                className="w-full aspect-[4/3] object-cover"
+              />
+
+              {/* Viewfinder (scanner corners) */}
+              <div className="pointer-events-none absolute inset-4">
+                <div className="absolute top-0 left-0 w-10 h-10 border-t-4 border-l-4 border-emerald-400 rounded-tl-xl"></div>
+                <div className="absolute top-0 right-0 w-10 h-10 border-t-4 border-r-4 border-emerald-400 rounded-tr-xl"></div>
+                <div className="absolute bottom-0 left-0 w-10 h-10 border-b-4 border-l-4 border-emerald-400 rounded-bl-xl"></div>
+                <div className="absolute bottom-0 right-0 w-10 h-10 border-b-4 border-r-4 border-emerald-400 rounded-br-xl"></div>
+              </div>
+
+              {/* Scan line */}
+              <div className="pointer-events-none absolute left-6 right-6 top-10 h-[3px] bg-emerald-400 animate-scan rounded-full shadow-[0_0_12px_rgba(16,185,129,0.8)]"></div>
+
+              {/* Switch Camera Button */}
               <button
                 onClick={toggleCamera}
-                className="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 focus:outline-none"
                 aria-label="Switch Camera"
+                className="absolute top-3 right-3 grid place-items-center w-10 h-10 rounded-full bg-white/90 backdrop-blur text-gray-800 ring-1 ring-black/5 shadow hover:scale-105 transition"
               >
-                <FaSyncAlt />
+                <FaSyncAlt className="text-lg" />
               </button>
 
+              {/* Scan Button */}
               <button
                 onClick={handleScanToAdd}
-                className="absolute bottom-4 right-2 text-white text-5xl hover:text-gray-300 focus:outline-none"
                 aria-label="Scan Plant"
                 disabled={loading}
+                className="group absolute bottom-4 right-4 w-14 h-14 rounded-full bg-gradient-to-br from-emerald-600 to-green-700 text-white shadow-xl hover:from-emerald-700 hover:to-green-800 hover:rotate-3 transition-transform disabled:opacity-60"
               >
-                <IoScanCircle />
+                <IoScanCircle className="text-3xl" />
+                {/* Pulse ring */}
+                <span className="pointer-events-none absolute inset-0 rounded-full ring-2 ring-emerald-400/30 group-hover:animate-ping"></span>
               </button>
-
-              
-              <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-green-500"></div>
-                <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-green-500"></div>
-                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-green-500"></div>
-                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-green-500"></div>
-                <div className="absolute inset-x-0 top-0 h-1 bg-green-500 animate-scan"></div>
-              </div>
             </div>
 
-            <div className="bg-gray-100 rounded-lg p-4 mt-4">
-              <h2 className="font-semibold text-green-800 mb-2">Add Plant to Garden</h2>
-              <p className="text-sm text-gray-700 mb-2">
-                Position your plant in the camera viewfinder. We'll detect the plant type and add it to your garden with optimal care settings.
+            <div className="bg-white rounded-lg p-4 m-2 ring-1 ring-gray-200">
+              <h2 className="font-semibold text-emerald-800 mb-1">Add Plant to Garden</h2>
+              <p className="text-sm text-gray-600 mb-3">
+                Place la plante dans le cadre et on s’occupe de reconnaître l’espèce.
               </p>
-              <div className="bg-white p-3 rounded shadow-inner">
-                <h3 className="font-semibold text-green-700">Tips for best results:</h3>
-                <ul className="list-disc list-inside text-sm text-gray-800 space-y-1 mt-1">
-                  <li>Ensure good lighting</li>
-                  <li>Hold camera steady</li>
-                  <li>Capture leaves clearly</li>
-                  <li>Include the whole plant if possible</li>
+              <div className="rounded-lg bg-emerald-50/60 ring-1 ring-emerald-200 p-3">
+                <h3 className="font-semibold text-emerald-700 text-sm mb-2">Tips for best results</h3>
+                <ul className="text-sm text-emerald-900 space-y-1.5">
+                  <li>• Bonne luminosité</li>
+                  <li>• Tiens le téléphone stable</li>
+                  <li>• Feuilles bien visibles</li>
+                  <li>• Si possible, toute la plante</li>
                 </ul>
               </div>
             </div>
@@ -251,7 +265,7 @@ export default function AddPlantPage() {
             </div>
 
             {/* Custom File Input */}
-            <div className="relative border-dashed border-2 border-gray-300 rounded-lg p-6 text-center">
+            <div className="relative border-dashed border-2 border-emerald-200 rounded-lg p-6 text-center  bg-emerald-50/60">
               <input
                 name="image"
                 type="file"
@@ -259,13 +273,14 @@ export default function AddPlantPage() {
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 required
               />
-              <div className="flex flex-col items-center justify-center space-y-2">
+              <div className="flex flex-col items-center justify-center space-y-2 ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-12 w-12 text-green-700"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  
                 >
                   <path
                     strokeLinecap="round"
@@ -281,7 +296,7 @@ export default function AddPlantPage() {
 
             <button
               type="submit"
-              className="bg-[#0A5D2F] text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50"
+              className="bg-[#0A5D2F] text-white px-4 py-2 rounded-xl hover:bg-green-700 disabled:opacity-50"
               disabled={loading}
             >
               {loading ? "Identification en cours..." : "Identifier la plante"}

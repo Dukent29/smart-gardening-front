@@ -287,60 +287,61 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
     <div className="space-y-6">
       
       <div className="relative">
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          className="w-full h-80 object-cover border"
-        />
-        
-        <button
-          onClick={toggleCamera}
-          className="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 focus:outline-none"
-          aria-label="Switch Camera"
-        >
-          <FaSyncAlt />
-        </button>
+  <video
+    ref={videoRef}
+    autoPlay
+    playsInline
+    className="w-full h-80 object-cover border"
+  />
 
-        
-        <button
-          onClick={takeSnapshotAndAnalyze}
-          className="absolute bottom-4 right-4 text-white text-4xl hover:text-gray-300 focus:outline-none"
-          aria-label="Scan Plant"
-          disabled={loading}
-        >
-          <TbHealthRecognition className="h-2xl" />
-        </button>
+  {/* Switch camera — rond en haut/droite */}
+  <button
+    onClick={toggleCamera}
+    className="absolute top-3 right-3 grid place-items-center w-10 h-10 rounded-full  text-white shadow-lg ring-2 ring-white/60 hover:opacity-90 focus:outline-none"
+    aria-label="Switch Camera"
+  >
+    <FaSyncAlt className="text-lg" />
+  </button>
 
-        
-        <div className="absolute inset-0 pointer-events-none">
-          
-          <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-green-500"></div>
-          
-          <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-green-500"></div>
-          
-          <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-green-500"></div>
-          
-          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-green-500"></div>
+  {/* Scan/Capture — même icône, fond rond plein */}
+  <button
+    onClick={takeSnapshotAndAnalyze}
+    className="absolute bottom-4 right-4 disabled:opacity-50"
+    aria-label="Scan Plant"
+    disabled={loading}
+  >
+    <span className="grid place-items-center w-14 h-14 rounded-full text-white shadow-[0_8px_20px_rgba(16,185,129,0.45)] ring-4 ring-white/50">
+      <TbHealthRecognition className="text-3xl" />
+    </span>
+  </button>
 
-          
-          <div className="absolute inset-x-0 top-0 h-1 bg-green-500 animate-scan"></div>
-        </div>
-      </div>
+  {/* OVERLAY : coins + ligne horizontale centrale */}
+  <div className="absolute inset-0 pointer-events-none">
+    {/* Coins */}
+    <span className="absolute top-2 left-2 w-8 h-8 border-l-4 border-t-4 border-emerald-400 rounded-tl-md"></span>
+    <span className="absolute top-2 right-2 w-8 h-8 border-r-4 border-t-4 border-emerald-400 rounded-tr-md"></span>
+    <span className="absolute bottom-2 left-2 w-8 h-8 border-l-4 border-b-4 border-emerald-400 rounded-bl-md"></span>
+    <span className="absolute bottom-2 right-2 w-8 h-8 border-r-4 border-b-4 border-emerald-400 rounded-br-md"></span>
+
+    {/* Animated horizontal scan line */}
+    <span className="absolute left-4 right-4 top-0 h-1 rounded-full bg-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.65)] animate-scan"></span>
+  </div>
+</div>
+
 
       
-      <div className="bg-gray-100 p-4">
-        <h2 className="font-semibold text-green-800 mb-2">Diagnostiquer l'état de santé</h2>
-        <p className="text-sm text-gray-700 mb-2">
+      <div className="bg-white rounded-lg p-4 m-2 ring-1 ring-gray-200">
+        <h2 className="font-semibold text-emerald-800 mb-1">Diagnostiquer l'état de santé</h2>
+        <p className="text-sm text-gray-600 mb-3">
           Placez la plante bien en vue dans le cadre pour lancer l'analyse de maladies potentielles.
         </p>
-        <div className="bg-white p-3 rounded shadow-inner">
-          <h3 className="font-semibold text-green-700">Conseils pour de meilleurs résultats :</h3>
-          <ul className="list-disc list-inside text-sm text-gray-800 space-y-1 mt-1">
-            <li>Lumière naturelle ou bien éclairée</li>
-            <li>Placer les feuilles visibles</li>
-            <li>Stabiliser la caméra</li>
-            <li>Inclure toute la plante si possible</li>
+        <div className="rounded-lg bg-emerald-50/60 ring-1 ring-emerald-200 p-3">
+          <h3 className="font-semibold text-emerald-700 text-sm mb-2">Conseils pour de meilleurs résultats :</h3>
+          <ul className="text-sm text-emerald-900 space-y-1.5">
+            <li>• Lumière naturelle ou bien éclairée</li>
+            <li>• Placer les feuilles visibles</li>
+            <li>• Stabiliser la caméra</li>
+            <li>• Inclure toute la plante si possible</li>
           </ul>
         </div>
       </div>

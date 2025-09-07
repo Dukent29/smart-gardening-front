@@ -162,7 +162,7 @@ function ArticleCard({ article }) {
       <img
         src={imageUrl}
         alt={article.title}
-        className="w-full h-40 object-cover rounded-t-lg mb-4"
+        className="w-full h-44 object-cover rounded-t-lg mb-4"
       />
       <div className="px-4 flex justify-between items-center">
         <span className="inline-block text-xs font-semibold mb-2 px-3 py-1 rounded-full uppercase bg-[#B3CDBF] text-[#0A5D2F]">

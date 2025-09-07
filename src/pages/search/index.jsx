@@ -59,45 +59,52 @@ export default function SearchPage() {
 
   return (
     <AppLayout title="Recherche">
-      <div className="min-h-screen p-6">
-        <div className="max-w-2xl mx-auto">
+      <div className="min-h-screen py-8 px-4">
+        <div className="max-w-3xl mx-auto space-y-6">
           {/* Search Input */}
-          <div className="mb-6 flex items-center">
+          <div className="flex items-center">
             <div className="relative w-full">
-              <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600" />
+              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
               <input
                 type="text"
                 placeholder="Search plants, species, care tips"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-gray-100 w-full pl-10 p-4 rounded-4xl border border-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 placeholder-gray-600 text-gray-600"
+                className="w-full h-12 pl-12 pr-4 rounded-full bg-white/80 backdrop-blur ring-1 ring-gray-200 shadow-sm
+                           focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent
+                           placeholder:text-gray-500 text-gray-700"
               />
             </div>
           </div>
 
-          {/* Filter Tabs */}
-          <div className="flex justify-center mb-6">
+          {/* Filter Pills */}
+          <div className="flex flex-wrap justify-center gap-2">
             <button
-              className={`px-4 py-2 rounded-3xl ${
-                filter === "all" ? "bg-green-300 text-[#074221]" : "bg-gray-600"
-              }`}
               onClick={() => setFilter("all")}
+              className={`px-4 h-9 rounded-full text-sm font-medium transition
+                ${filter === "all"
+                  ? "bg-emerald-600 text-white shadow-sm"
+                  : "bg-white/80 text-gray-700 ring-1 ring-gray-200 hover:bg-white"}`}
             >
               All ({matchedPlants.length + matchedArticles.length})
             </button>
+
             <button
-              className={`px-4 py-2 rounded-3xl mx-2 ${
-                filter === "plants" ? "bg-green-300 text-[#074221]" : "bg-gray-600"
-              }`}
               onClick={() => setFilter("plants")}
+              className={`px-4 h-9 rounded-full text-sm font-medium transition
+                ${filter === "plants"
+                  ? "bg-emerald-600 text-white shadow-sm"
+                  : "bg-white/80 text-gray-700 ring-1 ring-gray-200 hover:bg-white"}`}
             >
               Plants ({matchedPlants.length})
             </button>
+
             <button
-              className={`px-4 py-2 rounded-3xl ${
-                filter === "articles" ? "bg-green-300 text-[#074221]" : "bg-gray-600"
-              }`}
               onClick={() => setFilter("articles")}
+              className={`px-4 h-9 rounded-full text-sm font-medium transition
+                ${filter === "articles"
+                  ? "bg-emerald-600 text-white shadow-sm"
+                  : "bg-white/80 text-gray-700 ring-1 ring-gray-200 hover:bg-white"}`}
             >
               Articles ({matchedArticles.length})
             </button>
@@ -111,60 +118,57 @@ export default function SearchPage() {
                   result.plant_name ? (
                     <div
                       key={index}
-                      className="flex items-center p-4 mb-4 bg-white rounded-lg shadow-md border border-gray-200 cursor-pointer"
-                      onClick={() => handleResultClick(result.id, "plant")} // Navigate on click
+                      onClick={() => handleResultClick(result.id, "plant")}
+                      className="group flex items-center gap-4 p-4 mb-3 rounded-2xl bg-white/90 backdrop-blur ring-1 ring-gray-200
+                                 hover:shadow-md hover:ring-gray-300 transition cursor-pointer"
                     >
                       <img
                         src={getImageUrl(result.image_url)}
                         alt={result.plant_name}
-                        className="w-16 h-16 rounded-lg object-cover mr-4"
+                        className="w-16 h-16 rounded-xl object-cover ring-1 ring-gray-200"
                       />
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-800">
+                      <div className="min-w-0">
+                        <h3 className="text-base font-semibold text-gray-900 truncate">
                           {result.plant_name}
                         </h3>
-                        <p className="text-sm text-gray-600">
-                          {result.plant_type}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {result.description.split(" ").slice(0, 4).join(" ")}...
-                        </p>
+                        <p className="text-sm text-emerald-800/90">{result.plant_type}</p>
+                        <p className="text-xs text-gray-500 line-clamp-1">{result.description}</p>
                       </div>
+                      <span className="ml-auto text-gray-400 group-hover:text-emerald-600 transition">↗</span>
                     </div>
                   ) : (
                     <div
                       key={index}
-                      className="p-4 mb-4 bg-white rounded-lg shadow-md border border-gray-200 cursor-pointer"
-                      onClick={() => handleResultClick(result.id, "article")} // Navigate on click
+                      onClick={() => handleResultClick(result.id, "article")}
+                      className="group p-4 mb-3 rounded-2xl bg-white/90 backdrop-blur ring-1 ring-gray-200
+                                 hover:shadow-md hover:ring-gray-300 transition cursor-pointer"
                     >
-                      <span className="px-3 py-1 bg-gray-200 rounded-full text-sm text-gray-600">
-                        {result.category}
-                      </span>
-                      <h3 className="text-lg font-semibold text-gray-800">
-                        {result.title}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        {result.content.split(" ").slice(0, 4).join(" ")}...
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {new Date(result.createdAt).toLocaleDateString()}
-                      </p>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase
+                                         bg-gray-50 text-gray-700 ring-1 ring-gray-200">
+                          {result.category}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {new Date(result.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <h3 className="text-base font-semibold text-gray-900">{result.title}</h3>
+                      <p className="text-sm text-gray-600 line-clamp-2 mt-1">{result.content}</p>
                     </div>
                   )
                 )
               ) : (
-                <p className="text-center text-gray-600">No results found.</p>
+                <p className="text-center text-gray-600 py-10">No results found. Try another keyword.</p>
               )}
             </div>
           ) : (
-            /* Start Searching Section */
-            <div className="text-center">
-              <div className="flex justify-center mb-4 mt-16">
-                <FiSearch className="text-green-500" size={64} />
+            <div className="text-center pt-16">
+              <div className="mx-auto w-16 h-16 rounded-2xl bg-emerald-50 ring-1 ring-emerald-200 grid place-items-center mb-4">
+                <FiSearch className="text-emerald-600" size={28} />
               </div>
-              <h2 className="text-xl font-bold text-gray-800">Start Searching</h2>
+              <h2 className="text-xl font-bold text-gray-900">Start Searching</h2>
               <p className="text-sm text-gray-600">
-                Search through all your plants, articles, and care resources
+                Search through your plants, articles, and care resources
               </p>
             </div>
           )}

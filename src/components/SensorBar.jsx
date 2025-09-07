@@ -16,7 +16,7 @@ export default function SensorBar({ icon, label, value, displayValue, unit = "%"
     <div className="flex flex-col items-center">
       <span className="text-2xl">{icon}</span>
       <span className="text-xs mt-1">{label}</span>
-      <span className="text-sm font-medium">{val}{val !== "—" && ` ${unit}`}</span>
+      <span className="text-sm font-bold">{val}{val !== "—" && ` ${unit}`}</span>
 
       {/* bar */}
       <div className="w-full h-1 bg-gray-300 rounded mt-1">

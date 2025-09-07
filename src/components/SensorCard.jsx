@@ -43,7 +43,7 @@ export default function SensorCard({ type, value, status, onAction, isManual }) 
   const showActionButton = isManual && ["CRITICAL", "LOW"].includes(status);
 
   return (
-    <div className="rounded-2xl p-3 bg-white  border-gray-200 relative text-gray-800">
+    <div className="rounded-2xl p-3 bg-white border border-green-300 border-solid relative text-gray-800">
       <SensorBar 
         icon={IconComponent ? <IconComponent className="w-6 h-6 text-gray-700" /> : "📊"}
         label={label}
