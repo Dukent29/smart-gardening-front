@@ -297,7 +297,7 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
   {/* Switch camera — rond en haut/droite */}
   <button
     onClick={toggleCamera}
-    className="absolute top-3 right-3 grid place-items-center w-10 h-10 rounded-full  text-white shadow-lg ring-2 ring-white/60 hover:opacity-90 focus:outline-none"
+    className="absolute top-4 right-4  grid place-items-center w-10 h-10 rounded-full  text-white shadow-lg ring-2 ring-white/60 hover:opacity-90 focus:outline-none"
     aria-label="Switch Camera"
   >
     <FaSyncAlt className="text-lg" />
@@ -306,11 +306,11 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
   {/* Scan/Capture — même icône, fond rond plein */}
   <button
     onClick={takeSnapshotAndAnalyze}
-    className="absolute bottom-4 right-4 disabled:opacity-50"
+    className="absolute bottom-4  h-10 right-4 disabled:opacity-50"
     aria-label="Scan Plant"
     disabled={loading}
   >
-    <span className="grid place-items-center w-14 h-14 rounded-full text-white shadow-[0_8px_20px_rgba(16,185,129,0.45)] ring-4 ring-white/50">
+    <span className="grid place-items-center  rounded-full text-white shadow-[0_8px_20px_rgba(16,185,129,0.45)] ring-4 ring-white/50">
       <TbHealthRecognition className="text-3xl" />
     </span>
   </button>

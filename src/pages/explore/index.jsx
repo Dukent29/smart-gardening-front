@@ -95,7 +95,7 @@ export default function ExplorePage() {
                   : "border-[#0A5D2F] text-[#0A5D2F]"
               }`}
             >
-              {category}
+              {categoryTranslations[category] || category}
             </button>
           ))}
         </div>
@@ -199,3 +199,11 @@ function ArticleCard({ article }) {
     </div>
   );
 }
+
+const categoryTranslations = {
+  All: "Tous",
+  Rare: "Rare",
+  favoris: "Favoris",
+  Troubleshooting: "Dépannage",
+  Indoors: "Intérieur",
+};

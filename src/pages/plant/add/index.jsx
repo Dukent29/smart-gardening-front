@@ -208,7 +208,7 @@ export default function AddPlantPage() {
               <button
                 onClick={toggleCamera}
                 aria-label="Switch Camera"
-                className="absolute top-3 right-3 grid place-items-center w-10 h-10 rounded-full bg-white/90 backdrop-blur text-gray-800 ring-1 ring-black/5 shadow hover:scale-105 transition"
+                className="absolute top-6 right-6 grid place-items-center w-10 h-10 rounded-full bg-white/90 backdrop-blur text-gray-800 ring-1 ring-black/5 shadow hover:scale-105 transition"
               >
                 <FaSyncAlt className="text-lg" />
               </button>
@@ -218,7 +218,7 @@ export default function AddPlantPage() {
                 onClick={handleScanToAdd}
                 aria-label="Scan Plant"
                 disabled={loading}
-                className="group absolute bottom-4 right-4 w-14 h-14 rounded-full bg-gradient-to-br from-emerald-600 to-green-700 text-white shadow-xl hover:from-emerald-700 hover:to-green-800 hover:rotate-3 transition-transform disabled:opacity-60"
+                className="absolute bottom-6 right-6 w-10 h-10 rounded-full bg-gradient-to-br from-emerald-600 to-green-700 text-white shadow-xl hover:from-emerald-700 hover:to-green-800 hover:rotate-3 transition-transform disabled:opacity-60 flex items-center justify-center"
               >
                 <IoScanCircle className="text-3xl" />
                 {/* Pulse ring */}
@@ -227,7 +227,7 @@ export default function AddPlantPage() {
             </div>
 
             <div className="bg-white rounded-lg p-4 m-2 ring-1 ring-gray-200">
-              <h2 className="font-semibold text-emerald-800 mb-1">Add Plant to Garden</h2>
+              <h2 className="font-semibold text-emerald-800 mb-1">Ajouter votre plante au jardin</h2>
               <p className="text-sm text-gray-600 mb-3">
                 Place la plante dans le cadre et on s’occupe de reconnaître l’espèce.
               </p>

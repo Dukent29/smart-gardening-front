@@ -16,7 +16,7 @@ export default function SearchPage() {
   const [articles, setArticles] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("all");
-  const router = useRouter(); 
+  const router = useRouter();
 
   useEffect(() => {
     const loadData = async () => {
@@ -28,7 +28,7 @@ export default function SearchPage() {
         setPlants(plantsData);
         setArticles(articlesData.articles);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Erreur lors de la récupération des données :", error);
       }
     };
     loadData();
@@ -51,9 +51,9 @@ export default function SearchPage() {
 
   const handleResultClick = (id, type) => {
     if (type === "plant") {
-      router.push(`/dashboard`); 
+      router.push(`/dashboard`);
     } else if (type === "article") {
-      router.push(`/explore`); 
+      router.push(`/explore`);
     }
   };
 
@@ -67,7 +67,7 @@ export default function SearchPage() {
               <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
               <input
                 type="text"
-                placeholder="Search plants, species, care tips"
+                placeholder="Recherchez des plantes, espèces, conseils d'entretien"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full h-12 pl-12 pr-4 rounded-full bg-white/80 backdrop-blur ring-1 ring-gray-200 shadow-sm
@@ -86,7 +86,7 @@ export default function SearchPage() {
                   ? "bg-emerald-600 text-white shadow-sm"
                   : "bg-white/80 text-gray-700 ring-1 ring-gray-200 hover:bg-white"}`}
             >
-              All ({matchedPlants.length + matchedArticles.length})
+              Tous ({matchedPlants.length + matchedArticles.length})
             </button>
 
             <button
@@ -96,7 +96,7 @@ export default function SearchPage() {
                   ? "bg-emerald-600 text-white shadow-sm"
                   : "bg-white/80 text-gray-700 ring-1 ring-gray-200 hover:bg-white"}`}
             >
-              Plants ({matchedPlants.length})
+              Plantes ({matchedPlants.length})
             </button>
 
             <button
@@ -158,7 +158,7 @@ export default function SearchPage() {
                   )
                 )
               ) : (
-                <p className="text-center text-gray-600 py-10">No results found. Try another keyword.</p>
+                <p className="text-center text-gray-600 py-10">Aucun résultat trouvé. Essayez un autre mot-clé.</p>
               )}
             </div>
           ) : (
@@ -166,9 +166,9 @@ export default function SearchPage() {
               <div className="mx-auto w-16 h-16 rounded-2xl bg-emerald-50 ring-1 ring-emerald-200 grid place-items-center mb-4">
                 <FiSearch className="text-emerald-600" size={28} />
               </div>
-              <h2 className="text-xl font-bold text-gray-900">Start Searching</h2>
+              <h2 className="text-xl font-bold text-gray-900">Commencez votre recherche</h2>
               <p className="text-sm text-gray-600">
-                Search through your plants, articles, and care resources
+                Recherchez parmi vos plantes, articles et ressources d'entretien
               </p>
             </div>
           )}
