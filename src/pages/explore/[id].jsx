@@ -81,7 +81,7 @@ export default function ArticleDetailPage() {
   const imageUrl = getImageUrl(article.image);
 
   return (
-    <AppLayout title={article.title}>
+    <AppLayout title={article.title.split(" ").slice(0, 3).join(" ") + (article.title.split(" ").length > 3 ? "..." : "")}>
       <div className="min-h-screen bg-gradient-to-b from-[#F2F7F4] to-[#F7FAF9] -mt-6">
         {/* HERO IMAGE + OVERLAY */}
         <section className="relative">
@@ -104,7 +104,8 @@ export default function ArticleDetailPage() {
               </span>
 
               <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight text-white drop-shadow">
-                {article.title}
+                {article.title.split(" ").slice(0, 3).join(" ")}
+                {article.title.split(" ").length > 3 ? "..." : ""}
               </h1>
 
               <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-white/90">
