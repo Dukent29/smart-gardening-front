@@ -8,6 +8,14 @@ const getImageUrl = (path) => {
   return `${baseUrl}${path}`;
 };
 
+const categoryTranslations = {
+  All: "Tous",
+  Rare: "Rare",
+  favoris: "Favoris",
+  Troubleshooting: "Dépannage",
+  Indoors: "Intérieur",
+};
+
 export default function ArticleDetailPage() {
   const { id } = useRouter().query;
   const [article, setArticle] = useState(null);
@@ -24,11 +32,11 @@ export default function ArticleDetailPage() {
         if (res.data.success) {
           setArticle(res.data.article);
         } else {
-          setError("Article not found");
+          setError("Article introuvable");
         }
       } catch (err) {
-        console.error("Error fetching article:", err);
-        setError("Failed to load article");
+        console.error("Erreur lors de la récupération de l'article :", err);
+        setError("Échec du chargement de l'article");
       } finally {
         setLoading(false);
       }
@@ -50,9 +58,9 @@ export default function ArticleDetailPage() {
 
   if (loading) {
     return (
-      <AppLayout title="Loading...">
+      <AppLayout title="Chargement...">
         <div className="flex justify-center items-center min-h-[200px]">
-          <p className="text-gray-500">Loading article...</p>
+          <p className="text-gray-500">Chargement de l'article...</p>
         </div>
       </AppLayout>
     );
@@ -60,7 +68,7 @@ export default function ArticleDetailPage() {
 
   if (error) {
     return (
-      <AppLayout title="Error">
+      <AppLayout title="Erreur">
         <div className="flex justify-center items-center min-h-[200px]">
           <p className="text-red-500">{error}</p>
         </div>
@@ -70,9 +78,9 @@ export default function ArticleDetailPage() {
 
   if (!article) {
     return (
-      <AppLayout title="Not Found">
+      <AppLayout title="Introuvable">
         <div className="flex justify-center items-center min-h-[200px]">
-          <p className="text-gray-500">Article not found</p>
+          <p className="text-gray-500">Article introuvable</p>
         </div>
       </AppLayout>
     );
@@ -100,12 +108,12 @@ export default function ArticleDetailPage() {
                 className={`inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full ring-1 ring-black/5 uppercase
                 ${getBadgeColor(article.category)} backdrop-blur bg-white/80`}
               >
-                {article.category}
+                {categoryTranslations[article.category] || article.category}
               </span>
 
               <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight text-white drop-shadow">
-                {article.title.split(" ").slice(0, 3).join(" ")}
-                {article.title.split(" ").length > 3 ? "..." : ""}
+                {article.title}
+                
               </h1>
 
               <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-white/90">
@@ -116,11 +124,11 @@ export default function ArticleDetailPage() {
                       {article.author?.[0]?.toUpperCase() || "A"}
                     </span>
                   </span>
-                  <span className="opacity-95">By {article.author}</span>
+                  <span className="opacity-95">Par {article.author}</span>
                 </span>
                 <span className="opacity-70">•</span>
                 <span className="opacity-95">
-                  {new Date(article.createdAt).toLocaleDateString("en-US", {
+                  {new Date(article.createdAt).toLocaleDateString("fr-FR", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
@@ -146,19 +154,19 @@ export default function ArticleDetailPage() {
             {/* DETAILS */}
             <section className="mt-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                Article Details
+                Détails de l'article
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="rounded-xl bg-white/80 backdrop-blur ring-1 ring-gray-200 p-4">
-                  <p className="text-xs text-gray-500">Category</p>
+                  <p className="text-xs text-gray-500">Catégorie</p>
                   <p className="mt-1 font-medium text-gray-800">
-                    {article.category}
+                    {categoryTranslations[article.category] || article.category}
                   </p>
                 </div>
                 <div className="rounded-xl bg-white/80 backdrop-blur ring-1 ring-gray-200 p-4">
-                  <p className="text-xs text-gray-500">Published</p>
+                  <p className="text-xs text-gray-500">Publié</p>
                   <p className="mt-1 font-medium text-gray-800">
-                    {new Date(article.createdAt).toLocaleString("en-US", {
+                    {new Date(article.createdAt).toLocaleString("fr-FR", {
                       year: "numeric",
                       month: "long",
                       day: "numeric",
@@ -168,10 +176,10 @@ export default function ArticleDetailPage() {
                   </p>
                 </div>
                 <div className="rounded-xl bg-white/80 backdrop-blur ring-1 ring-gray-200 p-4">
-                  <p className="text-xs text-gray-500">Last Updated</p>
+                  <p className="text-xs text-gray-500">Dernière mise à jour</p>
                   <p className="mt-1 font-medium text-gray-800">
                     {new Date(article.updatedAt || article.createdAt).toLocaleString(
-                      "en-US",
+                      "fr-FR",
                       {
                         year: "numeric",
                         month: "long",

@@ -166,7 +166,7 @@ function ArticleCard({ article }) {
       />
       <div className="px-4 flex justify-between items-center">
         <span className="inline-block text-xs font-semibold mb-2 px-3 py-1 rounded-full uppercase bg-[#B3CDBF] text-[#0A5D2F]">
-          {article.category}
+          {categoryTranslations[article.category] || article.category}
         </span>
         <button
           onClick={(e) => {
@@ -191,8 +191,10 @@ function ArticleCard({ article }) {
           </svg>
         </button>
       </div>
-      <h2 className="px-4 text-lg font-bold text-[#0A5D2F]">{article.title}</h2>
-      <p className="px-4 text-sm text-gray-600">{article.content}</p>
+      <h2 className="px-4 text-lg font-bold text-[#0A5D2F]">{article.title.split(" ").slice(0, 3).join(" ")}...</h2>
+      <p className="px-4 text-sm text-gray-600">
+        {article.content.split(" ").slice(0, 40).join(" ")}...
+      </p>
       <p className="px-4 text-xs text-gray-400 mt-2">
         By {article.author} • {new Date(article.createdAt).toLocaleString()}
       </p>
