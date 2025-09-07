@@ -1,40 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# 🌱 Smart Gardening – Frontend
 
-## Getting Started
+Interface web en Next.js permettant de gérer un jardin connecté simulé.  
+Ce frontend consomme l’API backend (Node/Express, PostgreSQL, MongoDB) et offre une expérience utilisateur fluide : gestion des plantes, visualisation des capteurs simulés, notifications et articles éducatifs.
 
-First, run the development server:
+---
 
+## 🚀 Fonctionnalités principales
+
+- 📋 **Authentification** (connexion/inscription via JWT)
+- 🌿 **Gestion des plantes** (CRUD complet : ajout, consultation, modification, suppression)
+- 📊 **Capteurs simulés** (température, humidité, lumière, humidité du sol avec statuts OK/LOW/CRITICAL)
+- 🔔 **Notifications en temps réel** liées aux seuils critiques
+- 📚 **Articles éducatifs** pour l’entretien des plantes (contenu MongoDB)
+- 💻 **Dashboard responsive** avec indicateurs visuels et code couleur
+
+---
+
+## 📦 Stack technique
+
+- **Framework** : Next.js 13+ (App Router)
+- **Langage** : TypeScript / JavaScript
+- **UI** : React + TailwindCSS
+- **Tests E2E** : Playwright
+- **Outils** : Axios (requêtes API), SWR (fetching optimisé), Framer Motion (animations)
+
+---
+
+## ⚙️ Installation et lancement
+
+### 1. Cloner le projet
+```bash
+git clone https://github.com/Dukent29/smart-gardening-frontend.git
+cd smart-gardening-frontend
+```
+
+### 2. Installer les dépendances
+```bash
+npm install
+# ou
+yarn install
+# ou
+pnpm install
+# ou
+bun install
+```
+
+### 3. Lancer le serveur de développement
 ```bash
 npm run dev
-# or
+# ou
 yarn dev
-# or
+# ou
 pnpm dev
-# or
+# ou
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur pour voir le résultat.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Vous pouvez commencer à modifier la page en modifiant `pages/index.js`. La page se met à jour automatiquement lorsque vous modifiez le fichier.
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Les [routes API](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) peuvent être accédées à l'adresse [http://localhost:3000/api/hello](http://localhost:3000/api/hello). Ce point de terminaison peut être modifié dans `pages/api/hello.js`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+Le répertoire `pages/api` est mappé sur `/api/*`. Les fichiers de ce répertoire sont traités comme des [routes API](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) au lieu de pages React.
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Ce projet utilise [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) pour optimiser et charger automatiquement [Geist](https://vercel.com/font), une nouvelle famille de polices pour Vercel.
 
-## Learn More
+## En savoir plus
 
-To learn more about Next.js, take a look at the following resources:
+Pour en savoir plus sur Next.js, consultez les ressources suivantes :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+- [Documentation Next.js](https://nextjs.org/docs) - découvrez les fonctionnalités et l'API de Next.js.
+- [Apprendre Next.js](https://nextjs.org/learn-pages-router) - un tutoriel interactif sur Next.js.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Vous pouvez consulter [le dépôt GitHub de Next.js](https://github.com/vercel/next.js) - vos retours et contributions sont les bienvenus !
 
-## Deploy on Vercel
+## Déployer sur Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Le moyen le plus simple de déployer votre application Next.js est d'utiliser la [plateforme Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) des créateurs de Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+Consultez notre [documentation sur le déploiement Next.js](https://nextjs.org/docs/pages/building-your-application/deploying) pour plus de détails.
