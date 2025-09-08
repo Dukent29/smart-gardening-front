@@ -32,6 +32,52 @@ export default function DeprecatedPlantHealthPage() {
   const [analysisData, setAnalysisData] = useState(null);
   const router = useRouter();
 
+  const saveScanResultToLocalStorage = (result) => {
+    const existingResults = JSON.parse(localStorage.getItem("scanHistory")) || [];
+    const updatedResults = [...existingResults, result];
+    localStorage.setItem("scanHistory", JSON.stringify(updatedResults));
+  };
+
+  const savePlant = () => {
+    const scanResult = {
+      result: analysisData.result,
+      imageUrl: analysisData.imageUrl,
+      timestamp: new Date().toISOString(),
+    };
+    saveScanResultToLocalStorage(scanResult);
+    alert("Résultat enregistré avec succès !");
+  };
+
+  const renderHistory = () => {
+    const scanHistory = JSON.parse(localStorage.getItem("scanHistory")) || [];
+    if (scanHistory.length === 0) {
+      return <p className="text-center text-gray-400 mt-10">Aucun historique disponible.</p>;
+    }
+
+    return (
+      <div className="space-y-4">
+        {scanHistory.map((entry, index) => (
+          <div key={index} className="border rounded-lg bg-gray-50 shadow-sm p-4">
+            <img
+              src={entry.imageUrl}
+              alt="Scan Image"
+              className="w-full h-40 object-cover rounded-lg mb-2"
+            />
+            <p className="text-sm text-gray-600">
+              <strong>Date :</strong> {new Date(entry.timestamp).toLocaleString()}
+            </p>
+            <p className="text-sm text-gray-600">
+              <strong>État :</strong>{" "}
+              {entry.result.health_assessment?.is_healthy
+                ? "Aucun signe de maladie détecté"
+                : "Présence de maladies probables"}
+            </p>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <AppLayout title="Santé de la Plante">
       <TabsNav activeTab={activeTab} onTabChange={setActiveTab} />
@@ -51,15 +97,16 @@ export default function DeprecatedPlantHealthPage() {
             )
           )}
           {activeTab === "Chat" && <ChatBotComponent />}
-          {activeTab === "History" && (
-            <p className="text-center text-gray-400 mt-10">
-              Historique en cours de développement...
-            </p>
-          )}
+          {activeTab === "History" && renderHistory()}
         </div>
 
         {selectedDisease && (
-          <Modal onClose={() => setSelectedDisease(null)}>
+          <Modal
+            onClose={() => {
+              setSelectedDisease(null); // Close the disease details modal
+              setShowResultsModal(true); // Reopen the disease identification modal
+            }}
+          >
             <div className="flex flex-col w-full max-w-md overflow-hidden rounded-2xl">
               {loading ? (
                 <Skeleton height={200} />
@@ -124,9 +171,9 @@ export default function DeprecatedPlantHealthPage() {
                     <p className="text-md text-gray-700 mb-1">
                       <strong>Plante en bonne santé :</strong>{" "}
                       {analysisData.result.health_assessment?.is_healthy ? (
-                        <span className="text-[#0A5D2F] font-semibold">✅ Oui</span>
+                        <span className="text-[#0A5D2F] font-semibold">Aucun signe de maladie détecté</span>
                       ) : (
-                        <span className="text-red-500 font-semibold">❌ Non</span>
+                        <span className="text-red-500 font-semibold"> Présence de maladies probables</span>
                       )}
                     </p>
                     {analysisData.result.health_assessment.diseases

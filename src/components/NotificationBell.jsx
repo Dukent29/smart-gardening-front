@@ -76,8 +76,9 @@ export default function NotificationBell() {
       if (typeof window === "undefined") return;
       const userId = localStorage.getItem("userId");
       if (!userId) return;
-      // ✨ axios instance
-      await api.patch(`/api/notifications/${userId}/read`);
+
+      
+      await api.patch(`/notifications/${userId}/read`);
       setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
       setCount(0);
     } catch (err) {
