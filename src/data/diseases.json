@@ -2,43 +2,115 @@
   {
     "entity_id": 458,
     "name": "Fungi",
-    "description": "Fungal diseases affect the leaves, stems, or roots of plants and often appear as mold, mildew, or rust.",
-    "treatment": "Use appropriate fungicide. Remove infected parts and avoid overwatering."
+    "description": "Les maladies fongiques affectent les feuilles, les tiges ou les racines des plantes et apparaissent souvent sous forme de moisissure, mildiou ou rouille.",
+    "treatment": "Utilisez un fongicide approprié. Retirez les parties infectées et évitez un arrosage excessif."
   },
   {
     "entity_id": 469,
     "name": "Leotiomycetes",
-    "description": "A class of fungi known to cause blight and decay in plant tissue.",
-    "treatment": "Prune infected areas and apply antifungal treatments during early signs."
+    "description": "Une classe de champignons connue pour provoquer le flétrissement et la décomposition des tissus végétaux.",
+    "treatment": "Taillez les zones infectées et appliquez des traitements antifongiques dès les premiers signes."
   },
   {
     "entity_id": 1030,
     "name": "Rust",
-    "description": "Rust appears as orange, yellow, or brown pustules on leaves and can spread rapidly.",
-    "treatment": "Remove affected leaves. Use sulfur-based fungicides."
+    "description": "La rouille apparaît sous forme de pustules orange, jaunes ou brunes sur les feuilles et peut se propager rapidement.",
+    "treatment": "Retirez les feuilles affectées. Utilisez des fongicides à base de soufre."
   },
-    {
-        "entity_id": 1031,
-        "name": "Powdery Mildew",
-        "description": "A fungal disease that appears as white powdery spots on leaves.",
-        "treatment": "Increase air circulation, avoid overhead watering, and apply fungicides."
-    },
-    {
-        "entity_id": 1032,
-        "name": "Leaf Spot",
-        "description": "Leaf spot diseases cause dark or light spots on leaves, often leading to leaf drop.",
-        "treatment": "Remove affected leaves and apply fungicides if necessary."
-    },
-    {
-        "entity_id": 1033,
-        "name": "Blight",
-        "description": "Blight causes rapid browning and death of plant tissues, especially in leaves and stems.",
-        "treatment": "Remove infected parts and apply appropriate fungicides."
-    },
+  {
+    "entity_id": 1031,
+    "name": "Powdery Mildew",
+    "description": "Une maladie fongique qui apparaît sous forme de taches blanches poudreuses sur les feuilles.",
+    "treatment": "Augmentez la circulation de l'air, évitez l'arrosage par le dessus et appliquez des fongicides."
+  },
+  {
+    "entity_id": 1032,
+    "name": "Leaf Spot",
+    "description": "Les maladies des taches foliaires provoquent des taches sombres ou claires sur les feuilles, souvent entraînant leur chute.",
+    "treatment": "Retirez les feuilles affectées et appliquez des fongicides si nécessaire."
+  },
+  {
+    "entity_id": 1033,
+    "name": "Blight",
+    "description": "Le flétrissement provoque un brunissement rapide et la mort des tissus végétaux, en particulier des feuilles et des tiges.",
+    "treatment": "Retirez les parties infectées et appliquez des fongicides appropriés."
+  },
   {
     "entity_id": 1034,
-    "name": "abiotic",
-    "description": "Downy mildew appears as yellow or white patches on the upper surface of leaves, with a downy growth underneath.",
-    "treatment": "Improve air circulation, avoid overhead watering, and apply appropriate fungicides."
+    "name": "Downy Mildew",
+    "description": "Le mildiou apparaît sous forme de taches jaunes ou blanches sur la surface supérieure des feuilles, avec une croissance duveteuse en dessous.",
+    "treatment": "Améliorez la circulation de l'air, évitez l'arrosage par le dessus et appliquez des fongicides appropriés."
+  },
+  {
+    "entity_id": 1035,
+    "name": "water-related issue",
+    "description": "Le stress hydrique survient lorsque les plantes reçoivent trop ou trop peu d'eau, entraînant un flétrissement, un jaunissement ou une chute des feuilles.",
+    "treatment": "Assurez-vous que les plantes reçoivent une quantité d'eau appropriée, en ajustant l'arrosage selon les besoins."
+  },
+  {
+    "entity_id": 1036,
+    "name": "Root Rot",
+    "description": "La pourriture des racines est causée par un excès d'humidité dans le sol, entraînant la décomposition des racines.",
+    "treatment": "Améliorez le drainage du sol, réduisez l'arrosage et utilisez des fongicides spécifiques."
+  },
+  {
+    "entity_id": 1037,
+    "name": "Aphids",
+    "description": "Les pucerons sont de petits insectes qui sucent la sève des plantes, provoquant un jaunissement et une déformation des feuilles.",
+    "treatment": "Pulvérisez de l'eau savonneuse ou utilisez des insecticides naturels comme l'huile de neem."
+  },
+  {
+    "entity_id": 1038,
+    "name": "Spider Mites",
+    "description": "Les acariens provoquent des taches jaunes sur les feuilles et des toiles fines, souvent visibles sous les feuilles.",
+    "treatment": "Augmentez l'humidité, pulvérisez de l'eau savonneuse et utilisez des acaricides si nécessaire."
+  },
+  {
+    "entity_id": 1039,
+    "name": "Chlorosis",
+    "description": "La chlorose est une décoloration des feuilles due à un manque de nutriments, souvent de fer ou de magnésium.",
+    "treatment": "Appliquez des engrais riches en nutriments et ajustez le pH du sol si nécessaire."
+  },
+  {
+    "entity_id": 1040,
+    "name": "Wilt Disease",
+    "description": "La maladie du flétrissement est causée par des bactéries ou des champignons qui bloquent l'apport d'eau dans les plantes.",
+    "treatment": "Retirez les plantes infectées et désinfectez le sol avant de replanter."
+  },
+    {
+    "entity_id": 1041,
+    "name": "Heat Stress",
+    "description": "Le stress thermique survient lorsque les plantes sont exposées à des températures élevées, entraînant un flétrissement et une croissance réduite.",
+    "treatment": "Fournissez de l'ombre aux plantes et augmentez l'arrosage pendant les périodes de chaleur intense."
+  },
+  {
+    "entity_id": 1042,
+    "name": "Cold Damage",
+    "description": "Les dommages causés par le froid se manifestent par des feuilles brûlées ou des tiges cassées après une exposition au gel.",
+    "treatment": "Protégez les plantes avec des couvertures ou déplacez-les dans un endroit abrité pendant les périodes de froid."
+  },
+  {
+    "entity_id": 1043,
+    "name": "Nutrient Deficiency",
+    "description": "Un manque de nutriments essentiels entraîne une croissance lente, des feuilles jaunes ou des taches.",
+    "treatment": "Appliquez des engrais équilibrés et ajustez le pH du sol pour améliorer l'absorption des nutriments."
+  },
+  {
+    "entity_id": 1044,
+    "name": "Sunburn",
+    "description": "Les coups de soleil provoquent des taches brunes ou blanches sur les feuilles après une exposition excessive au soleil.",
+    "treatment": "Déplacez les plantes dans un endroit partiellement ombragé et évitez une exposition directe prolongée au soleil."
+  },
+  {
+    "entity_id": 1045,
+    "name": "abiotic stress",
+    "description": "Le stress abiotique est causé par des facteurs non vivants tels que la sécheresse, le gel ou la chaleur excessive, affectant la santé des plantes.",
+    "treatment": "Protégez les plantes des conditions extrêmes et fournissez des soins appropriés en fonction du type de stress."
+  },
+  {
+    "entity_id": 1046,
+    "name": "Bacterial",
+    "description": "Les taches bactériennes provoquent des lésions sombres sur les feuilles, les fruits et les tiges, souvent entourées d'un halo jaune.",
+    "treatment": "Retirez les parties infectées et appliquez des traitements bactéricides."
   }
 ]
