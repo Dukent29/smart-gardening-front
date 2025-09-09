@@ -76,7 +76,8 @@ export default function NotificationBell() {
       if (typeof window === "undefined") return;
       const userId = localStorage.getItem("userId");
       if (!userId) return;
-      // ✨ axios instance
+
+      
       await api.patch(`/notifications/${userId}/read`);
       setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
       setCount(0);
@@ -123,11 +124,11 @@ export default function NotificationBell() {
                   let Icon = FaFileAlt;
                   let iconColor = "text-gray-500 bg-gray-200";
                   switch (notif.type) {
-                    case "delete": Icon = FaTrash; iconColor = "text-red-500 bg-red-200"; break;
-                    case "article": Icon = FaFileAlt; iconColor = "text-blue-500 bg-blue-200"; break;
+                    case "delete": Icon = FaTrash; iconColor = "text-red-600 bg-red-200"; break;
+                    case "article": Icon = FaFileAlt; iconColor = "text-blue-600 bg-blue-200"; break;
                     case "plant":
-                    case "add_plant": Icon = FaSeedling; iconColor = "text-green-500 bg-green-200"; break;
-                    case "alert": Icon = FaExclamationCircle; iconColor = "text-yellow-500 bg-yellow-200"; break;
+                    case "add_plant": Icon = FaSeedling; iconColor = "text-green-600 bg-green-200"; break;
+                    case "alert": Icon = FaExclamationCircle; iconColor = "text-yellow-600 bg-yellow-200"; break;
                   }
                   return (
                     <div
