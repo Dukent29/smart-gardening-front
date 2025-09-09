@@ -5,11 +5,11 @@ const raw = process.env.NEXT_PUBLIC_API_BASE_URL;
 const base = raw.replace(/\/+$/, "");
 const apiBase = base.endsWith("/api") ? base : `${base}/api`;
 
-// const instance = axios.create({
-//   baseURL: apiBase,          // ⇦ toujours finit par /api ✅
-//   withCredentials: false,    // mets true si tu utilises des cookies
-//   timeout: 15000,
-// });
+const instance = axios.create({
+  baseURL: apiBase,          // ⇦ toujours finit par /api ✅
+  withCredentials: false,    // mets true si tu utilises des cookies
+  timeout: 15000,
+});
 
 instance.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
