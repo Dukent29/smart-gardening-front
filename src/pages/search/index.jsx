@@ -5,10 +5,15 @@ import { getPlants } from "@/lib/plantService";
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/router"; // Import useRouter
 
+const STATIC_BASE = "http://localhost:5000";
 
-const getImageUrl = (path) => {
-  const baseUrl = process.env.NEXT_PUBLIC_STATIC_BASE;
-  return `${baseUrl}${path}`;
+const toApiStatic = (raw = "") => {
+  if (!raw) return "";
+  let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, ""); 
+  p = p.replace(/^\/+/g, "");     
+  p = p.replace(/^api\/+/g, "");  
+  if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
+  return `${STATIC_BASE}/${p}`; 
 };
 
 export default function SearchPage() {
@@ -24,11 +29,13 @@ export default function SearchPage() {
         const [plantsData, articlesData] = await Promise.all([
           getPlants(),
           getAllArticles(),
-        ]);
+        ]); // Ensure proper closing of Promise.all
         setPlants(plantsData);
         setArticles(articlesData.articles);
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
+      } finally {
+        // Optional: Add a finally block if needed
       }
     };
     loadData();
@@ -114,8 +121,10 @@ export default function SearchPage() {
           {searchTerm ? (
             <div>
               {combinedResults.length > 0 ? (
-                combinedResults.map((result, index) =>
-                  result.plant_name ? (
+                combinedResults.map((result, index) => {
+                  const imageUrl = result.image_url ? toApiStatic(result.image_url) : "http://localhost:5000/uploads/default-image.png"; // Provide a fallback image
+
+                  return result.plant_name ? (
                     <div
                       key={index}
                       onClick={() => handleResultClick(result.id, "plant")}
@@ -123,7 +132,7 @@ export default function SearchPage() {
                                  hover:shadow-md hover:ring-gray-300 transition cursor-pointer"
                     >
                       <img
-                        src={getImageUrl(result.image_url)}
+                        src={imageUrl}
                         alt={result.plant_name}
                         className="w-16 h-16 rounded-xl object-cover ring-1 ring-gray-200"
                       />
@@ -155,8 +164,8 @@ export default function SearchPage() {
                       <h3 className="text-base font-semibold text-gray-900">{result.title}</h3>
                       <p className="text-sm text-gray-600 line-clamp-2 mt-1">{result.content}</p>
                     </div>
-                  )
-                )
+                  );
+                })
               ) : (
                 <p className="text-center text-gray-600 py-10">Aucun résultat trouvé. Essayez un autre mot-clé.</p>
               )}

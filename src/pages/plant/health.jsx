@@ -14,13 +14,11 @@ import { TbHealthRecognition } from "react-icons/tb";
 const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, "");
 const toApiStatic = (raw = "") => {
   if (!raw) return "";
-  if (/^blob:/i.test(raw)) return raw; 
-  
-  let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, "");
-  p = p.replace(/^\/+/, "");    
-  p = p.replace(/^api\/+/, ""); 
+  let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, ""); 
+  p = p.replace(/^\/+/g, "");     
+  p = p.replace(/^api\/+/g, "");  
   if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
-  return `${STATIC_BASE}/${p}`;  
+  return `http://localhost:5000/${p}`; // Use localhost:5000 for static URLs
 };
 
 

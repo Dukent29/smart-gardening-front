@@ -8,7 +8,7 @@ import { FiMoreVertical } from "react-icons/fi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, "");
+const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "http://localhost:5000").replace(/\/+$/, "");
 
 const toPlantImageUrl = (raw = "") => {
   if (!raw) return "";

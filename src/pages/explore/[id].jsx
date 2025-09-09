@@ -3,9 +3,15 @@ import { useState, useEffect } from "react";
 import { AppLayout } from "@/layout/AppLayout";
 import axios from "@/lib/axios";
 
-const getImageUrl = (path) => {
-  const baseUrl = process.env.NEXT_PUBLIC_STATIC_BASE;
-  return `${baseUrl}${path}`;
+const STATIC_BASE = "http://localhost:5000";
+
+const toApiStatic = (raw = "") => {
+  if (!raw) return "";
+  let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, ""); 
+  p = p.replace(/^\/+/g, "");     
+  p = p.replace(/^api\/+/g, "");  
+  if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
+  return `${STATIC_BASE}/${p}`; 
 };
 
 const categoryTranslations = {
@@ -86,7 +92,7 @@ export default function ArticleDetailPage() {
     );
   }
 
-  const imageUrl = getImageUrl(article.image);
+  const imageUrl = toApiStatic(article.image);
 
   return (
     <AppLayout title={article.title.split(" ").slice(0, 3).join(" ") + (article.title.split(" ").length > 3 ? "..." : "")}>

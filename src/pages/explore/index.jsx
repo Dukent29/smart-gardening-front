@@ -5,8 +5,16 @@ import { useRouter } from "next/router";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
+const STATIC_BASE = "http://localhost:5000";
 
-const STATIC_BASE = process.env.NEXT_PUBLIC_STATIC_BASE;
+const toApiStatic = (raw = "") => {
+  if (!raw) return "";
+  let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, "");
+  p = p.replace(/^\/+/g, "");
+  p = p.replace(/^api\/+/g, "");
+  if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
+  return `${STATIC_BASE}/${p}`;
+};
 
 export default function ExplorePage() {
   const [articles, setArticles] = useState([]);
@@ -128,7 +136,7 @@ function ArticleCard({ article }) {
   
   const imageUrl = article.image?.startsWith("http")
     ? article.image
-    : `${STATIC_BASE}/${article.image}`;
+    : toApiStatic(article.image);
 
   const [isFavorite, setIsFavorite] = useState(false);
 

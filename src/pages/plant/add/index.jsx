@@ -7,14 +7,13 @@ import { FaSyncAlt } from "react-icons/fa";
 import { IoScanCircle } from "react-icons/io5";
 
 
-const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, "");
-
+const STATIC_BASE = "http://localhost:5000";
 
 const toApiStatic = (raw = "") => {
   if (!raw) return "";
   let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, ""); 
-  p = p.replace(/^\/+/, "");     
-  p = p.replace(/^api\/+/, "");  
+  p = p.replace(/^\/+/g, "");     
+  p = p.replace(/^api\/+/g, "");  
   if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
   return `${STATIC_BASE}/${p}`; 
 };
