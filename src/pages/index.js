@@ -7,7 +7,7 @@ export default function Home() {
 
   useEffect(() => {
     router.replace("/login"); // Redirection immédiate vers /login
-  }, []);
+  }, [router]); // Include 'router' in the dependency array
 
   return null; // Rien n'est affiché
 }
