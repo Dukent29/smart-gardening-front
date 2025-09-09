@@ -126,35 +126,37 @@ export default function AddPlantPage() {
 
   // 💾 Save plant
   const savePlant = async () => {
-    if (!result) {
-      setError("Aucun résultat à enregistrer.");
-      return;
+  if (!result) {
+    setError("Aucun résultat à enregistrer.");
+    return;
+  }
+
+  // 1) On garde l'URL renvoyée par /plants/identify (souvent absolue)
+  // Le backend sait déjà extraire '/uploads/...' si besoin.
+  const imageUrl = result.image_url || "";
+
+  // 2) Envoi en multipart/form-data (important si la route a multer)
+  const fd = new FormData();
+  fd.append("name", result.name || "");
+  fd.append("type", result.type || "");
+  fd.append("description", result.description || "");
+  fd.append("imageUrl", imageUrl); // pas de fichier, juste l'URL
+
+  try {
+    const res = await axios.post("/plants/add-plant", fd); // NE PAS fixer Content-Type, le browser le fait
+    if (res.data.success) {
+      alert("✅ Plante ajoutée avec succès !");
+      setShowResultModal(false);
+      reset();
+      window.location.href = "/dashboard";
+    } else {
+      setError(res.data.message || "Erreur lors de l'ajout de la plante.");
     }
-
-    const payload = {
-      name: result.name,
-      type: result.type,
-      description: result.description,
-      user_id: 1, 
-      imageUrl: result.image_url || null, 
-    };
-
-    try {
-      const res = await axios.post("/plants/add-plant", payload);
-      if (res.data.success) {
-        alert("✅ Plante ajoutée avec succès !");
-        setShowResultModal(false);
-        reset();
-        window.location.href = "/dashboard";
-      } else {
-        setError(res.data.message || "Erreur lors de l'ajout de la plante.");
-      }
-    } catch (err) {
-      console.error(err);
-      setError("Erreur serveur lors de l'ajout de la plante.");
-    }
-  };
-
+  } catch (err) {
+    console.error(err);
+    setError("Erreur serveur lors de l'ajout de la plante.");
+  }
+};
   const handleFormChange = (e) => {
     const { name, value, files } = e.target;
     setForm((prev) => ({ ...prev, [name]: files ? files[0] : value }));
