@@ -288,14 +288,18 @@ function ScanComponent({ onSelectDisease, onShowResults }) {
       formData.append("image", blob);
 
       try {
-        const res = await axios.post("/plants/health", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const res = await axios.post(
+          "https://awm.portfolio-etudiant-rouen.com/api/api/plants/identify", // Hardcoded URL
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
 
         if (res.data.success) {
           onShowResults({
             result: res.data.health_data,
-            imageUrl: imageUrl, 
+            imageUrl: imageUrl,
             enrichDisease: enrichDisease,
           });
         } else {
