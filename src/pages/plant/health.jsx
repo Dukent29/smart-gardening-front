@@ -285,7 +285,7 @@ function ScanComponent({ onSelectDisease, onShowResults, setPageLoading }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const videoRef = useRef(null);
-  const [cameraFacingMode, setCameraFacingMode] = useState("user"); // "environment" pour cam arrière
+  const [cameraFacingMode, setCameraFacingMode] = useState("user");
 
   useEffect(() => {
     const startCamera = async () => {
@@ -315,7 +315,6 @@ function ScanComponent({ onSelectDisease, onShowResults, setPageLoading }) {
   };
 
   const enrichDisease = (disease) => {
-    // priorité au match par entity_id si dispo, sinon par nom
     const local =
       localDiseases.find((x) => String(x.entity_id) === String(disease?.entity?.id)) ||
       localDiseases.find((x) => x.name.toLowerCase() === (disease?.name || "").toLowerCase());
@@ -352,7 +351,6 @@ function ScanComponent({ onSelectDisease, onShowResults, setPageLoading }) {
       fd.append("image", blob, "snapshot.jpg");
 
       try {
-        // Appelle l’API serverless Vercel (pas ton back OVH)
         const resp = await fetch("/api/health", { method: "POST", body: fd });
         const data = await resp.json();
 
@@ -362,7 +360,7 @@ function ScanComponent({ onSelectDisease, onShowResults, setPageLoading }) {
 
         onShowResults({
           result: data.health_data,
-          imageUrl: data.image_url, // Blob public ou data:
+          imageUrl: data.image_url,
           enrichDisease,
         });
       } catch (err) {

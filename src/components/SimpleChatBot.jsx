@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FiSend, FiChevronDown, FiClock, FiCopy, FiCheck } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 
-// --- Demo data (unchanged content-wise) --------------------------------------
+
 const speciesData = {
   Rose: {
     questions: [

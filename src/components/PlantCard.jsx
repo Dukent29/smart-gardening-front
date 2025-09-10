@@ -10,10 +10,8 @@ import {
 export default function PlantCard({ plant }) {
   const router = useRouter();
 
-  // 1) latestByType avec fallback si pas de sensors
   const latestByType = buildLatestByType(plant.sensors, plant.plant_id);
 
-  // 2) overall
   const overallStatus = overallStatusFromLatest(latestByType);
 
   const getBadgeStyle = (status) => {
@@ -29,12 +27,10 @@ export default function PlantCard({ plant }) {
 
   const badgeText = overallStatus === "UNKNOWN" ? "Inconnu" : overallStatus;
 
-  // 3) synchro DB quand user agit (si tu veux garder en dashboard)
   const handleManualAction = async () => {
     try {
       await axios.post(`/mock/sensors/${plant.plant_id}`);
-      alert("🌱 Données synchronisées avec la base !");
-      // ici, si tu as un mutate() dispo, tu peux le call pour refresh
+      alert("Données synchronisées avec la base !");
     } catch (e) {
       console.error(e);
       alert("Erreur en synchronisant les capteurs");

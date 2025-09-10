@@ -5,7 +5,6 @@ import { getNotifications } from "@/lib/notificationService";
 import api from "@/lib/axios"; // ← instance axios (baseURL finit par /api)
 
 export default function NotificationBell() {
-  // Déclare TOUS les hooks sans condition (règle d’or React)
   const [notifications, setNotifications] = useState([]);
   const [count, setCount] = useState(0);
   const [open, setOpen] = useState(false);

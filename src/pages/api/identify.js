@@ -11,7 +11,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1) Parse multipart/form-data
     const { files } = await new Promise((resolve, reject) => {
       const form = formidable({
         multiples: false,
@@ -21,14 +20,12 @@ export default async function handler(req, res) {
       form.parse(req, (err, fields, files) => (err ? reject(err) : resolve({ fields, files })));
     });
 
-    // 2) Fichier quel que soit le format (objet vs tableau)
     let file = files?.image;
     if (Array.isArray(file)) file = file[0];
     if (!file) {
       return res.status(400).json({ success: false, error: "No file uploaded under 'image'." });
     }
 
-    // 3) chemin selon version formidable (filepath | path)
     const filePath = file.filepath || file.path;
     if (!filePath) {
       return res.status(400).json({
@@ -37,13 +34,11 @@ export default async function handler(req, res) {
       });
     }
 
-    // 4) Lire en buffer
     const fs = await import("fs");
     const buf = fs.readFileSync(filePath);
     const base64 = buf.toString("base64");
 
-    // 5) Appel Plant.id
-    const r = await fetch("https://api.plant.id/v2/identify", {
+    const r = await fetch("https://api.plant.id/v2/identify?language=${FR}", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -68,7 +63,6 @@ export default async function handler(req, res) {
     const type = taxonomy.class || "Unknown";
     const description = s.plant_details?.wiki_description?.value || "No description";
 
-    // 6) Upload image: ESSAYER @vercel/blob via import dynamique (serveur seulement)
     let image_url;
     try {
       const { put } = await import("@vercel/blob"); // <— import dynamique
@@ -80,7 +74,6 @@ export default async function handler(req, res) {
       });
       image_url = uploaded.url;
     } catch (blobErr) {
-      // En local sans token blob: fallback en data URL (toujours fonctionnel pour l'UI)
       image_url = `data:${file.mimetype || "image/jpeg"};base64,${base64}`;
     }
 

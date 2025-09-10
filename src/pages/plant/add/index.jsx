@@ -9,24 +9,19 @@ import { IoScanCircle } from "react-icons/io5";
 export default function AddPlantPage() {
   const [activeTab, setActiveTab] = useState("AddPhoto");
 
-  // form state (utilisé surtout pour AddManually)
   const [form, setForm] = useState({ name: "", type: "", description: "", image: null });
 
-  // scan state
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [result, setResult] = useState(null);
 
-  // ui state
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showResultModal, setShowResultModal] = useState(false);
 
-  // camera
   const videoRef = useRef(null);
   const [cameraFacingMode, setCameraFacingMode] = useState("user"); // "environment" pour cam arrière
 
-  // ---- Camera lifecycle ----
   useEffect(() => {
     if (activeTab !== "AddPhoto") return;
     const start = async () => {
@@ -52,9 +47,6 @@ export default function AddPlantPage() {
   const toggleCamera = () =>
     setCameraFacingMode((m) => (m === "user" ? "environment" : "user"));
 
-  // -----------------------------------------
-  // SCAN VIA CAMÉRA -> /api/identify (Vercel)
-  // -----------------------------------------
   const handleScanToAdd = () => {
     const canvas = document.createElement("canvas");
     const video = videoRef.current;
@@ -76,14 +68,11 @@ export default function AddPlantPage() {
         const fd = new FormData();
         fd.append("image", blob, "snapshot.jpg");
 
-        // IMPORTANT : on appelle le serverless local Vercel, pas axios (qui pointe OVH)
         const resp = await fetch("/api/identify", { method: "POST", body: fd });
         const data = await resp.json();
 
         if (resp.ok && data?.success) {
-          // data = { name, type, description, image_url }
           setResult(data);
-          // Pré-remplir aussi le form si l'utilisateur veut corriger avant save
           setForm({
             name: data.name || "",
             type: data.type || "",
@@ -103,9 +92,6 @@ export default function AddPlantPage() {
     }, "image/jpeg");
   };
 
-  // -----------------------------------------------------
-  // UPLOAD MANUEL -> /api/identify (Vercel) pour détecter
-  // -----------------------------------------------------
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!form.image) {
@@ -120,12 +106,12 @@ export default function AddPlantPage() {
       const fd = new FormData();
       fd.append("image", form.image);
 
-      const resp = await fetch("/api/identify", { method: "POST", body: fd });
+      const resp = await fetch("/api/identify?language=fr", { method: "POST", body: fd });
       const data = await resp.json();
 
       if (resp.ok && data?.success) {
-        setResult(data); // { name, type, description, image_url }
-        // Pré-remplir nom/type/desc avec ce que l'API propose
+        setResult(data);
+
         setForm((prev) => ({
           ...prev,
           name: data.name || prev.name,
@@ -168,20 +154,17 @@ export default function AddPlantPage() {
   fd.append("description", finalDesc);
 
   try {
-    // 1) Priorité au fichier manuel si l’utilisateur a uploadé
     if (form.image instanceof File) {
       fd.append("image", form.image, form.image.name);
     } else if (result?.image_url?.startsWith("data:")) {
-      // 2) Si on a une data URL -> on convertit en fichier pour Multer
       const resp = await fetch(result.image_url);
       const blob = await resp.blob();
       fd.append("image", blob, "snapshot.jpg");
     } else if (result?.image_url) {
-      // 3) Sinon URL http(s) -> on envoie imageUrl (texte)
       fd.append("imageUrl", result.image_url);
     }
 
-    const res = await axios.post("/plants/add-plant", fd); // NE PAS fixer Content-Type
+    const res = await axios.post("/plants/add-plant", fd);
     if (res.data?.success) {
       alert("✅ Plante ajoutée avec succès !");
       setShowResultModal(false);
@@ -196,8 +179,6 @@ export default function AddPlantPage() {
   }
 };
 
-
-  // --------- helpers ----------
   const handleFormChange = (e) => {
     const { name, value, files } = e.target;
     setForm((prev) => ({ ...prev, [name]: files ? files[0] : value }));
@@ -213,10 +194,9 @@ export default function AddPlantPage() {
 
   const handleCancelResult = () => {
     setShowResultModal(false);
-    // on ne reset pas forcément pour permettre corrections, à toi de voir
   };
 
-  // ---------- UI ----------
+
   return (
     <AppLayout title="Ajouter une plante">
       <TabsNav activeTab={activeTab} onTabChange={setActiveTab} />
