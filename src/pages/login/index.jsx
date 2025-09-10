@@ -34,7 +34,7 @@ export default function LoginPage() {
         <div className="flex flex-col items-center mb-4">
           <button className="w-full bg-white border border-gray-300 py-2 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:bg-gray-100">
             <FaGoogle className="text-[#0a5d2f] w-5 h-5" />
-            <span className="text-gray-600 font-medium">Continuer avec Google</span>
+            <span className="text-gray-600 font-medium">Continuer avec Google GO!</span>
           </button>
           <div className="flex items-center w-full mt-2">
             <hr className="flex-grow border-gray-300" />
