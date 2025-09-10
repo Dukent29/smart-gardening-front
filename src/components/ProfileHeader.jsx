@@ -32,7 +32,7 @@ export default function ProfileHeader({ title = "Profil" }) {
       {/* Logout icon */}
       <button
         onClick={handleLogout}
-        className="text-gray-600 hover:text-red-600 text-2xl"
+        className="text-gray-600 hover:text-[#de3d31] text-2xl"
         aria-label="Déconnexion"
       >
         <FaSignOutAlt />

@@ -129,10 +129,10 @@ export default function NotificationBell() {
                   let Icon = FaFileAlt;
                   let iconColor = "text-gray-500 bg-gray-200";
                   switch (notif.type) {
-                    case "delete": Icon = FaTrash; iconColor = "text-red-600 bg-red-200"; break;
+                    case "delete": Icon = FaTrash; iconColor = "text-[#de3d31] bg-red-200"; break;
                     case "article": Icon = FaFileAlt; iconColor = "text-blue-600 bg-blue-200"; break;
                     case "plant":
-                    case "add_plant": Icon = FaSeedling; iconColor = "text-green-600 bg-green-200"; break;
+                    case "add_plant": Icon = FaSeedling; iconColor = "text-[#09552b] bg-[#8eb49f]"; break;
                     case "alert": Icon = FaExclamationCircle; iconColor = "text-yellow-600 bg-yellow-200"; break;
                   }
                   return (

@@ -358,7 +358,7 @@ export default function AddPlantPage() {
           </form>
         )}
 
-        {error && <p className="text-red-600 text-center">{error}</p>}
+        {error && <p className="text-[#de3d31] text-center">{error}</p>}
 
         {/* Modal résultat (commune aux 2 tabs) */}
         {showResultModal && result && (

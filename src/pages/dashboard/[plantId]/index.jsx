@@ -232,7 +232,7 @@ export default function PlantDetail() {
               <div className="absolute right-0 mt-2 w-44 bg-white border rounded-lg shadow-lg z-20">
                 <button
                   onClick={() => setShowDeleteModal(true)}
-                  className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                  className="block w-full text-left px-4 py-2 text-sm text-[#de3d31] hover:bg-red-50"
                 >
                   Supprimer la plante
                 </button>
@@ -389,7 +389,7 @@ export default function PlantDetail() {
                 </button>
                 <button
                   onClick={handleDeletePlant}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                  className="px-4 py-2 bg-[#de3d31] text-white rounded-lg hover:bg-red-700"
                   disabled={loadingAction}
                 >
                   {loadingAction ? "Suppression..." : "Supprimer"}

@@ -48,7 +48,7 @@ export default function UserInfo({ user: initialUser }) {
       <div className="bg-white rounded-xl shadow p-6 mb-4">
         <div className="text-5xl mb-2 flex flex-col items-center">
           <div className="relative">
-            <ProfilIcon className="text-green-600" />
+            <ProfilIcon className="text-[#09552b]" />
             <div className="absolute -bottom-2 -right-2 bg-[#074221] text-white rounded-full p-1 shadow-lg">
               <GiGardeningShears className="text-xl" />
             </div>

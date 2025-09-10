@@ -43,10 +43,10 @@ export default function Dashboard() {
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 px-4 mb-4">
               <div className="p-4 bg-white rounded-lg shadow flex items-center justify-between">
                 <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-                  <FaSeedling className="text-green-600 text-3xl" />
+                  <FaSeedling className="text-[#09552b] text-3xl" />
                 </div>
                 <div className="text-right">
-                  <p className="text-4xl font-bold text-green-600">{plantCount}</p>
+                  <p className="text-4xl font-bold text-[#09552b]">{plantCount}</p>
                   <p className="text-gray-500">Plantes</p>
                 </div>
               </div>
@@ -82,7 +82,7 @@ export default function Dashboard() {
         
         <Link href="/plant/add" legacyBehavior>
           <a
-            className="fixed bottom-24 right-8 bg-green-600 hover:bg-green-700 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg text-3xl z-50 transition-colors duration-200"
+            className="fixed bottom-24 right-8 bg-[#09552b] hover:bg-[#074221] text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg text-3xl z-50 transition-colors duration-200"
             aria-label="Ajouter une plante"
           >
             +
