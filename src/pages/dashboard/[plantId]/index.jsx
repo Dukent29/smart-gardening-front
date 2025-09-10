@@ -12,9 +12,38 @@ const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfol
 
 const toPlantImageUrl = (raw = "") => {
   if (!raw) return "";
+
+  let s = String(raw).trim();
+
+  // 1) data: URL (leave it)
+  if (/^data:/i.test(s)) return s;
+
+  // 2) Fix accidental "hosthttps://..." concatenations (keep the last http URL)
+  const multiHttp = s.match(/https?:\/\/.+https?:\/\/(.+)$/i);
+  if (multiHttp) s = "https://" + multiHttp[1];
+
+  // 3) If absolute URL
+  if (/^https?:\/\//i.test(s)) {
+    try {
+      const apiHost = new URL(STATIC_BASE).host;
+      const u = new URL(s);
+
+      // If not our API host -> external (e.g., Vercel Blob). Use as-is.
+      if (u.host !== apiHost) return s;
+
+      // If it's our API host, normalize path to /uploads/...
+      let p = u.pathname.replace(/^\/+/, "");
+      p = p.replace(/^api\/+/, "");
+      if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
+      return `${STATIC_BASE}/${p}`;
+    } catch {
+      // If URL parsing fails, fall through to relative handling below
+    }
+  }
+
   let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, "");
-  p = p.replace(/^\/+/, "");
-  p = p.replace(/^api\/+/, "");
+  p = p.replace(/^\/+/g, "");
+  p = p.replace(/^api\/+/g, "");
   if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
   return `${STATIC_BASE}/${p}`;
 };
