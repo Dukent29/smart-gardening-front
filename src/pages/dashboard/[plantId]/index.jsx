@@ -1,7 +1,9 @@
+// src/pages/dashboard/[plantId].js
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { usePlantDetail } from "@/hooks/usePlantDetail";
 import axios from "@/lib/axios";
+import { buildLatestByType, overallStatusFromLatest } from "@/utils/sensorsClient";
 import SensorCard from "@/components/SensorCard";
 import { AppLayout } from "@/layout/AppLayout";
 import { FiMoreVertical } from "react-icons/fi";
@@ -41,6 +43,7 @@ const toPlantImageUrl = (raw = "") => {
     }
   }
 
+  // Relative or odd absolute: normalize to STATIC_BASE/uploads/...
   let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, "");
   p = p.replace(/^\/+/g, "");
   p = p.replace(/^api\/+/g, "");
@@ -58,40 +61,36 @@ export default function PlantDetail() {
   const [loadingAction, setLoadingAction] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
 
-  // ------- derived sensors -------
-  const latestByType = {};
-  (sensors || []).forEach((s) => {
-    if (!latestByType[s.type] || new Date(s.timestamp) > new Date(latestByType[s.type].timestamp)) {
-      latestByType[s.type] = s;
-    }
-  });
+  // ------- derived sensors (fallback + latest + overall) -------
+  const latestByType = buildLatestByType(sensors, plantId);
+  const overallStatus = overallStatusFromLatest(latestByType);
 
-  const getOverallStatus = () => {
-    const allStatuses = Object.values(latestByType).map(sensor => sensor.status);
-    if (allStatuses.includes("CRITICAL")) return "CRITICAL";
-    if (allStatuses.includes("LOW")) return "LOW";
-    if (allStatuses.length > 0 && allStatuses.every(status => status === "OK")) return "OK";
-    return "UNKNOWN";
-  };
-
-  const overallStatus = getOverallStatus();
   const getBadgeStyle = (status) => {
     const styles = {
       OK: "bg-green-100 text-green-800 border-green-200",
       LOW: "bg-yellow-100 text-yellow-800 border-yellow-200",
       CRITICAL: "bg-red-100 text-red-800 border-red-200",
-      UNKNOWN: "bg-gray-100 text-gray-600 border-gray-200"
+      UNKNOWN: "bg-gray-100 text-gray-600 border-gray-200",
     };
     return styles[status] || styles.UNKNOWN;
   };
 
-  // ------- actions (logic unchanged) -------
+  // ------- self-heal manual action -------
   const handleSimulateManualAction = async () => {
     try {
+      const noRealSensors = !Array.isArray(sensors) || sensors.length === 0;
+
+      if (noRealSensors) {
+        await axios.post(`/mock/sensors/${plantId}`);
+        await mutate(); // ensure fresh sensors loaded
+      }
+
       const res = await axios.patch(`/simulation/simulate-response/${plantId}`);
       if (res.data.success) {
-        console.log("✅ Manual actions applied:", res.data.updatedSensors);
-        mutate();
+        await mutate();
+        alert("🌱 Action appliquée !");
+      } else {
+        alert("❌ Échec de l'action manuelle.");
       }
     } catch (err) {
       console.error("❌ Failed to simulate manual actions:", err);
@@ -105,8 +104,7 @@ export default function PlantDetail() {
         is_automatic: !plant.is_automatic,
       });
       if (res.data.success) {
-        console.log("🌿 Automation mode updated");
-        mutate();
+        await mutate();
       }
     } catch (err) {
       console.error("❌ Failed to toggle automation mode:", err);
@@ -136,6 +134,65 @@ export default function PlantDetail() {
   const handleEditPlant = () => {
     router.push(`/plants/edit/${plantId}`);
   };
+
+  // ------- auto-tick: fait vivre la plante quand page ouverte -------
+  useEffect(() => {
+  if (!plantId) return;
+
+  let stopped = false;
+  let timer = null;
+
+  const nextDelay = () => {
+    // 75s à 120s, pour éviter l'effet “machine”
+    const base = 75_000;
+    const jitter = Math.floor(Math.random() * 45_000); // 0–45s
+    return base + jitter;
+  };
+
+  const schedule = () => {
+    if (stopped) return;
+    timer = setTimeout(tick, nextDelay());
+  };
+
+  const tick = async () => {
+    if (stopped) return;
+    try {
+      // pause si onglet non visible (évite spam serveur)
+      if (typeof document !== "undefined" && document.visibilityState !== "visible") {
+        return schedule();
+      }
+
+      const noRealSensors = !Array.isArray(sensors) || sensors.length === 0;
+
+      if (noRealSensors) {
+        // seed la DB une seule fois si vide
+        await axios.post(`/mock/sensors/${plantId}`);
+        await mutate();
+        return schedule();
+      }
+
+      if (plant?.is_automatic) {
+        // 👉 évolution plus douce côté serveur (plutôt que random “mock”)
+        await axios.patch(`/simulation/simulate-response/${plantId}`);
+      }
+
+      await mutate();
+    } catch (e) {
+      console.error("auto-tick error", e);
+    } finally {
+      schedule(); // replanifie avec un nouveau délai random
+    }
+  };
+
+  // kickstart
+  schedule();
+
+  return () => {
+    stopped = true;
+    if (timer) clearTimeout(timer);
+  };
+}, [plantId, plant?.is_automatic, sensors?.length, mutate]);
+
 
   // ------- helpers for short description -------
   const DESC_LIMIT = 180;
@@ -251,12 +308,12 @@ export default function PlantDetail() {
                   <button
                     onClick={toggleAutomationMode}
                     className={`text-xs px-2 py-1 rounded border font-semibold shadow-sm hover:shadow transition ${
-                      plant.is_automatic
+                      plant?.is_automatic
                         ? "bg-blue-100 text-blue-700 border-blue-300"
                         : "bg-gray-100 text-gray-700 border-gray-300"
                     }`}
                   >
-                    {plant.is_automatic ? "AUTO" : "MANUAL"}
+                    {plant?.is_automatic ? "AUTO" : "MANUAL"}
                   </button>
                 </div>
 
@@ -265,28 +322,28 @@ export default function PlantDetail() {
                     type="soil_moisture"
                     value={latestByType.soil_moisture?.value}
                     status={latestByType.soil_moisture?.status || "OK"}
-                    isManual={!plant.is_automatic}
+                    isManual={!plant?.is_automatic}
                     onAction={handleSimulateManualAction}
                   />
                   <SensorCard
                     type="light"
                     value={latestByType.light?.value}
                     status={latestByType.light?.status || "OK"}
-                    isManual={!plant.is_automatic}
+                    isManual={!plant?.is_automatic}
                     onAction={handleSimulateManualAction}
                   />
                   <SensorCard
                     type="temperature"
                     value={latestByType.temperature?.value}
                     status={latestByType.temperature?.status || "OK"}
-                    isManual={!plant.is_automatic}
+                    isManual={!plant?.is_automatic}
                     onAction={handleSimulateManualAction}
                   />
                   <SensorCard
                     type="humidity"
                     value={latestByType.humidity?.value}
                     status={latestByType.humidity?.status || "OK"}
-                    isManual={!plant.is_automatic}
+                    isManual={!plant?.is_automatic}
                     onAction={handleSimulateManualAction}
                   />
                 </div>
