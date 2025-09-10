@@ -29,7 +29,7 @@ export default function Header({ title = "Page" }) {
       <button
         type="button"
         onClick={() => router.back()}
-        className="text-gray-600 hover:text-blue-600 text-xl"
+        className="text-gray-600 hover:text-[#074221] text-xl cursor-pointer"
         aria-label="Retour"
       >
         <BackIcon aria-hidden="true" />
@@ -46,7 +46,7 @@ export default function Header({ title = "Page" }) {
         <button
           type="button"
           onClick={() => router.push("/profile")}
-          className="text-gray-600 hover:text-blue-600 text-2xl"
+          className="text-gray-600 text-2xl"
           aria-label="Profil"
         >
           <ProfilIcon aria-hidden="true" />

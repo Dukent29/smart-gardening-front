@@ -18,7 +18,7 @@ export default function ProfileHeader({ title = "Profil" }) {
       {/* Arrow left */}
       <button
         onClick={() => router.back()}
-        className="text-gray-600 hover:text-blue-600 text-xl"
+        className="text-gray-600 hover:text-[#074221] text-xl cursor-pointer"
         aria-label="Retour"
       >
         <BackIcon />

@@ -1,4 +1,3 @@
-// src/pages/dashboard/[plantId].js
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { usePlantDetail } from "@/hooks/usePlantDetail";
@@ -17,33 +16,33 @@ const toPlantImageUrl = (raw = "") => {
 
   let s = String(raw).trim();
 
-  // 1) data: URL (leave it)
+  
   if (/^data:/i.test(s)) return s;
 
-  // 2) Fix accidental "hosthttps://..." concatenations (keep the last http URL)
+  
   const multiHttp = s.match(/https?:\/\/.+https?:\/\/(.+)$/i);
   if (multiHttp) s = "https://" + multiHttp[1];
 
-  // 3) If absolute URL
+  
   if (/^https?:\/\//i.test(s)) {
     try {
       const apiHost = new URL(STATIC_BASE).host;
       const u = new URL(s);
 
-      // If not our API host -> external (e.g., Vercel Blob). Use as-is.
+      
       if (u.host !== apiHost) return s;
 
-      // If it's our API host, normalize path to /uploads/...
+      
       let p = u.pathname.replace(/^\/+/, "");
       p = p.replace(/^api\/+/, "");
       if (!/^uploads\//i.test(p)) p = `uploads/${p}`;
       return `${STATIC_BASE}/${p}`;
     } catch {
-      // If URL parsing fails, fall through to relative handling below
+      
     }
   }
 
-  // Relative or odd absolute: normalize to STATIC_BASE/uploads/...
+  
   let p = String(raw).trim().replace(/^https?:\/\/[^/]+\/?/, "");
   p = p.replace(/^\/+/g, "");
   p = p.replace(/^api\/+/g, "");
@@ -61,7 +60,7 @@ export default function PlantDetail() {
   const [loadingAction, setLoadingAction] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
 
-  // ------- derived sensors (fallback + latest + overall) -------
+  
   const latestByType = buildLatestByType(sensors, plantId);
   const overallStatus = overallStatusFromLatest(latestByType);
 
@@ -75,14 +74,14 @@ export default function PlantDetail() {
     return styles[status] || styles.UNKNOWN;
   };
 
-  // ------- self-heal manual action -------
+  
   const handleSimulateManualAction = async () => {
     try {
       const noRealSensors = !Array.isArray(sensors) || sensors.length === 0;
 
       if (noRealSensors) {
         await axios.post(`/mock/sensors/${plantId}`);
-        await mutate(); // ensure fresh sensors loaded
+        await mutate(); 
       }
 
       const res = await axios.patch(`/simulation/simulate-response/${plantId}`);
@@ -135,7 +134,7 @@ export default function PlantDetail() {
     router.push(`/plants/edit/${plantId}`);
   };
 
-  // ------- auto-tick: fait vivre la plante quand page ouverte -------
+  
   useEffect(() => {
   if (!plantId) return;
 
@@ -194,7 +193,7 @@ export default function PlantDetail() {
 }, [plantId, plant?.is_automatic, sensors?.length, mutate]);
 
 
-  // ------- helpers for short description -------
+  
   const DESC_LIMIT = 180;
   const fullDesc = plant?.description || "";
   const needsClamp = fullDesc.length > DESC_LIMIT;
@@ -203,7 +202,7 @@ export default function PlantDetail() {
   return (
     <AppLayout title={plant?.plant_name || "Détails de la Plante"}>
       <div className="min-h-screen bg-gradient-to-b from-[#F2F7F4] to-[#F7FAF9] -mt-6">
-        {/* ============ HERO IMAGE + OVERLAY ============ */}
+        
         <section className="relative">
           {loading ? (
             <Skeleton height={320} />
@@ -221,7 +220,7 @@ export default function PlantDetail() {
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-transparent" />
 
-          {/* Kebab menu */}
+          
           <div className="absolute top-3 right-3 z-10">
             <button
               onClick={() => setShowMenu((prev) => !prev)}
@@ -235,24 +234,24 @@ export default function PlantDetail() {
                   onClick={() => setShowDeleteModal(true)}
                   className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                 >
-                  Delete Plant
+                  Supprimer la plante
                 </button>
                 <button
                   onClick={handleEditPlant}
                   className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
-                  Edit Plant
+                  Modifier la plante
                 </button>
               </div>
             )}
           </div>
 
-          {/* Type + Title over image */}
+          
           {!loading && !error && (
             <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-6 pb-4">
               <div className="max-w-3xl">
                 <span className="inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full ring-1 ring-black/5 uppercase bg-white/80 backdrop-blur text-emerald-800">
-                  {plant?.plant_type || "Plant"}
+                  {plant?.plant_type || "Plante"}
                 </span>
                 <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight text-white drop-shadow">
                   {plant?.plant_name}
@@ -262,10 +261,10 @@ export default function PlantDetail() {
           )}
         </section>
 
-        {/* =================== BODY =================== */}
+        
         <main className="px-4 sm:px-6">
           <div className="mx-auto max-w-3xl -mt-6 sm:-mt-10">
-            {/* Description (short with Read more) */}
+            
             <section className="rounded-2xl bg-white/90 backdrop-blur ring-1 ring-gray-200 shadow-sm p-5 sm:p-7 mt-10">
               {loading ? (
                 <>
@@ -278,7 +277,7 @@ export default function PlantDetail() {
                 <>
                   <p className="text-sm text-gray-500">{plant?.plant_type}</p>
 
-                  {/* Content with clamp/toggle */}
+                  
                   <div className="mt-2 text-gray-700 leading-relaxed">
                     <p className="whitespace-pre-line">
                       {descExpanded ? fullDesc : shortDesc}
@@ -290,7 +289,7 @@ export default function PlantDetail() {
                         onClick={() => setDescExpanded((v) => !v)}
                         className="mt-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800"
                       >
-                        {descExpanded ? "Show less" : "Read more"}
+                        {descExpanded ? "Afficher moins" : "Lire la suite"}
                       </button>
                     )}
                   </div>
@@ -298,12 +297,12 @@ export default function PlantDetail() {
               )}
             </section>
 
-            {/* Sensors + actions */}
+            
             {!loading && !error && (
               <section className="p-4 sm:p-5 space-y-4 bg-white/90 backdrop-blur ring-1 ring-gray-200 rounded-2xl shadow-sm mt-6">
                 <div className="flex items-center justify-between">
                   <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${getBadgeStyle(overallStatus)}`}>
-                    {overallStatus === "UNKNOWN" ? "Unknown" : overallStatus}
+                    {overallStatus === "UNKNOWN" ? "Inconnu" : overallStatus}
                   </span>
                   <button
                     onClick={toggleAutomationMode}
@@ -313,7 +312,7 @@ export default function PlantDetail() {
                         : "bg-gray-100 text-gray-700 border-gray-300"
                     }`}
                   >
-                    {plant?.is_automatic ? "AUTO" : "MANUAL"}
+                    {plant?.is_automatic ? "AUTO" : "MANUEL"}
                   </button>
                 </div>
 
@@ -373,7 +372,7 @@ export default function PlantDetail() {
           </div>
         </main>
 
-        {/* Delete Confirmation Modal */}
+        
         {showDeleteModal && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-96">

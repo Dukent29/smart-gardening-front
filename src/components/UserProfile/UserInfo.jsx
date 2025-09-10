@@ -47,7 +47,12 @@ export default function UserInfo({ user: initialUser }) {
     <>
       <div className="bg-white rounded-xl shadow p-6 mb-4">
         <div className="text-5xl mb-2 flex flex-col items-center">
-          <ProfilIcon />
+          <div className="relative">
+            <ProfilIcon className="text-green-600" />
+            <div className="absolute -bottom-2 -right-2 bg-[#074221] text-white rounded-full p-1 shadow-lg">
+              <GiGardeningShears className="text-xl" />
+            </div>
+          </div>
         </div>
         <div className="font-bold text-lg text-gray-800 flex items-center gap-2">
           <UserIcon />
@@ -94,7 +99,7 @@ export default function UserInfo({ user: initialUser }) {
         </div>
         <div className="text-gray-600 flex items-center gap-2 mt-1 ">
           <GiGardeningShears className="text-2xl" />
-          <span>{user.role}</span>
+          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${user.role === 'admin' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>{user.role}</span>
         </div>
         <div className="text-gray-600 flex items-center gap-2 mt-1">
           <FaRegCalendar className="text-2xl" />

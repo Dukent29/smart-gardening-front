@@ -1,4 +1,4 @@
-// src/components/NotificationBell.jsx
+
 import { useEffect, useState } from "react";
 import { FaBell, FaTrash, FaFileAlt, FaSeedling, FaExclamationCircle } from "react-icons/fa";
 import { getNotifications } from "@/lib/notificationService";
@@ -63,7 +63,7 @@ export default function NotificationBell() {
 
   const markNotificationAsRead = async (id) => {
     try {
-      // ✨ axios instance → pas de /api dans le chemin
+      
       await api.patch(`/notifications/${id}/read`);
       setNotifications((prev) =>
         prev.map((n) => (n._id === id ? { ...n, is_read: true } : n))
@@ -103,7 +103,7 @@ export default function NotificationBell() {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="relative text-gray-600 hover:text-blue-600 text-xl"
+        className="relative text-gray-600 hover:text-[#074221] text-xl cursor-pointer"
         aria-label="Notifications"
       >
         <FaBell />
