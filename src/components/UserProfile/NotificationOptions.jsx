@@ -18,12 +18,12 @@ export default function NotificationOptions() {
         <SwitchToggle checked={smsNotif} onChange={() => setSmsNotif(!smsNotif)} />
       </div>
       <div className="flex justify-between items-center">
-        <span className="text-sm font-medium">Health Notifications</span>
+        <span className="text-sm font-medium">Notifications de santé</span>
         <SwitchToggle checked={healthNotif} onChange={() => setHealthNotif(!healthNotif)} />
       </div>
 
       <div className="flex justify-between items-center">
-        <span className="text-sm font-medium">Watering Reminders</span>
+        <span className="text-sm font-medium">Rappels d'arrosage</span>
         <SwitchToggle checked={wateringReminders} onChange={() => setWateringReminders(!wateringReminders)} />
       </div>
     </div>

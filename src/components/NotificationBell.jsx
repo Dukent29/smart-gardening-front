@@ -1,4 +1,4 @@
-// src/components/NotificationBell.jsx
+
 import { useEffect, useState } from "react";
 import { FaBell, FaTrash, FaFileAlt, FaSeedling, FaExclamationCircle } from "react-icons/fa";
 import { getNotifications } from "@/lib/notificationService";
@@ -25,21 +25,24 @@ export default function NotificationBell() {
           return;
         }
 
-        const data = await getNotifications(userId); 
-        if (ignore) return;
-
+        const data = await getNotifications(userId);
         if (Array.isArray(data)) {
-          setNotifications(data);
-          setCount(data.filter((n) => !n.is_read).length);
+          // Check localStorage for persisted read state
+          const persistedNotifications = JSON.parse(localStorage.getItem(`notifications_${userId}`)) || [];
+          const mergedNotifications = data.map((notif) => {
+            const persisted = persistedNotifications.find((p) => p._id === notif._id);
+            return persisted ? { ...notif, is_read: persisted.is_read } : notif;
+          });
+
+          setNotifications(mergedNotifications);
+          setCount(mergedNotifications.filter((n) => !n.is_read).length);
         } else {
-          console.warn("Structure de réponse invalide :", data);
-          setError("Échec du chargement des notifications. Veuillez réessayer plus tard.");
+          console.warn("Invalid response structure:", data);
+          setError("Failed to load notifications. Please try again later.");
         }
       } catch (err) {
-        if (!ignore) {
-          console.warn("Erreur lors de la récupération des notifications :", err);
-          setError("Échec du chargement des notifications. Veuillez réessayer plus tard.");
-        }
+        console.warn("Error fetching notifications:", err);
+        setError("Failed to load notifications. Please try again later.");
       } finally {
         if (!ignore) setLoading(false);
       }
@@ -60,7 +63,7 @@ export default function NotificationBell() {
 
   const markNotificationAsRead = async (id) => {
     try {
-      // ✨ axios instance → pas de /api dans le chemin
+      
       await api.patch(`/notifications/${id}/read`);
       setNotifications((prev) =>
         prev.map((n) => (n._id === id ? { ...n, is_read: true } : n))
@@ -71,18 +74,20 @@ export default function NotificationBell() {
     }
   };
 
-  const markAllAsRead = async () => {
-    try {
-      if (typeof window === "undefined") return;
-      const userId = localStorage.getItem("userId");
-      if (!userId) return;
+  const markAllAsRead = () => {
+    // Directly update the local state to mark all notifications as read
+    setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
+    setCount(0); // Reset the notification count to 0
 
-      
-      await api.patch(`/notifications/${userId}/read`);
-      setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
-      setCount(0);
+    // Optionally, persist the updated state in localStorage
+    try {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        const updatedNotifications = notifications.map((n) => ({ ...n, is_read: true }));
+        localStorage.setItem(`notifications_${userId}`, JSON.stringify(updatedNotifications));
+      }
     } catch (err) {
-      console.warn("Erreur lors du marquage de toutes les notifications comme lues :", err);
+      console.warn("Failed to persist notifications in localStorage:", err);
     }
   };
 
@@ -98,7 +103,7 @@ export default function NotificationBell() {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="relative text-gray-600 hover:text-blue-600 text-xl"
+        className="relative text-gray-600 hover:text-[#074221] text-xl cursor-pointer"
         aria-label="Notifications"
       >
         <FaBell />

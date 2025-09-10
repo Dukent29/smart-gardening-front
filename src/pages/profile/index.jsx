@@ -4,7 +4,6 @@ import UserInfo from "@/components/UserProfile/UserInfo";
 import PrivacySettings from "@/components/UserProfile/PrivacySettings";
 import HelpSupport from "@/components/UserProfile/HelpSupport";
 import NotificationOptions from "@/components/UserProfile/NotificationOptions";
-import HealthReport from "@/components/UserProfile/HealthReport";
 import { getUserProfile } from "@/lib/userService";
 
 
@@ -25,7 +24,7 @@ export default function UserProfilePage() {
     <AppLayout title="Mon Profil">
       <div className="space-y-6 mt-6 px-4">
         {!user ? (
-          <div className="text-center text-gray-400">Loading user info...</div>
+          <div className="text-center text-gray-400">Chargement de votre profil...</div>
         ) : (
           <UserInfo user={user} />
         )}
@@ -33,7 +32,6 @@ export default function UserProfilePage() {
           <PrivacySettings />
           <HelpSupport />
           <NotificationOptions />
-          <HealthReport />
         </div>
       </div>
     </AppLayout>

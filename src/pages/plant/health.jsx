@@ -150,8 +150,8 @@ export default function PlantHealthPage() {
         {selectedDisease && (
           <Modal
             onClose={() => {
-              setSelectedDisease(null); // Close disease details
-              setShowResultsModal(true); // Reopen results modal
+              setSelectedDisease(null);
+              setShowResultsModal(true); 
             }}
           >
             <div className="flex flex-col w-full max-w-md overflow-hidden rounded-2xl">
@@ -184,7 +184,7 @@ export default function PlantHealthPage() {
           </Modal>
         )}
 
-        {/* Modal Résultats Analyse */}
+        
         {showResultsModal && analysisData && (
           <Modal onClose={() => setShowResultsModal(false)}>
             <div className="flex flex-col w-full max-w-md overflow-hidden rounded-lg">
@@ -221,7 +221,7 @@ export default function PlantHealthPage() {
                       )}
                     </p>
 
-                    {/* Top 3 maladies probables > 60% */}
+                    
                     {Array.isArray(analysisData.result?.health_assessment?.diseases) &&
                       analysisData.result.health_assessment.diseases
                         .filter((d) => d.probability > 0.6)

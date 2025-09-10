@@ -5,21 +5,21 @@ import { IoIosSettings } from "react-icons/io";
 export default function PrivacySettings() {
   return (
     <div>
-      <h3 className="font-semibold text-[#0A5D2F] mb-2">Settings</h3>
+      <h3 className="font-semibold text-[#0A5D2F] mb-2">Paramètres</h3>
       <ul className="space-y-2">
         <li>
-          <Link href="/settings/privacy" className="flex items-center gap-2 text-blue-600 hover:underline">
+          <Link href="/settings/privacy" className="flex items-center gap-2 text-gray-600 hover:underline">
             <ShieldIcon />
-            <span>Privacy Settings</span>
+            <span>Paramètres de confidentialité</span>
           </Link>
         </li>
         <li>
-          <Link href="/settings/account" className="flex items-center gap-2 text-blue-600 hover:underline">
+          <Link href="/settings/account" className="flex items-center gap-2 text-gray-600 hover:underline">
             <IoIosSettings className="text-2xl text-[#474747]" />
-            <span>Account Settings</span>
+            <span>Paramètres du compte</span>
           </Link>
         </li>
       </ul>
-      </div>
+    </div>
   );
 }
