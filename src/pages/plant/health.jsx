@@ -26,6 +26,8 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { FaSyncAlt } from "react-icons/fa";
 import { TbHealthRecognition } from "react-icons/tb";
+import { MdVerified } from "react-icons/md";
+import { MdOutlineSick } from "react-icons/md";
 
 const STATIC_BASE = (process.env.NEXT_PUBLIC_STATIC_BASE || "https://awm.portfolio-etudiant-rouen.com/api").replace(/\/+$/, "");
 
@@ -165,7 +167,7 @@ export default function PlantHealthPage() {
 
                   return (
                     <>
-                      <h2 className="text-xl font-bold mb-2 text-red-600">{title}</h2>
+                      <h2 className="text-xl font-bold mb-2 text-[#de3d31]">{title}</h2>
                       <p className="text-sm mb-4 text-gray-700">
                         <strong>Description :</strong>
                         <br />
@@ -211,12 +213,12 @@ export default function PlantHealthPage() {
                     <p className="text-md text-gray-700 mb-1">
                       <strong>Plante en bonne santé :</strong>{" "}
                       {analysisData.result?.health_assessment?.is_healthy ? (
-                        <span className="text-[#0A5D2F] font-semibold">
-                          Aucun signe de maladie détecté
+                        <span className="inline-flex items-center gap-1 text-[#0A5D2F]">
+                          <MdVerified className="text-[#09552b]" /> Aucun signe de maladie détecté
                         </span>
                       ) : (
-                        <span className="text-red-500 font-semibold">
-                          Présence de maladies probables
+                        <span className="inline-flex items-center gap-1 text-red-500">
+                          <MdOutlineSick className="text-[#de3d31]" /> Présence de maladies probables
                         </span>
                       )}
                     </p>
@@ -241,7 +243,7 @@ export default function PlantHealthPage() {
                               </span>
                             </p>
                             <button
-                              className="text-xs text-gray-400 hover:text-green-600 absolute top-2 right-2"
+                              className="text-xs text-gray-400 hover:text-[#09552b] absolute top-2 right-2"
                               onClick={() => {
                                 setShowResultsModal(false);
                                 setSelectedDisease(analysisData.enrichDisease(disease));
@@ -437,7 +439,7 @@ function ScanComponent({ onSelectDisease, onShowResults, setPageLoading }) {
         </button>
       </div>
 
-      {error && <p className="text-red-600 text-center">{error}</p>}
+      {error && <p className="text-[#de3d31] text-center">{error}</p>}
     </div>
   );
 }

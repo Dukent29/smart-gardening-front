@@ -13,7 +13,7 @@ export default function SensorCard({ type, value, status, onAction, isManual }) 
   };
 
   const { label, icon: IconComponent, unit, action, barColor } = sensorInfo[type] || {};
-  const alertColor = status === "CRITICAL" ? "bg-red-600" :
+  const alertColor = status === "CRITICAL" ? "bg-[#de3d31]" :
                      status === "LOW" ? "bg-yellow-400" : "bg-green-500";
 
   // Convert value for percentage display (light sensor needs different scaling)
@@ -58,7 +58,7 @@ export default function SensorCard({ type, value, status, onAction, isManual }) 
           onClick={onAction}
           className={`mt-3 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 w-full ${
             status === "CRITICAL" 
-              ? "bg-red-500 hover:bg-red-600 text-white shadow-lg hover:shadow-xl" 
+              ? "bg-red-500 hover:bg-[#de3d31] text-white shadow-lg hover:shadow-xl" 
               : "bg-yellow-500 hover:bg-yellow-600 text-white shadow-md hover:shadow-lg"
           }`}
         >

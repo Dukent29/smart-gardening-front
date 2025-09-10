@@ -26,7 +26,7 @@ export default function LogOut() {
       <button
         onClick={handleLogout}
         disabled={loading}
-        className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+        className="w-full bg-[#de3d31] hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
       >
         <BiLogOut className="text-xl" />
         {loading ? "Déconnexion..." : "Se déconnecter"}

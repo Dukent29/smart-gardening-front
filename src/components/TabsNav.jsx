@@ -27,7 +27,7 @@ export default function TabsNav({ activeTab, onTabChange }) {
             className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition duration-150 ease-in-out ${
               activeTab === key
                 ? 'text-green-700 border-green-700'
-                : 'text-gray-500 border-transparent hover:text-green-600'
+                : 'text-gray-500 border-transparent hover:text-[#09552b]'
             }`}
           >
             {icon}

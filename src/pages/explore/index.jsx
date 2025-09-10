@@ -64,7 +64,7 @@ export default function ExplorePage() {
             placeholder="Search articles..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-2 pl-10 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 bg-gray-100 text-gray-800"
+            className="w-full p-2 pl-10 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#09552b] bg-gray-100 text-gray-800"
           />
           
           <svg
