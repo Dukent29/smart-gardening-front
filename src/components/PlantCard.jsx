@@ -18,10 +18,10 @@ export default function PlantCard({ plant }) {
 
   const getBadgeStyle = (status) => {
     const styles = {
-      OK: "bg-green-100 text-green-800 border-green-200",
-      LOW: "bg-yellow-100 text-yellow-800 border-yellow-200",
-      CRITICAL: "bg-red-100 text-red-800 border-red-200",
-      UNKNOWN: "bg-gray-100 text-gray-600 border-gray-200",
+      BIEN: "bg-green-100 text-green-800 border-green-200",
+      FAIBLE: "bg-yellow-100 text-yellow-800 border-yellow-200",
+      CRITIQUE: "bg-red-100 text-red-800 border-red-200",
+      INCONNU: "bg-gray-100 text-gray-600 border-gray-200",
       default: "bg-gray-100 text-gray-600 border-gray-200",
     };
     return styles[status] || styles.default;
